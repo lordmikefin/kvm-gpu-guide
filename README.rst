@@ -1,5 +1,5 @@
 
-Guide for VGA (PGU) Passthrough with KVM (QEMU).
+Guide for VGA (GPU) Passthrough with KVM (QEMU).
 
 ( Guide is under construction :)
 
