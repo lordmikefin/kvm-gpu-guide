@@ -1,3 +1,4 @@
+
 License for source code of project "Guide for VGA Passthrough with KVM"
 =======================================================================
 
@@ -28,6 +29,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-----------------------------------------------------------------------
+----------------------------------
+
 Licenses for incorporated software
 ==================================
