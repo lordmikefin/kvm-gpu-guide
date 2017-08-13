@@ -19,7 +19,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.5"
+CURRENT_SCRIPT_VER="0.0.6"
 CURRENT_SCRIPT_DATE="2017-08-13"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -56,8 +56,11 @@ fi
 
 unset DISTRO_INFO IS_UBUNTU EXEC_MATE_ABOUT IS_MATE
 DISTRO_INFO="/etc/os-release"
-if [[ -a "${DISTRO_INFO}" ]] ; then
-	source /etc/os-release # Executeing commands from file. Import variables.
+if [[ -r "${DISTRO_INFO}" ]] ; then
+	source "${DISTRO_INFO}" # Executeing commands from file. Import variables.
+else
+	echo -e "\n '${DISTRO_INFO}' file missing or is not readable.  Aborting." >&2
+	exit 1
 fi
 #echo -e "\n Distro name: ${NAME}, Version: ${VERSION}"
 
@@ -161,6 +164,9 @@ fi
 
 if [ -z "${OUTPUT_FILE}" ] ; then
 	echo "No output file will be created."
+else
+	echo "Writing info into file:"
+	echo "${OUTPUT_FILE}"
 fi
 
 
