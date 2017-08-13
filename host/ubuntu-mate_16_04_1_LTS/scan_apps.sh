@@ -6,18 +6,18 @@
 # License of this script file:
 #   BSD 2-Clause License
 # 
-# License if available online:
+# License is available online:
 #   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/LICENSE.rst
 # 
 # Latest version of this script file:
-#   
+#   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/host/ubuntu-mate_16_04_1_LTS/scan_apps.sh
 
 # Scan all applications needed for host system.
 # And list version of all applications.
 # All information is listed into console and text file.
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1-alpha"
+CURRENT_SCRIPT_VER="0.0.2-alpha"
 CURRENT_SCRIPT_DATE="2017-08-13"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
