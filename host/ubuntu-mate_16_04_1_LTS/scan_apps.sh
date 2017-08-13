@@ -51,9 +51,8 @@ LANG="en_US.UTF-8" # Prevent output localization. Not really required :)
 #   ( https://stackoverflow.com/questions/17577093/how-do-i-get-the-absolute-directory-of-a-file-in-bash )
 
 unset CURRENT_SCRIPT CURRENT_REALPATH CURRENT_SCRIPT_DIR WORK_DIR
-#CURRENT_SCRIPT_DIR="$(dirname $(readlink -f "$0"))"
-CURRENT_REALPATH="$(realpath ${0})"
-#CURRENT_SCRIPT="$(basename ${0})"
+#CURRENT_REALPATH="$(realpath ${0})"
+CURRENT_REALPATH="$(realpath ${BASH_SOURCE[0]})"
 CURRENT_SCRIPT="$(basename ${CURRENT_REALPATH})"
 CURRENT_SCRIPT_DIR="$(dirname ${CURRENT_REALPATH})"
 WORK_DIR="${PWD}"
@@ -84,7 +83,7 @@ echo "OUTPUT_FILE: ${OUTPUT_FILE}"
 
 if [ -a "${OUTPUT_FILE}" ] ; then
 	echo "File ${OUTPUT_FILE} exists."
-	read -p "Do you want to overwrit the file ([Yes]/No): " USER_INPUT
+	read -p "Do you want to overwrite the file ([Yes]/No): " USER_INPUT
 	echo "USER_INPUT: ${USER_INPUT}"
 	
 	echo "Output file exists.  Aborting." >&2
