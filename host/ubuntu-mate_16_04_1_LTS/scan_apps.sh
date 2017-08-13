@@ -19,7 +19,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.6"
+CURRENT_SCRIPT_VER="0.0.7"
 CURRENT_SCRIPT_DATE="2017-08-13"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -102,6 +102,55 @@ fi
 #echo -e "\n This script is in test mode :)  Aborting." >&2
 #exit 1
 
+
+
+
+
+
+
+
+function print_dpkg_version() {
+	unset DPKG_VER
+	DPKG_VER="$(echo "${DPKG_INFO}" | awk '/Version:/ {print $2}')"
+	echo "" | tee -a ${OUTPUT_FILE}
+	echo "Package '${DPKG}' is installed. OK" | tee -a ${OUTPUT_FILE}
+	echo "Version: ${DPKG_VER}" | tee -a ${OUTPUT_FILE}
+}
+
+
+#DPKG_MISSING=""
+unset DPKG_MISSING DPKG_MISSING_OPT
+function dpkg_version() {
+	unset DPKG DPKG_INFO
+	DPKG="${2}"
+	
+	if [[ ${1} == "required" ]] ; then
+		DPKG_INFO="$(dpkg -s ${DPKG} 2>/dev/null)" && {
+			print_dpkg_version
+		} || {
+			echo "Package '${DPKG}' is missing. FAILED" >&2
+			echo "Package '${DPKG}' is required, but it's not installed.  Aborting." >&2
+			#echo "$ sudo apt-cache show ${DPKG}"
+			#echo "$ sudo apt-get install ${DPKG}"
+			echo ""
+			DPKG_MISSING="${DPKG_MISSING} ${DPKG}"
+		}
+	elif [[ ${1} == "optional" ]] ; then
+		DPKG_INFO="$(dpkg -s ${DPKG} 2>/dev/null)" && {
+			print_dpkg_version
+		} || {
+			echo "Package '${DPKG}' is optional. Not really needed, but is recommended."
+			#echo "$ sudo apt-cache show ${DPKG}"
+			#echo "$ sudo apt-get install ${DPKG}"
+			echo ""
+			DPKG_MISSING_OPT="${DPKG_MISSING_OPT} ${DPKG}"
+		}
+	else
+		echo "Script ${0}  FAILED" >&2
+		echo "First parameter for function '${FUNCNAME[ 0 ]}' must be 'optional' or 'required'.  Aborting." >&2
+		exit 1; 
+	fi
+}
 
 
 
@@ -201,6 +250,35 @@ fi
 
 # Bash
 echo -e "\nBash version ${BASH_VERSION}" | tee -a ${OUTPUT_FILE}
+
+
+
+# Debian packages 
+dpkg_version required ovmf
+dpkg_version required qemu-kvm
+dpkg_version required virt-manager
+
+dpkg_version optional git
+dpkg_version optional joe
+dpkg_version optional gparted
+dpkg_version optional aptitude
+dpkg_version optional keepassx
+
+if [[ -n ${DPKG_MISSING} ]] ; then
+	echo ""
+	echo "Required packages are missing." >&2
+	echo "$ sudo apt-cache  show ${DPKG_MISSING}"
+	echo "$ sudo apt-get install ${DPKG_MISSING}"
+#	exit 1
+fi
+
+if [[ -n ${DPKG_MISSING_OPT} ]] ; then
+	echo ""
+	echo "Optional packages are missing." >&2
+	echo "$ sudo apt-cache  show ${DPKG_MISSING_OPT}"
+	echo "$ sudo apt-get install ${DPKG_MISSING_OPT}"
+fi
+
 
 
 
