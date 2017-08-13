@@ -19,7 +19,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.7"
+CURRENT_SCRIPT_VER="0.0.8"
 CURRENT_SCRIPT_DATE="2017-08-13"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -121,36 +121,40 @@ function print_dpkg_version() {
 #DPKG_MISSING=""
 unset DPKG_MISSING DPKG_MISSING_OPT
 function dpkg_version() {
-	unset DPKG DPKG_INFO
+	unset METHOD_TYPE DPKG DPKG_INFO
+	METHOD_TYPE="${1}"
 	DPKG="${2}"
 	
-	if [[ ${1} == "required" ]] ; then
-		DPKG_INFO="$(dpkg -s ${DPKG} 2>/dev/null)" && {
-			print_dpkg_version
-		} || {
-			echo "Package '${DPKG}' is missing. FAILED" >&2
-			echo "Package '${DPKG}' is required, but it's not installed.  Aborting." >&2
-			#echo "$ sudo apt-cache show ${DPKG}"
-			#echo "$ sudo apt-get install ${DPKG}"
+	case ${METHOD_TYPE} in
+		required )
+			DPKG_INFO="$(dpkg -s ${DPKG}  2>/dev/null )" && {
+				print_dpkg_version # Operation succeeded
+			} || {
+				echo ""
+				echo "Package '${DPKG}' is missing. FAILED" >&2
+				echo "Package '${DPKG}' is required, but it's not installed.  Aborting." >&2
+				DPKG_MISSING="${DPKG_MISSING} ${DPKG}"
+			}
+			;;
+		optional )
+			DPKG_INFO="$(dpkg -s ${DPKG}  2>/dev/null )" && {
+				print_dpkg_version # Operation succeeded
+			} || {
+				echo ""
+				echo "Package '${DPKG}' is optional. Not really needed, but is recommended."
+				DPKG_MISSING_OPT="${DPKG_MISSING_OPT} ${DPKG}"
+			}
+			;;
+		* )
 			echo ""
-			DPKG_MISSING="${DPKG_MISSING} ${DPKG}"
-		}
-	elif [[ ${1} == "optional" ]] ; then
-		DPKG_INFO="$(dpkg -s ${DPKG} 2>/dev/null)" && {
-			print_dpkg_version
-		} || {
-			echo "Package '${DPKG}' is optional. Not really needed, but is recommended."
-			#echo "$ sudo apt-cache show ${DPKG}"
-			#echo "$ sudo apt-get install ${DPKG}"
-			echo ""
-			DPKG_MISSING_OPT="${DPKG_MISSING_OPT} ${DPKG}"
-		}
-	else
-		echo "Script ${0}  FAILED" >&2
-		echo "First parameter for function '${FUNCNAME[ 0 ]}' must be 'optional' or 'required'.  Aborting." >&2
-		exit 1; 
-	fi
+#			echo "Script ${0}  FAILED" >&2
+			echo "Script ${CURRENT_SCRIPT}  FAILED" >&2
+			echo "First parameter for function '${FUNCNAME[ 0 ]}' must be 'optional' or 'required'.  Aborting." >&2
+			exit 1; 
+			;;
+	esac
 }
+
 
 
 
