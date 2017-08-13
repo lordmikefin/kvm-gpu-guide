@@ -17,7 +17,7 @@
 # All information is listed into console and text file.
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.3-alpha"
+CURRENT_SCRIPT_VER="0.0.4-alpha"
 CURRENT_SCRIPT_DATE="2017-08-13"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -67,7 +67,7 @@ echo "WORK_DIR: ${WORK_DIR}"
 
 
 # Output file will contain information about found applications.
-unset MY_APPS_TXT OUTPUT_FILE TEXT USER_INPUT
+unset MY_APPS_TXT OUTPUT_FILE TEXT
 MY_APPS_TXT="MyApps.txt"
 OUTPUT_FILE="${CURRENT_SCRIPT_DIR}/${MY_APPS_TXT}"
 echo ""
@@ -81,20 +81,31 @@ echo "OUTPUT_FILE: ${OUTPUT_FILE}"
 # NOTE to myself: Read more about Bash conditional statements.
 #   ( http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_07_01.html )
 
+unset USER_INPUT
 if [ -a "${OUTPUT_FILE}" ] ; then
-	echo "File ${OUTPUT_FILE} exists."
-	read -p "Do you want to overwrite the file ([Yes]/No): " USER_INPUT
-	echo "USER_INPUT: ${USER_INPUT}"
-	
-	echo "Output file exists.  Aborting." >&2
-	exit 1
+	echo ""
+	echo "File exists:  ${OUTPUT_FILE}"
+	while [[ -z ${USER_INPUT} ]]; do
+		echo -n "Do you want to overwrite the file ([Yes]/No): "
+		read USER_INPUT
+		case "${USER_INPUT}" in
+			Yes | YES | yes | y | "" )
+				USER_INPUT="YES" ;;
+			No | NO | no | n )
+				USER_INPUT="NO"
+				unset OUTPUT_FILE # Clear file name. No file to overwrite.
+				;;
+			* )
+				unset USER_INPUT ;; # Clear input ( = stay in while loop )
+		esac
+	done
 fi
 
 
 
 
-echo "This script is in test mode :)  Aborting." >&2
-exit 1 # 127
+#echo "This script is in test mode :)  Aborting." >&2
+#exit 1 # 127
 
 
 
