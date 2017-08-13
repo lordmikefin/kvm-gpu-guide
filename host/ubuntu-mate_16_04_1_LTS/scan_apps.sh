@@ -19,7 +19,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.8"
+CURRENT_SCRIPT_VER="0.0.10"
 CURRENT_SCRIPT_DATE="2017-08-13"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -159,36 +159,66 @@ function dpkg_version() {
 
 
 
+
+function print_app_version_core() {
+	unset APP_CALLER APP_PARAM
+	APP_CALLER="${1}"
+	APP_PARAM="${2}"
+	
+	if [ -z "${VERSION_PRINT}" ] ; then
+		VERSION_PRINT="$(${APP_CALL} ${APP_PARAM}  2>/dev/null )"
+	fi
+	
+}
+
+function print_app_version() {
+	unset APP_CALL VERSION_PRINT
+	APP_CALL="${1}"
+	
+	print_app_version_core "${APP_CALL}" "--version"
+
+#	echo ""
+	if [ -n "${VERSION_PRINT}" ] ; then
+		echo "${VERSION_PRINT}" | tee -a ${OUTPUT_FILE}
+	else
+		echo "FAILED: Can not get version."
+		echo " $ ${EXEC_APP} --version"
+		${APP_CALL} --version
+	fi
+}
+
 # NOTE to myself: Read more about how to test if application exists.
 #   ( https://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script )
 
 function app_version() {
-	unset METHOD_TYPE APP
+	unset METHOD_TYPE APP EXEC_APP
 	METHOD_TYPE="${1}"
 	APP="${2}"
-	echo ""
-	echo "$ ${APP} --version"
-	echo ""
 	
+	EXEC_APP="$(which ${APP})"
+	
+	echo "" | tee -a ${OUTPUT_FILE};
 	case ${METHOD_TYPE} in
 		required )
-			command -v ${APP} >/dev/null 2>&1 && {
-				echo "Application exists. OK";
-				echo "$(${APP} --version)"
-				echo ""
-			} || { 
+			if [[ -n ${EXEC_APP} ]] ; then
+				echo "'${APP}' Application exists. OK" | tee -a ${OUTPUT_FILE};
+				print_app_version ${EXEC_APP}
+			else
 				echo "Application missing. FAILED" >&2
 				echo "'${APP}' is required, but it's not installed.  Aborting." >&2
-				#exit 1; 
-			}
+				echo "'${APP}' is not installed."
+			fi
 			;;
 		optional )
-			command -v ${APP} >/dev/null 2>&1 || { 
+			if [[ -n ${EXEC_APP} ]] ; then
+				echo "'${APP}' Application exists. OK" | tee -a ${OUTPUT_FILE};
+				print_app_version ${EXEC_APP}
+			else
 				echo "'${APP}' is optional. Not really needed, but is recommended." >&2
-			}
+				echo "'${APP}' is not installed."
+			fi
 			;;
 		* )
-			echo ""
 #			echo "Script ${0}  FAILED" >&2
 			echo "Script ${CURRENT_SCRIPT}  FAILED" >&2
 			echo "First parameter for function '${FUNCNAME[ 0 ]}' must be 'optional' or 'required'.  Aborting." >&2
@@ -312,11 +342,15 @@ dpkg_version optional keepassx
 
 
 # Application versions
-app_version required git
-#app_version optional foo
-#app_version required foo
-#app_version required foo  || { echo "FAILED"; exit 127; }
-#app_version foo
+# TODO: How to get  'ovmf' version ??????
+app_version required qemu-system-x86_64
+app_version required virsh # NOTE: 'virt-manager' prints version number as error ?!?!?!
+
+app_version optional git
+#dpkg_version optional joe # Can not print 'joe' version ??
+app_version optional parted # Can not print 'gparted' version ??
+app_version optional aptitude
+app_version optional keepassx
 
 
 
