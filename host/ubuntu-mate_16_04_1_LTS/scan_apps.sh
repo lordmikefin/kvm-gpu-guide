@@ -159,6 +159,47 @@ function dpkg_version() {
 
 
 
+# NOTE to myself: Read more about how to test if application exists.
+#   ( https://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script )
+
+function app_version() {
+	unset METHOD_TYPE APP
+	METHOD_TYPE="${1}"
+	APP="${2}"
+	echo ""
+	echo "$ ${APP} --version"
+	echo ""
+	
+	case ${METHOD_TYPE} in
+		required )
+			command -v ${APP} >/dev/null 2>&1 && {
+				echo "Application exists. OK";
+				echo "$(${APP} --version)"
+				echo ""
+			} || { 
+				echo "Application missing. FAILED" >&2
+				echo "'${APP}' is required, but it's not installed.  Aborting." >&2
+				#exit 1; 
+			}
+			;;
+		optional )
+			command -v ${APP} >/dev/null 2>&1 || { 
+				echo "'${APP}' is optional. Not really needed, but is recommended." >&2
+			}
+			;;
+		* )
+			echo ""
+#			echo "Script ${0}  FAILED" >&2
+			echo "Script ${CURRENT_SCRIPT}  FAILED" >&2
+			echo "First parameter for function '${FUNCNAME[ 0 ]}' must be 'optional' or 'required'.  Aborting." >&2
+			exit 1;
+			;;
+	esac
+}
+
+
+
+
 
 
 
@@ -267,6 +308,18 @@ dpkg_version optional joe
 dpkg_version optional gparted
 dpkg_version optional aptitude
 dpkg_version optional keepassx
+
+
+
+# Application versions
+app_version required git
+#app_version optional foo
+#app_version required foo
+#app_version required foo  || { echo "FAILED"; exit 127; }
+#app_version foo
+
+
+
 
 if [[ -n ${DPKG_MISSING} ]] ; then
 	echo ""
