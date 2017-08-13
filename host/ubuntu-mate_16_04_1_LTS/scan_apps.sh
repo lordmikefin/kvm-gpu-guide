@@ -17,26 +17,26 @@
 # All information is listed into console and text file.
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2-alpha"
+CURRENT_SCRIPT_VER="0.0.3-alpha"
 CURRENT_SCRIPT_DATE="2017-08-13"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
 
-# NOTE to my self: Read more about Bash exit codes.
+# NOTE to myself: Read more about Bash exit codes.
 #   ( http://tldp.org/LDP/abs/html/exitcodes.html )
 
 unset OS_NAME OS_VER OS_ARCH CURRENT_SHELL
 OS_NAME="$(uname)"
 OS_VER="$(uname -r)"
 OS_ARCH="$(uname -m)"
-if [[ ${OS_NAME} != "Linux" ]] ; then
+if [ ${OS_NAME} != "Linux" ] ; then
 	echo "System is not Linux. This script is tested only with Linux.  Aborting." >&2
 	exit 1 # 127
 fi
 
 CURRENT_SHELL="$(basename $SHELL)"
-if [[ ${CURRENT_SHELL} != "bash" ]] ; then
+if [ ${CURRENT_SHELL} != "bash" ] ; then
 	echo "This script is tested only with Bash.  Aborting." >&2
 	exit 1 # 127
 fi
@@ -65,13 +65,32 @@ echo "WORK_DIR: ${WORK_DIR}"
 
 
 
+
+
 # Output file will contain information about found applications.
-unset MY_APPS_TXT OUTPUT_FILE TEXT
+unset MY_APPS_TXT OUTPUT_FILE TEXT USER_INPUT
 MY_APPS_TXT="MyApps.txt"
 OUTPUT_FILE="${CURRENT_SCRIPT_DIR}/${MY_APPS_TXT}"
 echo ""
 echo "MY_APPS_TXT: ${MY_APPS_TXT}"
 echo "OUTPUT_FILE: ${OUTPUT_FILE}"
+
+
+
+
+
+# NOTE to myself: Read more about Bash conditional statements.
+#   ( http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_07_01.html )
+
+if [ -a "${OUTPUT_FILE}" ] ; then
+	echo "File ${OUTPUT_FILE} exists."
+	read -p "Do you want to overwrit the file ([Yes]/No): " USER_INPUT
+	echo "USER_INPUT: ${USER_INPUT}"
+	
+	echo "Output file exists.  Aborting." >&2
+	exit 1
+fi
+
 
 
 
