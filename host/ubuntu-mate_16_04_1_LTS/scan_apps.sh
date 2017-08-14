@@ -353,6 +353,12 @@ app_version optional aptitude
 app_version optional keepassx
 
 
+# TODO: How to get 'retext' version ??
+#  Check if it exists. If not point to guide.  TODO: create the guide :)
+#    $ which retext
+#app_version optional retext
+
+
 
 
 if [[ -n ${DPKG_MISSING} ]] ; then
