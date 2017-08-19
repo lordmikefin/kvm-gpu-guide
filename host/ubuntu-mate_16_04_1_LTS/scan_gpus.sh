@@ -12,9 +12,9 @@
 # Latest version of this script file:
 #   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/host/ubuntu-mate_16_04_1_LTS/scan_gpus.sh
 
-# Scan all applications needed for host system.
-# And list version of all applications.
-# All information is listed into console and text file.
+# Scan all GPUs of host system.
+# Create file with information about GPUs.
+# Create vfio configuration file. It can be used by /etc/modprobe.d/
 
 
 
