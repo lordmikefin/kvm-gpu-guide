@@ -10,7 +10,7 @@
 #   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/LICENSE.rst
 # 
 # Latest version of this script file:
-#   TODO: copy link here !
+#   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/host/ubuntu-mate_16_04_1_LTS/scan_gpus.sh
 
 # Scan all applications needed for host system.
 # And list version of all applications.
