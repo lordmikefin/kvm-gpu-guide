@@ -19,7 +19,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.10"
+CURRENT_SCRIPT_VER="0.0.11"
 CURRENT_SCRIPT_DATE="2017-08-13"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -334,6 +334,7 @@ dpkg_version required qemu-kvm
 dpkg_version required virt-manager
 
 dpkg_version optional git
+dpkg_version optional gitg
 dpkg_version optional joe
 dpkg_version optional gparted
 dpkg_version optional aptitude
@@ -347,6 +348,7 @@ app_version required qemu-system-x86_64
 app_version required virsh # NOTE: 'virt-manager' prints version number as error ?!?!?!
 
 app_version optional git
+app_version optional gitg
 #dpkg_version optional joe # Can not print 'joe' version ??
 app_version optional parted # Can not print 'gparted' version ??
 app_version optional aptitude
