@@ -1,12 +1,17 @@
 
 Result of script: scan_gpus.sh
-Script version: 0.0.2 (2017-10-08)
+Script version: 0.0.3 (2017-10-14)
 -----------------------------------------------
+
+Card is Intel
 00:02.0 VGA compatible controller [0300]: Intel Corporation Device [8086:5912] (rev 04)
 	DeviceName: Onboard IGD
 	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:7a58]
 	Kernel driver in use: i915_bpo
 	Kernel modules: i915_bpo
+
+
+Card is NVIDIA
 01:00.0 VGA compatible controller [0300]: NVIDIA Corporation Device [10de:1c81] (rev a1)
 	Subsystem: ASUSTeK Computer Inc. Device [1043:85d2]
 	Kernel driver in use: vfio-pci
@@ -15,6 +20,9 @@ Script version: 0.0.2 (2017-10-08)
 	Subsystem: ASUSTeK Computer Inc. Device [1043:85d2]
 	Kernel driver in use: vfio-pci
 	Kernel modules: snd_hda_intel
+
+
+Card is NVIDIA
 02:00.0 VGA compatible controller [0300]: NVIDIA Corporation Device [10de:128b] (rev a1)
 	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:8c93]
 	Kernel driver in use: vfio-pci
@@ -23,3 +31,4 @@ Script version: 0.0.2 (2017-10-08)
 	Subsystem: Micro-Star International Co., Ltd. [MSI] GK208 HDMI/DP Audio Controller [1462:8c93]
 	Kernel driver in use: vfio-pci
 	Kernel modules: snd_hda_intel
+

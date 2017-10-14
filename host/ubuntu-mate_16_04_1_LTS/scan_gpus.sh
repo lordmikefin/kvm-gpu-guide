@@ -19,8 +19,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
-CURRENT_SCRIPT_DATE="2017-10-08"
+CURRENT_SCRIPT_VER="0.0.3"
+CURRENT_SCRIPT_DATE="2017-10-14"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -113,11 +113,11 @@ CURRENT_SCRIPT_REALPATH="$(realpath ${BASH_SOURCE[0]})"
 CURRENT_SCRIPT="$(basename ${CURRENT_SCRIPT_REALPATH})"
 CURRENT_SCRIPT_DIR="$(dirname ${CURRENT_SCRIPT_REALPATH})"
 WORK_DIR="${PWD}"
-echo ""
-echo "CURRENT_SCRIPT: ${CURRENT_SCRIPT}"
-echo "CURRENT_SCRIPT_REALPATH: ${CURRENT_SCRIPT_REALPATH}"
-echo "CURRENT_SCRIPT_DIR: ${CURRENT_SCRIPT_DIR}"
-echo "WORK_DIR: ${WORK_DIR}"
+#echo ""
+#echo "CURRENT_SCRIPT: ${CURRENT_SCRIPT}"
+#echo "CURRENT_SCRIPT_REALPATH: ${CURRENT_SCRIPT_REALPATH}"
+#echo "CURRENT_SCRIPT_DIR: ${CURRENT_SCRIPT_DIR}"
+#echo "WORK_DIR: ${WORK_DIR}"
 
 
 
@@ -130,9 +130,9 @@ unset MY_GPUS_TXT OUTPUT_FILE TEXT VFIO_CONF_FILE OUTPUT_VFIO_CONF_FILE
 LANG="en_US.UTF-8" # Prevent output localization. Not really required ;)
 MY_GPUS_TXT="MyGPUs.txt"
 OUTPUT_FILE="${CURRENT_SCRIPT_DIR}/${MY_GPUS_TXT}"
-echo ""
-echo "MY_GPUS_TXT: ${MY_GPUS_TXT}"
-echo "OUTPUT_FILE: ${OUTPUT_FILE}"
+#echo ""
+#echo "MY_GPUS_TXT: ${MY_GPUS_TXT}"
+#echo "OUTPUT_FILE: ${OUTPUT_FILE}"
 
 
 # vfio.conf will contain settings for vfio-pci driver.
@@ -201,8 +201,8 @@ IFS='
 #for i in ${NVIDIA_VGA} ; do
 for i in ${VGA} ; do
 	let COUNT=COUNT+1
-	echo "loop counter: ${COUNT}"
-	echo "loop var i: ${i}"
+	#echo "loop counter: ${COUNT}"
+	#echo "loop var i: ${i}"
 
 	PCI_BUS_VGA=""
 	PCI_BUS_AUDIO=""
@@ -231,13 +231,14 @@ for i in ${VGA} ; do
 			IS_INTEL=1
 		fi
 	done
-	echo 
+	
+	echo ""  | tee -a ${OUTPUT_FILE}
 	#echo ${IS_NVIDIA}
 	if [ ${IS_NVIDIA} == 1 ] ; then
-		echo "Card is NVIDIA"
-		echo "pci bus: ${PCI_BUS_VGA}"
-		echo "device type [ManufactureID:DeviceTypeID]: ${DEVICE_TYPE}"
-		lspci -nnk -s ${PCI_BUS_VGA}
+		echo "Card is NVIDIA"  | tee -a ${OUTPUT_FILE}
+		#echo "pci bus: ${PCI_BUS_VGA}"
+		#echo "device type [ManufactureID:DeviceTypeID]: ${DEVICE_TYPE}"
+		#lspci -nnk -s ${PCI_BUS_VGA}
 		IFS='.' # Set array separator as period.
 		for x in ${PCI_BUS_VGA} ; do
 			#echo ${x}
@@ -247,12 +248,12 @@ for i in ${VGA} ; do
 				PCI_BUS_AUDIO=${x}.1 
 				IFS=' ' # Set non array separator.
 				#echo ${PCI_BUS_AUDIO}
-				lspci -nnk -s ${PCI_BUS_AUDIO}
+				#lspci -nnk -s ${PCI_BUS_AUDIO}
 				for z in $(lspci -nn -s ${PCI_BUS_AUDIO}) ; do
 					#echo ${z}
 					if [[ ${z} == "["*":"*"]" ]] ; then
 						#echo ${z}
-						echo "device type [ManufactureID:DeviceTypeID]: ${z}"
+						#echo "device type [ManufactureID:DeviceTypeID]: ${z}"
 						DEVICE_TYPE_AUDIO=${z}
 					fi
 				done
@@ -266,13 +267,14 @@ for i in ${VGA} ; do
 		NVIDIA_DEVICES=${NVIDIA_DEVICES}${DEVICE_TYPE}${DEVICE_TYPE_AUDIO}
 	fi
 	if [ ${IS_INTEL} == 1 ] ; then
-		echo "Card is Intel"
-		echo "pci bus: ${PCI_BUS_VGA}"
-		echo "device type [ManufactureID:DeviceTypeID]: ${DEVICE_TYPE}"
-		lspci -nnk -s ${PCI_BUS_VGA}
+		echo "Card is Intel"  | tee -a ${OUTPUT_FILE}
+		#echo "pci bus: ${PCI_BUS_VGA}"
+		#echo "device type [ManufactureID:DeviceTypeID]: ${DEVICE_TYPE}"
+		#lspci -nnk -s ${PCI_BUS_VGA}
 		echo $(lspci -nnk -s ${PCI_BUS_VGA})  | tee -a ${OUTPUT_FILE}
 	fi
-	echo 
+	
+	echo ""  | tee -a ${OUTPUT_FILE}
 done
 
 
