@@ -1,0 +1,33 @@
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+
+# / was on /dev/sda2 during installation
+UUID=20a36895-8ba3-477d-9a9d-50e3e4314592 /               ext4    errors=remount-ro 0       1
+
+# /boot/efi was on /dev/sda1 during installation
+UUID=E88A-EE08  /boot/efi       vfat    umask=0077      0       1
+
+# swap was on /dev/sda4 during installation
+#UUID=efdad564-7a01-4672-9994-d6916670e9ea none            swap    sw              0       0
+#UUID=86eca848-023e-42a3-8f77-6c8951b7bdfe none            swap    sw              0       0
+
+# swap was on /dev/sdb2 during installation (38GB)
+UUID=58563970-7bf0-484e-923c-f1de4d43670c none            swap    sw              0       0
+
+
+# /media/4TB_Store was on /dev/sdb1 during installation (3.6TB)
+UUID=5caf7bf6-d17c-4083-89f0-c56ca6913b4f /media/4TB_Store        ext4    errors=remount-ro 0       1
+
+
+# /opt was on /dev/sda3 during installation (91GB)
+UUID=d65d502e-90f0-45fb-a965-d2d4ec855e06 /opt        ext4    errors=remount-ro 0       1
+
+
+# Loop mount 'kvm-workspace'
+/media/4TB_Store/kvm-workspace /home/lordmike/kvm-workspace     none     defaults,bind     0      0
+
