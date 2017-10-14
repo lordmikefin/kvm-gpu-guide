@@ -33,5 +33,42 @@ $ pip3 install markups
 
 $ retext README.md
 
+----------------------------------------------------------
+
+
+Here is good guide for Markdown and reStructuredText:
+
+
+
+Common markup for Markdown and reStructuredText 
+ ( https://gist.github.com/dupuy/1855764 )
+$ sudo apt-cache show unzip
+$ sudo apt-get install unzip
+$ mkdir guide-rst
+$ cd guide-rst/
+$ wget https://gist.github.com/dupuy/1855764/archive/338c3d9f4aab955aab32b673707f1aa2d09d7e7f.zip
+$ unzip 338c3d9f4aab955aab32b673707f1aa2d09d7e7f.zip
+$ mv -v 1855764-338c3d9f4aab955aab32b673707f1aa2d09d7e7f/* ./
+$ rm -vR 1855764-338c3d9f4aab955aab32b673707f1aa2d09d7e7f/
+$ retext README.rst
+
+----------------------------------------------------------
+
+
+
+reStructuredText
+Markup Syntax and Parser Component of Docutils
+ ( http://docutils.sourceforge.net/rst.html )
+
+----------------------------------------------------------
+
+
+
+Online reStructuredText editor
+ ( http://rst.ninjs.org/# )
+
+----------------------------------------------------------
+
+
 
 
