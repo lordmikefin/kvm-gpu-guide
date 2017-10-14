@@ -38,18 +38,38 @@ Asus GeForce GTX 1050 OC EX-GTX1050-O2G 2048 Mt PCI-e
 * NVIDIA GeForce GTX 1050 
   ( https://www.nvidia.com/en-us/geforce/products/10series/geforce-gtx-1050/ )
 
-NOTE: Card has to support UEFI. ( I think this is required. TODO: How we can check it form specs? )
+NOTE: Card has to support UEFI. ( I think this is required. I think all modern cards support UEFI.)
 
 -----
-
 
 .. ..
 
     <!--- Hidden block
-    ( ??? )
+    ( ??? ) my own nots
+    -
+    NOTE: Card has to support UEFI. ( I think this is required. I think all modern cards support UEFI.)
+    -
+    TODO: How we can check it form specs? )
     --->
 
+2nd GPU
+-------
 
+MSI GT 710 2GD3H LP GeForce GT710 2048 Mt DDR3 PCI Express x16
+( https://www.msi.com/Graphics-card/GT-710-2GD3H-LP.html )
 
+* NVIDIA GeForce GT 710
+  ( https://www.geforce.com/hardware/desktop-gpus/geforce-gt-710/specifications )
+
+NOTE: OS X does not have drivers for NVIDIA GTX 1050!
+    I had this extra card on other pc. And this has drivers on OS X  :)
+
+-----
+
+.. ..
+
+    <!--- my own nots :)
+    foobar
+    --->
 
 
