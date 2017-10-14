@@ -10,7 +10,7 @@
 #   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/LICENSE.rst
 # 
 # Latest version of this script file:
-#   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/... TODO: get correct link
+#   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/guest/linux/ubuntu-mate_16_04_1_LTS-init.sh
 
 # Initialize ubuntu-mate_16_04 virtual machine.
 # This script will create a new vm into folder ~/kvm-workspace/ubuntu-mate_16_04/
