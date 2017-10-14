@@ -1,0 +1,37 @@
+
+
+Quick quide how I installed 'retext' editor.
+
+
+ReText is a simple but powerful editor for Markdown and reStructuredText markup languages.
+ ( https://github.com/retext-project/retext )
+
+$ git clone https://github.com/retext-project/retext.git
+
+ReText requires the following packages to run:
+#$ sudo apt-cache show python3.5
+#$ sudo apt-cache show python3-pip
+#$ sudo apt-cache show python3-pyqt5
+#$ sudo apt-cache show python3-markups
+## ( python3-markups  is version 1.x !!!  we need > 2.x )
+#
+#$ sudo apt-cache show python3-markdown
+#$ sudo apt-cache show python3-docutils
+## ( python3-docutils = reStructuredText language support )
+#
+#$ sudo apt-cache show python3-enchant
+
+$ sudo apt-get install python3.5 python3-pip python3-pyqt5 python3-markups python3-markdown python3-docutils python3-enchant
+
+$ cd retext/
+$ sudo python3.5 setup.py install
+$ retext
+
+$ pip3 show markups
+$ pip3 install markups
+# ( installs 'markups' version > 2.x )
+
+$ retext README.md
+
+
+
