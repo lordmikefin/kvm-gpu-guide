@@ -118,6 +118,45 @@ echo "WORK_DIR: ${WORK_DIR}"
 
 
 
+# TODO: Check if kvm-workspace variable is set
+
+# if not ask user if she/he wants to continue using default path:
+#   /home/lordmike/kvm-workspace
+#   /home/<USER>/kvm-workspace
+
+
+
+#KVM_WORKSPACE="/home/lordmike/kvm-workspace"
+KVM_WORKSPACE_DEFAULT="${HOME}/kvm-workspace"
+
+exit 1
+
+# TODO: modify this !!!
+
+# Check OUTPUT_FILE
+unset USER_INPUT
+if [[ -z "${KVM_WORKSPACE}" ]] ; then
+	echo ""
+	#echo "File exists:  ${OUTPUT_FILE}"
+	echo "Variable 'KVM_WORKSPACE' is not set."
+	echo "  I will use the default path: ${KVM_WORKSPACE_DEFAULT}"
+	while [[ -z ${USER_INPUT} ]]; do
+		echo -n "Do you want to use defalut path (Yes/[No]): "
+		read USER_INPUT
+		case "${USER_INPUT}" in
+			Yes | YES | yes | y )
+				USER_INPUT="YES"
+				KVM_WORKSPACE="${KVM_WORKSPACE_DEFAULT}"
+				;;
+			No | NO | no | n | "" )
+				USER_INPUT="NO"
+				#unset OUTPUT_FILE # Clear file name. No file to overwrite.
+				;;
+			* )
+				unset USER_INPUT ;; # Clear input ( = stay in while loop )
+		esac
+	done
+fi
 
 
 
