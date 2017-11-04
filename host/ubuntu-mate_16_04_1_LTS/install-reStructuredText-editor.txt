@@ -8,6 +8,16 @@ ReText is a simple but powerful editor for Markdown and reStructuredText markup 
 
 $ git clone https://github.com/retext-project/retext.git
 
+ I used commit id -> 5f5fe0cd1fba3b6443a52c9666105c3d3048c2f3
+
+ https://github.com/retext-project/retext/tree/5f5fe0cd1fba3b6443a52c9666105c3d3048c2f3
+
+
+If this guide does not work try to check out this sepsific commit:
+
+$ git checkout 5f5fe0cd1fba3b6443a52c9666105c3d3048c2f3
+
+
 ReText requires the following packages to run:
 #$ sudo apt-cache show python3.5
 #$ sudo apt-cache show python3-pip
