@@ -129,6 +129,8 @@ echo "WORK_DIR: ${WORK_DIR}"
 #KVM_WORKSPACE="/home/lordmike/kvm-workspace"
 KVM_WORKSPACE_DEFAULT="${HOME}/kvm-workspace"
 
+KVM_WORKSPACE="${KVM_WORKSPACE_DEFAULT}" # TODO: Remove this TEST code
+
 unset USER_INPUT
 if [[ -z "${KVM_WORKSPACE}" ]] ; then
 	echo ""
@@ -177,6 +179,11 @@ if [ ! -d "${KVM_WORKSPACE_ISO}" ]; then
 	echo "Directory '${KVM_WORKSPACE_ISO}' does not exist."
 fi
 
+
+
+#IMPORT_FUNCTIONS="../../script/lm_functions.sh"
+IMPORT_FUNCTIONS="${CURRENT_SCRIPT_DIR}/../../script/lm_functions.sh"
+source ${IMPORT_FUNCTIONS}
 
 
 
