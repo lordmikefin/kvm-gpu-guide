@@ -10,7 +10,7 @@
 #   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/LICENSE.rst
 # 
 # Latest version of this script file:
-#   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/...
+#   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/script/lm_functions.sh
 
 
 
@@ -25,21 +25,33 @@
 
 
 
+# Usage:
+# ----------------------------------------------------------------------------
+#	IMPORT_FUNCTIONS="$(dirname $(realpath ${BASH_SOURCE[0]}))/../../script/lm_functions.sh"
+#	if [[ ! -f "${IMPORT_FUNCTIONS}" ]]; then
+#		>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Source script '${IMPORT_FUNCTIONS}' missing!" # echo into stderr 
+#		exit 1
+#	fi
+#
+#	source ${IMPORT_FUNCTIONS}
+#
+#	if [ ${LM_FUNCTIONS_VER} != "1.2.3" ]; then
+#		lm_functions_incorrect_version
+#	fi
+# ----------------------------------------------------------------------------
+
+
+
 unset LM_FUNCTIONS_VER LM_FUNCTIONS_DATE
 LM_FUNCTIONS_VER="0.0.1"
 LM_FUNCTIONS_DATE="2017-11-12"
 echo "LM functions version: ${LM_FUNCTIONS_VER} (${LM_FUNCTIONS_DATE})"
 
-LM_FUNCTIONS_RALATIVE_PATH="${BASH_SOURCE[0]}"
-echo ""
-echo "LM_FUNCTIONS_RALATIVE_PATH : ${LM_FUNCTIONS_RALATIVE_PATH}"
-echo "BASH_SOURCE[0] : ${BASH_SOURCE[0]}"
-echo "BASH_SOURCE[1] : ${BASH_SOURCE[1]}"
 
 unset LM_FUNCTIONS LM_FUNCTIONS_REALPATH LM_FUNCTIONS_DIR LM_FUNCTIONS_WORK_DIR
-#CURRENT_SCRIPT_REALPATH="$(realpath ${0})"
+unset CALLER_SCRIPT_REALPATH
+CALLER_SCRIPT_REALPATH="$(realpath ${BASH_SOURCE[1]})"
 LM_FUNCTIONS_REALPATH="$(realpath ${BASH_SOURCE[0]})"
-#LM_FUNCTIONS_REALPATH="$(realpath ${LM_FUNCTIONS_RALATIVE_PATH})"
 LM_FUNCTIONS="$(basename ${LM_FUNCTIONS_REALPATH})"
 LM_FUNCTIONS_DIR="$(dirname ${LM_FUNCTIONS_REALPATH})"
 LM_FUNCTIONS_WORK_DIR="${PWD}"
@@ -48,8 +60,39 @@ echo "LM_FUNCTIONS: ${LM_FUNCTIONS}"
 echo "LM_FUNCTIONS_REALPATH: ${LM_FUNCTIONS_REALPATH}"
 echo "LM_FUNCTIONS_DIR: ${LM_FUNCTIONS_DIR}"
 echo "LM_FUNCTIONS_WORK_DIR: ${LM_FUNCTIONS_WORK_DIR}"
+echo ""
+echo "CALLER_SCRIPT_REALPATH: ${CALLER_SCRIPT_REALPATH}"
 
 
 
 
+lm_functions_incorrect_version() {
+	>&2 echo "${BASH_SOURCE[1]}: line ${BASH_LINENO[0]}: Source script '${LM_FUNCTIONS}' is incorrect version!" # echo into stderr
+	echo ""
+	echo "Something has changed in ${LM_FUNCTIONS}."
+	echo "Everything might not run correctly."
+	echo ""
+	
+	echo "Do you want to run this script as is? ( YES / [no] ):"
+	echo ""
+	
+	unset INPUT
+	read INPUT
+	
+	if [ "${INPUT}" == "YES" ]; then
+		echo "OK then. Let's run and see what happens."
+	else
+		echo "OK then. bye."
+		exit 1
+	fi
+}
+
+
+
+
+
+
+echo ""
+#echo "End of script '${CURRENT_SCRIPT}'"
+echo "Functions loaded from: '${LM_FUNCTIONS}'"
 

@@ -23,6 +23,41 @@ CURRENT_SCRIPT_DATE="2017-11-12"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
+# NOTE to myself: How to get absolute path of file. 
+#   ( https://stackoverflow.com/questions/17577093/how-do-i-get-the-absolute-directory-of-a-file-in-bash )
+
+unset CURRENT_SCRIPT CURRENT_SCRIPT_REALPATH CURRENT_SCRIPT_DIR WORK_DIR
+#CURRENT_SCRIPT_REALPATH="$(realpath ${0})"
+CURRENT_SCRIPT_REALPATH="$(realpath ${BASH_SOURCE[0]})"
+CURRENT_SCRIPT="$(basename ${CURRENT_SCRIPT_REALPATH})"
+CURRENT_SCRIPT_DIR="$(dirname ${CURRENT_SCRIPT_REALPATH})"
+WORK_DIR="${PWD}"
+echo ""
+echo "CURRENT_SCRIPT: ${CURRENT_SCRIPT}"
+echo "CURRENT_SCRIPT_REALPATH: ${CURRENT_SCRIPT_REALPATH}"
+echo "CURRENT_SCRIPT_DIR: ${CURRENT_SCRIPT_DIR}"
+echo "WORK_DIR: ${WORK_DIR}"
+
+
+
+#IMPORT_FUNCTIONS="${CURRENT_SCRIPT_DIR}/../../script/lm_functions.sh"
+IMPORT_FUNCTIONS="$(dirname $(realpath ${BASH_SOURCE[0]}))/../../script/lm_functions.sh"
+if [[ ! -f "${IMPORT_FUNCTIONS}" ]]; then
+	>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Source script '${IMPORT_FUNCTIONS}' missing!" # echo into stderr 
+	exit 1
+fi
+
+source ${IMPORT_FUNCTIONS}
+
+if [ ${LM_FUNCTIONS_VER} != "0.0.1" ]; then
+	#echo "ERROR: Incorrect ver"
+	#exit 1
+	
+	lm_functions_incorrect_version
+fi
+
+
+
 
 # NOTE to myself: Read more about Bash exit codes.
 #   ( http://tldp.org/LDP/abs/html/exitcodes.html )
@@ -98,20 +133,20 @@ fi
 
 
 
-# NOTE to myself: How to get absolute path of file. 
-#   ( https://stackoverflow.com/questions/17577093/how-do-i-get-the-absolute-directory-of-a-file-in-bash )
-
-unset CURRENT_SCRIPT CURRENT_SCRIPT_REALPATH CURRENT_SCRIPT_DIR WORK_DIR
-#CURRENT_SCRIPT_REALPATH="$(realpath ${0})"
-CURRENT_SCRIPT_REALPATH="$(realpath ${BASH_SOURCE[0]})"
-CURRENT_SCRIPT="$(basename ${CURRENT_SCRIPT_REALPATH})"
-CURRENT_SCRIPT_DIR="$(dirname ${CURRENT_SCRIPT_REALPATH})"
-WORK_DIR="${PWD}"
-echo ""
-echo "CURRENT_SCRIPT: ${CURRENT_SCRIPT}"
-echo "CURRENT_SCRIPT_REALPATH: ${CURRENT_SCRIPT_REALPATH}"
-echo "CURRENT_SCRIPT_DIR: ${CURRENT_SCRIPT_DIR}"
-echo "WORK_DIR: ${WORK_DIR}"
+## NOTE to myself: How to get absolute path of file. 
+##   ( https://stackoverflow.com/questions/17577093/how-do-i-get-the-absolute-directory-of-a-file-in-bash )
+#
+#unset CURRENT_SCRIPT CURRENT_SCRIPT_REALPATH CURRENT_SCRIPT_DIR WORK_DIR
+##CURRENT_SCRIPT_REALPATH="$(realpath ${0})"
+#CURRENT_SCRIPT_REALPATH="$(realpath ${BASH_SOURCE[0]})"
+#CURRENT_SCRIPT="$(basename ${CURRENT_SCRIPT_REALPATH})"
+#CURRENT_SCRIPT_DIR="$(dirname ${CURRENT_SCRIPT_REALPATH})"
+#WORK_DIR="${PWD}"
+#echo ""
+#echo "CURRENT_SCRIPT: ${CURRENT_SCRIPT}"
+#echo "CURRENT_SCRIPT_REALPATH: ${CURRENT_SCRIPT_REALPATH}"
+#echo "CURRENT_SCRIPT_DIR: ${CURRENT_SCRIPT_DIR}"
+#echo "WORK_DIR: ${WORK_DIR}"
 
 
 
@@ -128,8 +163,6 @@ echo "WORK_DIR: ${WORK_DIR}"
 
 #KVM_WORKSPACE="/home/lordmike/kvm-workspace"
 KVM_WORKSPACE_DEFAULT="${HOME}/kvm-workspace"
-
-KVM_WORKSPACE="${KVM_WORKSPACE_DEFAULT}" # TODO: Remove this TEST code
 
 unset USER_INPUT
 if [[ -z "${KVM_WORKSPACE}" ]] ; then
@@ -181,9 +214,9 @@ fi
 
 
 
-#IMPORT_FUNCTIONS="../../script/lm_functions.sh"
-IMPORT_FUNCTIONS="${CURRENT_SCRIPT_DIR}/../../script/lm_functions.sh"
-source ${IMPORT_FUNCTIONS}
+##IMPORT_FUNCTIONS="../../script/lm_functions.sh"
+#IMPORT_FUNCTIONS="${CURRENT_SCRIPT_DIR}/../../script/lm_functions.sh"
+#source ${IMPORT_FUNCTIONS}
 
 
 
