@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
-CURRENT_SCRIPT_DATE="2017-10-14"
+CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_DATE="2017-11-12"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -157,10 +157,27 @@ fi
 
 
 # TODO: copy ubuntu-mate-16.04.1-desktop-amd64.iso into folder 'iso'
+
+#   https://ubuntu-mate.org/download/
+
+#   cdimage.ubuntu.com/ubuntu-mate/releases/16.04.3/release/ubuntu-mate-16.04.3-desktop-amd64.iso
+
+#   magnet:?xt=urn:btih:fa5a86377cc38d2bd75339ebe5c0ebc5f593cb90&dn=ubuntu-mate-16.04.3-desktop-amd64.iso&tr=http%3A%2F%2Ftorrent.ubuntu.com%3A6969%2Fannounce
+
+
+
 KVM_WORKSPACE_ISO="${KVM_WORKSPACE}/iso"
 echo ""
 #echo "${KVM_WORKSPACE}/iso/"
 echo "${KVM_WORKSPACE_ISO}"
+
+
+
+if [ ! -d "${KVM_WORKSPACE_ISO}" ]; then
+	echo "Directory '${KVM_WORKSPACE_ISO}' does not exist."
+fi
+
+
 
 
 echo ""
