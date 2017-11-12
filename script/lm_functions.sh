@@ -53,9 +53,9 @@
 
 
 unset LM_FUNCTIONS_VER LM_FUNCTIONS_DATE
-LM_FUNCTIONS_VER="0.0.3"
+LM_FUNCTIONS_VER="0.0.4"
 LM_FUNCTIONS_DATE="2017-11-12"
-echo "LM functions version: ${LM_FUNCTIONS_VER} (${LM_FUNCTIONS_DATE})"
+#echo "LM functions version: ${LM_FUNCTIONS_VER} (${LM_FUNCTIONS_DATE})"
 
 
 unset LM_FUNCTIONS LM_FUNCTIONS_REALPATH LM_FUNCTIONS_DIR LM_FUNCTIONS_WORK_DIR
@@ -65,13 +65,33 @@ LM_FUNCTIONS_REALPATH="$(realpath ${BASH_SOURCE[0]})"
 LM_FUNCTIONS="$(basename ${LM_FUNCTIONS_REALPATH})"
 LM_FUNCTIONS_DIR="$(dirname ${LM_FUNCTIONS_REALPATH})"
 LM_FUNCTIONS_WORK_DIR="${PWD}"
-echo ""
-echo "LM_FUNCTIONS: ${LM_FUNCTIONS}"
-echo "LM_FUNCTIONS_REALPATH: ${LM_FUNCTIONS_REALPATH}"
-echo "LM_FUNCTIONS_DIR: ${LM_FUNCTIONS_DIR}"
-echo "LM_FUNCTIONS_WORK_DIR: ${LM_FUNCTIONS_WORK_DIR}"
-echo ""
-echo "CALLER_SCRIPT_REALPATH: ${CALLER_SCRIPT_REALPATH}"
+#echo ""
+#echo "LM_FUNCTIONS: ${LM_FUNCTIONS}"
+#echo "LM_FUNCTIONS_REALPATH: ${LM_FUNCTIONS_REALPATH}"
+#echo "LM_FUNCTIONS_DIR: ${LM_FUNCTIONS_DIR}"
+#echo "LM_FUNCTIONS_WORK_DIR: ${LM_FUNCTIONS_WORK_DIR}"
+#echo ""
+#echo "CALLER_SCRIPT_REALPATH: ${CALLER_SCRIPT_REALPATH}"
+
+
+
+# NOTE to myself: Read more about Bash exit codes.
+#   ( http://tldp.org/LDP/abs/html/exitcodes.html )
+
+unset OS_NAME OS_VER OS_ARCH CURRENT_SHELL
+OS_NAME="$(uname)"
+OS_VER="$(uname -r)"
+OS_ARCH="$(uname -m)"
+if [[ ${OS_NAME} != "Linux" ]] ; then
+	echo -e "\n System is not Linux. This script is tested only with Linux.  Aborting." >&2
+	exit 1 # 127
+fi
+
+CURRENT_SHELL="$(basename $SHELL)"
+if [[ ${CURRENT_SHELL} != "bash" ]] ; then
+	echo -e "\n This script is tested only with Bash.  Aborting." >&2
+	exit 1 # 127
+fi
 
 
 
@@ -128,6 +148,7 @@ lm_check_KVM_WORKSPACE () {
 	# If it is not, then ask what user wants to do.
 	
 	# Usage:
+	#	unset KVM_WORKSPACE_DEFAULT
 	#	lm_check_KVM_WORKSPACE
 	
 	if [[ -z "${KVM_WORKSPACE}" ]] ; then
@@ -155,7 +176,7 @@ lm_check_KVM_WORKSPACE () {
 
 
 
-echo ""
+#echo ""
 #echo "End of script '${CURRENT_SCRIPT}'"
-echo "Functions loaded from: '${LM_FUNCTIONS}'"
+#echo "Functions loaded from: '${LM_FUNCTIONS}'"
 

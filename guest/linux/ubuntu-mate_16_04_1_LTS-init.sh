@@ -12,13 +12,14 @@
 # Latest version of this script file:
 #   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/guest/linux/ubuntu-mate_16_04_1_LTS-init.sh
 
+# ubuntu-mate_16_04_1_LTS-init.sh
 # Initialize ubuntu-mate_16_04 virtual machine.
 # This script will create a new vm into folder ~/kvm-workspace/ubuntu-mate_16_04/
 
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.4"
+CURRENT_SCRIPT_VER="0.0.5"
 CURRENT_SCRIPT_DATE="2017-11-12"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -40,6 +41,12 @@ echo "WORK_DIR: ${WORK_DIR}"
 
 
 
+unset LM_FUNCTIONS_VER LM_FUNCTIONS_DATE
+unset LM_FUNCTIONS LM_FUNCTIONS_REALPATH LM_FUNCTIONS_DIR LM_FUNCTIONS_WORK_DIR
+unset CALLER_SCRIPT_REALPATH
+unset OS_NAME OS_VER OS_ARCH CURRENT_SHELL
+unset INPUT
+
 #IMPORT_FUNCTIONS="${CURRENT_SCRIPT_DIR}/../../script/lm_functions.sh"
 IMPORT_FUNCTIONS="$(dirname $(realpath ${BASH_SOURCE[0]}))/../../script/lm_functions.sh"
 if [[ ! -f "${IMPORT_FUNCTIONS}" ]]; then
@@ -56,23 +63,6 @@ fi
 
 
 
-# NOTE to myself: Read more about Bash exit codes.
-#   ( http://tldp.org/LDP/abs/html/exitcodes.html )
-
-unset OS_NAME OS_VER OS_ARCH CURRENT_SHELL
-OS_NAME="$(uname)"
-OS_VER="$(uname -r)"
-OS_ARCH="$(uname -m)"
-if [[ ${OS_NAME} != "Linux" ]] ; then
-	echo -e "\n System is not Linux. This script is tested only with Linux.  Aborting." >&2
-	exit 1 # 127
-fi
-
-CURRENT_SHELL="$(basename $SHELL)"
-if [[ ${CURRENT_SHELL} != "bash" ]] ; then
-	echo -e "\n This script is tested only with Bash.  Aborting." >&2
-	exit 1 # 127
-fi
 
 
 
@@ -155,6 +145,7 @@ fi
 # if not ask user if she/he wants to continue using default path:
 #   /home/<USER>/kvm-workspace
 
+unset KVM_WORKSPACE_DEFAULT
 lm_check_KVM_WORKSPACE
 
 
