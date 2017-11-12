@@ -49,7 +49,7 @@ fi
 
 source ${IMPORT_FUNCTIONS}
 
-if [ ${LM_FUNCTIONS_VER} != "0.0.2" ]; then
+if [ ${LM_FUNCTIONS_VER} != "0.0.3" ]; then
 	lm_functions_incorrect_version
 fi
 
@@ -150,34 +150,16 @@ fi
 
 
 
-# Check if KVM_WORKSPACE variable is set
+# Check if KVM_WORKSPACE variable is set.
 
 # if not ask user if she/he wants to continue using default path:
 #   /home/<USER>/kvm-workspace
 
-
-
-KVM_WORKSPACE_DEFAULT="${HOME}/kvm-workspace"
-
-unset INPUT
-if [[ -z "${KVM_WORKSPACE}" ]] ; then
-	echo ""
-	echo "Variable 'KVM_WORKSPACE' is not set."
-	echo "  I will use the default path: ${KVM_WORKSPACE_DEFAULT}"
-	echo ""
-	
-	lm_read_to_INPUT "Do you want to use defalut path?"
-	if [ "${INPUT}" == "YES" ]; then
-		KVM_WORKSPACE="${KVM_WORKSPACE_DEFAULT}"
-	fi
-fi
+lm_check_KVM_WORKSPACE
 
 
 
-if [[ -z "${KVM_WORKSPACE}" ]] ; then
-	echo -e "\n Variable 'KVM_WORKSPACE' not set.  Aborting." >&2
-	exit 1
-fi
+
 
 
 # TODO: copy ubuntu-mate-16.04.1-desktop-amd64.iso into folder 'iso'

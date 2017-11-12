@@ -46,13 +46,14 @@
 # :Functions without subshell:
 #  - lm_functions_incorrect_version ()
 #  - lm_read_to_INPUT ()
+#  - lm_check_KVM_WORKSPACE ()
 # :Functions with subshell:
 #  - 
 
 
 
 unset LM_FUNCTIONS_VER LM_FUNCTIONS_DATE
-LM_FUNCTIONS_VER="0.0.2"
+LM_FUNCTIONS_VER="0.0.3"
 LM_FUNCTIONS_DATE="2017-11-12"
 echo "LM functions version: ${LM_FUNCTIONS_VER} (${LM_FUNCTIONS_DATE})"
 
@@ -122,6 +123,33 @@ lm_read_to_INPUT () {
 	done
 }
 
+lm_check_KVM_WORKSPACE () {
+	# Check if KVM_WORKSPACE variable is set.
+	# If it is not, then ask what user wants to do.
+	
+	# Usage:
+	#	lm_check_KVM_WORKSPACE
+	
+	if [[ -z "${KVM_WORKSPACE}" ]] ; then
+		KVM_WORKSPACE_DEFAULT="${HOME}/kvm-workspace"
+		
+		echo ""
+		echo "Variable 'KVM_WORKSPACE' is not set."
+		echo "  I will use the default path: ${KVM_WORKSPACE_DEFAULT}"
+		echo ""
+		
+		unset INPUT
+		lm_read_to_INPUT "Do you want to use defalut path?"
+		if [ "${INPUT}" == "YES" ]; then
+			KVM_WORKSPACE="${KVM_WORKSPACE_DEFAULT}"
+		fi
+	fi
+	
+	if [[ -z "${KVM_WORKSPACE}" ]] ; then
+		>&2 echo -e "\n Variable 'KVM_WORKSPACE' not set.  Aborting."
+		exit 1
+	fi
+}
 
 
 
