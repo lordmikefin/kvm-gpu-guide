@@ -24,6 +24,7 @@
 # We do not want accidentally overwrite data set in caller script.
 
 
+
 unset LM_FUNCTIONS_VER LM_FUNCTIONS_DATE
 LM_FUNCTIONS_VER="0.0.1"
 LM_FUNCTIONS_DATE="2017-11-12"
