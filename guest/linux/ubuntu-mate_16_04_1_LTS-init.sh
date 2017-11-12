@@ -18,7 +18,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_VER="0.0.3"
 CURRENT_SCRIPT_DATE="2017-11-12"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -49,7 +49,7 @@ fi
 
 source ${IMPORT_FUNCTIONS}
 
-if [ ${LM_FUNCTIONS_VER} != "0.0.1" ]; then
+if [ ${LM_FUNCTIONS_VER} != "0.0.2" ]; then
 	#echo "ERROR: Incorrect ver"
 	#exit 1
 	
@@ -164,26 +164,37 @@ fi
 #KVM_WORKSPACE="/home/lordmike/kvm-workspace"
 KVM_WORKSPACE_DEFAULT="${HOME}/kvm-workspace"
 
-unset USER_INPUT
+unset INPUT
 if [[ -z "${KVM_WORKSPACE}" ]] ; then
 	echo ""
 	echo "Variable 'KVM_WORKSPACE' is not set."
 	echo "  I will use the default path: ${KVM_WORKSPACE_DEFAULT}"
-	while [[ -z ${USER_INPUT} ]]; do
-		echo -n "Do you want to use defalut path (Yes/[No]): "
-		read USER_INPUT
-		case "${USER_INPUT}" in
-			Yes | YES | yes | y )
-				USER_INPUT="YES"
-				KVM_WORKSPACE="${KVM_WORKSPACE_DEFAULT}"
-				;;
-			No | NO | no | n | "" )
-				USER_INPUT="NO" ;;
-			* )
-				unset USER_INPUT ;; # Clear input ( = stay in while loop )
-		esac
-	done
+	echo ""
+#	while [[ -z ${USER_INPUT} ]]; do
+#		echo -n "Do you want to use defalut path (Yes/[No]): "
+#		read USER_INPUT
+#		case "${USER_INPUT}" in
+#			Yes | YES | yes | y )
+#				USER_INPUT="YES"
+#				KVM_WORKSPACE="${KVM_WORKSPACE_DEFAULT}"
+#				;;
+#			No | NO | no | n | "" )
+#				USER_INPUT="NO" ;;
+#			* )
+#				unset USER_INPUT ;; # Clear input ( = stay in while loop )
+#		esac
+#	done
+	
+	#unset INPUT
+	lm_read_to_INPUT "Do you want to use defalut path?"
+	if [ "${INPUT}" == "YES" ]; then
+		KVM_WORKSPACE="${KVM_WORKSPACE_DEFAULT}"
+	#else
+	#	echo "NO ..."
+	fi
 fi
+
+
 
 if [[ -z "${KVM_WORKSPACE}" ]] ; then
 	echo -e "\n Variable 'KVM_WORKSPACE' not set.  Aborting." >&2

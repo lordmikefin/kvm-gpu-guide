@@ -42,8 +42,17 @@
 
 
 
+# Currently this script provides functions:
+# :Functions without subshell:
+#  - lm_functions_incorrect_version ()
+#  - lm_read_to_INPUT ()
+# :Functions with subshell:
+#  - 
+
+
+
 unset LM_FUNCTIONS_VER LM_FUNCTIONS_DATE
-LM_FUNCTIONS_VER="0.0.1"
+LM_FUNCTIONS_VER="0.0.2"
 LM_FUNCTIONS_DATE="2017-11-12"
 echo "LM functions version: ${LM_FUNCTIONS_VER} (${LM_FUNCTIONS_DATE})"
 
@@ -66,25 +75,51 @@ echo "CALLER_SCRIPT_REALPATH: ${CALLER_SCRIPT_REALPATH}"
 
 
 
-lm_functions_incorrect_version() {
+lm_functions_incorrect_version () {
 	>&2 echo "${BASH_SOURCE[1]}: line ${BASH_LINENO[0]}: Source script '${LM_FUNCTIONS}' is incorrect version!" # echo into stderr
 	echo ""
 	echo "Something has changed in ${LM_FUNCTIONS}."
 	echo "Everything might not run correctly."
 	echo ""
 	
-	echo "Do you want to run this script as is? ( YES / [no] ):"
-	echo ""
-	
 	unset INPUT
-	read INPUT
-	
+	lm_read_to_INPUT "Do you want to run this script as is?"
 	if [ "${INPUT}" == "YES" ]; then
 		echo "OK then. Let's run and see what happens."
 	else
 		echo "OK then. bye."
 		exit 1
 	fi
+}
+
+lm_read_to_INPUT () {
+	# Read input from user until we get acceptable answer.
+	
+	# WARNING: This fuction will over write variable INPUT !!!
+	
+	# Usage:
+	#	unset INPUT
+	#   lm_read_to_INPUT "Do you wanna do something?"
+	#	if [ "${INPUT}" == "YES" ]; then
+	#		do_something_function
+	#	else
+	#		echo "NO ..."
+	#	fi
+	
+	unset INPUT
+	while [[ -z ${INPUT} ]]; do
+		echo -n "$1 ( Yes / [No] ): "
+		read INPUT
+		
+		case "${INPUT}" in
+			Yes | YES | yes | y )
+				INPUT="YES" ;;
+			No | NO | no | n | "" )
+				INPUT="NO" ;;
+			* )
+				unset INPUT ;; # Clear input ( = stay in while loop )
+		esac
+	done
 }
 
 
