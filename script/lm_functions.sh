@@ -60,13 +60,14 @@
 #  - lm_max_argument ()
 #  - lm_string_to_lower_case ()
 #  - lm_create_folder_recursive ()
+#  - lm_download_to_folder ()
 
 
 
 
 
 unset LM_FUNCTIONS_VER LM_FUNCTIONS_DATE
-LM_FUNCTIONS_VER="0.0.6"
+LM_FUNCTIONS_VER="0.0.7"
 LM_FUNCTIONS_DATE="2017-11-19"
 #echo "LM functions version: ${LM_FUNCTIONS_VER} (${LM_FUNCTIONS_DATE})"
 
@@ -367,6 +368,30 @@ lm_create_folder_recursive () {
 					lm_failure ;;
 			esac
 		fi
+	)
+}
+
+lm_download_to_folder () {
+	# Create given folder. Recursively.
+	
+	# Usage:
+	#   lm_download_to_folder "${FOLDER}" "${URL}"  || lm_failure
+	
+	( # subshell
+		PATH_FOLDER="$(lm_verify_argument "${1}")"  || lm_failure
+		URL="$(lm_verify_argument "${2}")"  || lm_failure
+		
+		lm_max_argument "${3}"  || lm_failure
+		#echo ${PWD} 
+		cd ${PATH_FOLDER}  || exit 1
+		#echo ${PWD}
+		
+		echo "Downloading  ${URL}"
+		echo "into  ${PATH_FOLDER}"
+		wget ${URL}  || exit 1
+		
+		cd ${WORK_DIR}  || exit 1
+		#echo ${PWD}
 	)
 }
 

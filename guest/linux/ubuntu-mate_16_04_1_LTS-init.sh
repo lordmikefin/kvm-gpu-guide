@@ -19,7 +19,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.7"
+CURRENT_SCRIPT_VER="0.0.8"
 CURRENT_SCRIPT_DATE="2017-11-19"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -174,10 +174,30 @@ KVM_WORKSPACE_ISO="${KVM_WORKSPACE}/iso"
 lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
 
 
+# $ wget cdimage.ubuntu.com/ubuntu-mate/releases/16.04.3/release/ubuntu-mate-16.04.3-desktop-amd64.iso
 
-##IMPORT_FUNCTIONS="../../script/lm_functions.sh"
-#IMPORT_FUNCTIONS="${CURRENT_SCRIPT_DIR}/../../script/lm_functions.sh"
-#source ${IMPORT_FUNCTIONS}
+# $ wget --spider cdimage.ubuntu.com/ubuntu-mate/releases/16.04.3/release/
+# $ wget --spider cdimage.ubuntu.com/ubuntu-mate/releases/16.04.3/release/ubuntu-mate-16.04.3-desktop-amd64.iso
+
+# $ wget --spider --server-response cdimage.ubuntu.com/ubuntu-mate/releases/16.04.3/release/ubuntu-mate-16.04.3-desktop-amd64.iso
+
+# $ wget --spider cdimage.ubuntu.com/ubuntu-mate/releases/16.04.3/release/ubuntu-mate-16.04.1-desktop-amd64.iso
+
+
+# wget --spider -r --no-parent cdimage.ubuntu.com/ubuntu-mate/releases/16.04.3/release/
+
+# --accept-regex=REGEX
+
+# $ wget --spider -r --no-parent --accept-regex=.*-desktop-amd64.iso cdimage.ubuntu.com/ubuntu-mate/releases/16.04.3/release/
+
+# $ wget --spider -r --no-parent --accept-regex=.*-desktop-amd64.iso cdimage.ubuntu.com/ubuntu-mate/releases/*/*/
+
+URL="cdimage.ubuntu.com/ubuntu-mate/releases/16.04.3/release/ubuntu-mate-16.04.3-desktop-amd64.iso"
+lm_download_to_folder "${KVM_WORKSPACE_ISO}" "${URL}"  || lm_failure
+
+
+
+# TODO: Verify that whole file was downloaded.
 
 
 
