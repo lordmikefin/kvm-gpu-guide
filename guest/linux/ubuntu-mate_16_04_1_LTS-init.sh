@@ -19,7 +19,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.6"
+CURRENT_SCRIPT_VER="0.0.7"
 CURRENT_SCRIPT_DATE="2017-11-19"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -171,18 +171,7 @@ lm_check_KVM_WORKSPACE
 
 
 KVM_WORKSPACE_ISO="${KVM_WORKSPACE}/iso"
-KVM_WORKSPACE_ISO="${KVM_WORKSPACE}/iso/test"
-echo ""
-#echo "${KVM_WORKSPACE}/iso/"
-echo "${KVM_WORKSPACE_ISO}"
-
-
-
-if [ ! -d "${KVM_WORKSPACE_ISO}" ]; then
-	echo "Directory '${KVM_WORKSPACE_ISO}' does not exist."
-	
-	lm_create_folder_recursive "${HOME}/kvm-workspace/iso"  || lm_failure
-fi
+lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
 
 
 

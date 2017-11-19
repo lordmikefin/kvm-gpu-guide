@@ -56,6 +56,8 @@
 #  - lm_read_to_INPUT ()
 #  - lm_check_KVM_WORKSPACE ()
 # :Functions with subshell:
+#  - lm_verify_argument ()
+#  - lm_max_argument ()
 #  - lm_string_to_lower_case ()
 #  - lm_create_folder_recursive ()
 
@@ -64,7 +66,7 @@
 
 
 unset LM_FUNCTIONS_VER LM_FUNCTIONS_DATE
-LM_FUNCTIONS_VER="0.0.5"
+LM_FUNCTIONS_VER="0.0.6"
 LM_FUNCTIONS_DATE="2017-11-19"
 #echo "LM functions version: ${LM_FUNCTIONS_VER} (${LM_FUNCTIONS_DATE})"
 
@@ -205,7 +207,7 @@ lm_read_to_INPUT () {
 	
 	# Usage:
 	#	unset INPUT
-	#   lm_read_to_INPUT "Do you wanna do something?"
+	#	lm_read_to_INPUT "Do you wanna do something?"
 	#	case "${INPUT}" in
 	#		"YES" )
 	#			INPUT="YES" ;;
@@ -274,6 +276,43 @@ lm_check_KVM_WORKSPACE () {
 #                                                                    #
 ######################################################################
 
+lm_verify_argument () {
+	# Verify the argument.
+	
+	# NOTE: Do not echo enything into stdout! All stdout echoes are used as return value.
+	
+	# Usage:
+	#   STRING="$(lm_verify_argument "${1}")"  || lm_failure
+	
+	( # subshell
+		STRING="$1"
+		
+		if [ "${STRING}" == "" ]; then
+			>&2 echo "Argument can not be empty."
+			exit 1
+		fi
+		
+		echo "${STRING}"
+	)
+}
+
+lm_max_argument () {
+	# Verify that the there is no more arguments than max.
+	
+	# NOTE: Do not echo enything into stdout! All stdout echoes are used as return value.
+	
+	# Usage:
+	#   lm_max_argument "${1}"  || lm_failure
+	
+	( # subshell
+		STRING="$1"
+		
+		if [ "${STRING}" != "" ]; then
+			>&2 echo "Too many argument has been set."
+			exit 1
+		fi
+	)
+}
 
 lm_string_to_lower_case () {
 	# Create given folder. Recursively.
@@ -285,7 +324,10 @@ lm_string_to_lower_case () {
 	
 	( # subshell
 		
-		STRING="$1"
+		#STRING="$(lm_verify_argument "${1}")"  || lm_failure
+		STRING="${1}"
+		
+		lm_max_argument "${2}"  || lm_failure
 		
 		#$(echo "${STRING,,}")  || lm_failure
 		#echo "${STRING,,} ${foo&#}"  || lm_failure
@@ -301,15 +343,30 @@ lm_create_folder_recursive () {
 	# Usage:
 	#   lm_create_folder_recursive "${HOME}/kvm-workspace/iso"  || lm_failure
 	
-	
-	# TODO: Implement this method and test it.
-	
 	( # subshell
+		PATH_FOLDER="$(lm_verify_argument "${1}")"  || lm_failure
 		
-		# $ mkdir -R foo/bar/zoo/andsoforth
+		lm_max_argument "${2}"  || lm_failure
 		
-		$(exit 1)  || lm_failure
-		
+		if [ ! -d "${PATH_FOLDER}" ]; then
+			echo ""
+			echo "Directory '${PATH_FOLDER}' does not exist."
+			
+			unset INPUT
+			lm_read_to_INPUT "Do you want to create the folder?"
+			case "${INPUT}" in
+				"YES" )
+					# No error if existing, make parent directories as needed.
+					mkdir -p "${PATH_FOLDER}"  || lm_failure
+					echo "Directory '${PATH_FOLDER}' and parents are created."
+					INPUT="YES" ;;
+				"NO" )
+					echo "Folder not created."
+					exit 1 ;;
+				"FAILED" | * )
+					lm_failure ;;
+			esac
+		fi
 	)
 }
 
