@@ -27,34 +27,45 @@
 
 # Usage:
 # ----------------------------------------------------------------------------
-#	IMPORT_FUNCTIONS="$(dirname $(realpath ${BASH_SOURCE[0]}))/../../script/lm_functions.sh"
+#	CURRENT_SCRIPT_REALPATH="$(realpath ${BASH_SOURCE[0]})"
+#	CURRENT_SCRIPT_DIR="$(dirname ${CURRENT_SCRIPT_REALPATH})"
+#	IMPORT_FUNCTIONS="$(realpath "${CURRENT_SCRIPT_DIR}/../../script/lm_functions.sh")"
 #	if [[ ! -f "${IMPORT_FUNCTIONS}" ]]; then
-#		>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Source script '${IMPORT_FUNCTIONS}' missing!" # echo into stderr 
+#		>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Source script '${IMPORT_FUNCTIONS}' missing!"
 #		exit 1
 #	fi
 #
 #	source ${IMPORT_FUNCTIONS}
 #
-#	if [ ${LM_FUNCTIONS_VER} != "1.2.3" ]; then
+#	if [ ${LM_FUNCTIONS_VER} != "0.0.3" ]; then
 #		lm_functions_incorrect_version
+#		if [ "${INPUT}" == "FAILED" ]; then
+#			lm_failure
+#		fi
 #	fi
 # ----------------------------------------------------------------------------
 
 
 
+
 # Currently this script provides functions:
 # :Functions without subshell:
+#  - lm_failure_message ()
+#  - lm_failure ()
 #  - lm_functions_incorrect_version ()
 #  - lm_read_to_INPUT ()
 #  - lm_check_KVM_WORKSPACE ()
 # :Functions with subshell:
-#  - 
+#  - lm_string_to_lower_case ()
+#  - lm_create_folder_recursive ()
+
+
 
 
 
 unset LM_FUNCTIONS_VER LM_FUNCTIONS_DATE
-LM_FUNCTIONS_VER="0.0.4"
-LM_FUNCTIONS_DATE="2017-11-12"
+LM_FUNCTIONS_VER="0.0.5"
+LM_FUNCTIONS_DATE="2017-11-19"
 #echo "LM functions version: ${LM_FUNCTIONS_VER} (${LM_FUNCTIONS_DATE})"
 
 
@@ -78,26 +89,95 @@ LM_FUNCTIONS_WORK_DIR="${PWD}"
 # NOTE to myself: Read more about Bash exit codes.
 #   ( http://tldp.org/LDP/abs/html/exitcodes.html )
 
-unset OS_NAME OS_VER OS_ARCH CURRENT_SHELL
+unset OS_NAME OS_VER OS_ARCH CURRENT_SHELL INCORRECT_VERSION
 OS_NAME="$(uname)"
 OS_VER="$(uname -r)"
 OS_ARCH="$(uname -m)"
 if [[ ${OS_NAME} != "Linux" ]] ; then
-	echo -e "\n System is not Linux. This script is tested only with Linux.  Aborting." >&2
-	exit 1 # 127
+	>&2 echo -e "\n System is not Linux. This script is tested only with Linux.  Aborting."
+	exit 1
 fi
 
 CURRENT_SHELL="$(basename $SHELL)"
 if [[ ${CURRENT_SHELL} != "bash" ]] ; then
-	echo -e "\n This script is tested only with Bash.  Aborting." >&2
-	exit 1 # 127
+	>&2 echo -e "\n This script is tested only with Bash.  Aborting."
+	exit 1
+fi
+
+
+unset INCORRECT_VERSION
+
+# Check Bash version.
+INCORRECT_VERSION=false
+if [[ "${BASH_VERSINFO[0]}" -lt  4  ]] ; then
+	INCORRECT_VERSION=true
+else
+	if [[ "${BASH_VERSINFO[1]}" -lt  3  ]] ; then
+		INCORRECT_VERSION=true
+	else
+		if [[ "${BASH_VERSINFO[2]}" -lt  46  ]] ; then
+			INCORRECT_VERSION=true
+		fi
+	fi
+fi
+
+#echo "INCORRECT_VERSION : ${INCORRECT_VERSION}"
+if [ "${INCORRECT_VERSION}" == true ] ; then
+	>&2 echo -e "\n This script is tested only with Bash version 4.3.46 (or higher).  Aborting."
+	exit 1
 fi
 
 
 
 
+
+
+
+lm_failure_message () {
+	
+	# Usage:
+	#	lm_failure_message
+	
+	# Secondary usage:
+	#	lm_failure_message "${BASH_SOURCE[1]}" "${BASH_LINENO[0]}" "${MESSAGE}"
+	
+	# NOTE: Parameters must be in order. Each are optional.
+	
+	ARG_BASH_SOURCE="${BASH_SOURCE[1]}"
+	if [ -n "$1" ]; then
+		ARG_BASH_SOURCE="$1"
+	fi
+	
+	ARG_BASH_LINENO="${BASH_LINENO[0]}"
+	if [ -n "$2" ]; then
+		ARG_BASH_LINENO="$2"
+	fi
+	
+	ARG_MESSAGE="Script  FAILED"
+	if [ -n "$3" ]; then
+		ARG_MESSAGE="$3"
+	fi
+	
+	>&2 echo "${ARG_BASH_SOURCE}: line ${ARG_BASH_LINENO}: ${ARG_MESSAGE}"
+}
+
+lm_failure () {
+	# Will exit the caller script with error 1.
+	# Prints error with caller script name and row number.
+	
+	lm_failure_message "${BASH_SOURCE[1]}" "${BASH_LINENO[0]}"
+	
+	exit 1
+}
+
+
+
 lm_functions_incorrect_version () {
-	>&2 echo "${BASH_SOURCE[1]}: line ${BASH_LINENO[0]}: Source script '${LM_FUNCTIONS}' is incorrect version!" # echo into stderr
+	
+	>&2 echo ""
+	lm_failure_message "${BASH_SOURCE[1]}" "${BASH_LINENO[0]}" "Source script '${LM_FUNCTIONS}' is incorrect version!" # echo into stderr
+	>&2 echo ""
+	
 	echo ""
 	echo "Something has changed in ${LM_FUNCTIONS}."
 	echo "Everything might not run correctly."
@@ -105,38 +185,51 @@ lm_functions_incorrect_version () {
 	
 	unset INPUT
 	lm_read_to_INPUT "Do you want to run this script as is?"
-	if [ "${INPUT}" == "YES" ]; then
-		echo "OK then. Let's run and see what happens."
-	else
-		echo "OK then. bye."
-		exit 1
-	fi
+	
+	case "${INPUT}" in
+		"YES" )
+			echo "OK then. Let's run and see what happens." ;;
+		"NO" )
+			echo "OK then. bye."
+			exit 1 ;;
+		"FAILED" | * )
+			lm_failure_message ;;
+	esac
 }
 
 lm_read_to_INPUT () {
 	# Read input from user until we get acceptable answer.
 	
-	# WARNING: This fuction will over write variable INPUT !!!
+	# WARNING: 
+	#   This fuction will over write variables INPUT and STRING_LOW_CASE !!!
 	
 	# Usage:
 	#	unset INPUT
 	#   lm_read_to_INPUT "Do you wanna do something?"
-	#	if [ "${INPUT}" == "YES" ]; then
-	#		do_something_function
-	#	else
-	#		echo "NO ..."
-	#	fi
+	#	case "${INPUT}" in
+	#		"YES" )
+	#			INPUT="YES" ;;
+	#		"NO" )
+	#			INPUT="NO" ;;
+	#		"FAILED" | * )
+	#			lm_failure_message
+	#			INPUT="FAILED" ;;
+	#	esac
 	
 	unset INPUT
 	while [[ -z ${INPUT} ]]; do
 		echo -n "$1 ( Yes / [No] ): "
 		read INPUT
 		
-		case "${INPUT}" in
-			Yes | YES | yes | y )
+		STRING_LOW_CASE="$(lm_string_to_lower_case "${INPUT}")"  || { STRING_LOW_CASE="FAILED";  lm_failure_message; }
+		
+		case "${STRING_LOW_CASE}" in
+			"yes" | "ye" | "y" )
 				INPUT="YES" ;;
-			No | NO | no | n | "" )
+			"no" | "n" | "" )
 				INPUT="NO" ;;
+			"FAILED" )
+				INPUT="FAILED" ;;
 			* )
 				unset INPUT ;; # Clear input ( = stay in while loop )
 		esac
@@ -174,9 +267,56 @@ lm_check_KVM_WORKSPACE () {
 
 
 
+######################################################################
+#                                                                    #
+#  Following functions are using 'subshell' to protect variables.    #
+#  We do not want accidentally overwrite data set in caller script.  #
+#                                                                    #
+######################################################################
+
+
+lm_string_to_lower_case () {
+	# Create given folder. Recursively.
+	
+	# NOTE: Do not echo enything into stdout! All stdout echoes are used as return value.
+	
+	# Usage:
+	#   STRING_LOW_CASE="$(lm_string_to_lower_case "${STRING}")"  || lm_failure
+	
+	( # subshell
+		
+		STRING="$1"
+		
+		#$(echo "${STRING,,}")  || lm_failure
+		#echo "${STRING,,} ${foo&#}"  || lm_failure
+		
+		echo "${STRING,,}"
+		#exit 1
+	)
+}
+
+lm_create_folder_recursive () {
+	# Create given folder. Recursively.
+	
+	# Usage:
+	#   lm_create_folder_recursive "${HOME}/kvm-workspace/iso"  || lm_failure
+	
+	
+	# TODO: Implement this method and test it.
+	
+	( # subshell
+		
+		# $ mkdir -R foo/bar/zoo/andsoforth
+		
+		$(exit 1)  || lm_failure
+		
+	)
+}
+
+
 
 
 #echo ""
-#echo "End of script '${CURRENT_SCRIPT}'"
 #echo "Functions loaded from: '${LM_FUNCTIONS}'"
+#echo ""
 

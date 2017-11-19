@@ -19,8 +19,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.5"
-CURRENT_SCRIPT_DATE="2017-11-12"
+CURRENT_SCRIPT_VER="0.0.6"
+CURRENT_SCRIPT_DATE="2017-11-19"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -47,10 +47,14 @@ unset CALLER_SCRIPT_REALPATH
 unset OS_NAME OS_VER OS_ARCH CURRENT_SHELL
 unset INPUT
 
-#IMPORT_FUNCTIONS="${CURRENT_SCRIPT_DIR}/../../script/lm_functions.sh"
-IMPORT_FUNCTIONS="$(dirname $(realpath ${BASH_SOURCE[0]}))/../../script/lm_functions.sh"
+#STORE_REALPATH="$(realpath "${BASH_SOURCE[0]}")"
+#STORE_DIRNAME="$(dirname "${STORE_REALPATH}")"
+#IMPORT_FUNCTIONS="$(realpath "${STORE_DIRNAME}/../../script/lm_functions.sh")"
+CURRENT_SCRIPT_REALPATH="$(realpath ${BASH_SOURCE[0]})"
+CURRENT_SCRIPT_DIR="$(dirname ${CURRENT_SCRIPT_REALPATH})"
+IMPORT_FUNCTIONS="$(realpath "${CURRENT_SCRIPT_DIR}/../../script/lm_functions.sh")"
 if [[ ! -f "${IMPORT_FUNCTIONS}" ]]; then
-	>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Source script '${IMPORT_FUNCTIONS}' missing!" # echo into stderr 
+	>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Source script '${IMPORT_FUNCTIONS}' missing!"
 	exit 1
 fi
 
@@ -58,6 +62,9 @@ source ${IMPORT_FUNCTIONS}
 
 if [ ${LM_FUNCTIONS_VER} != "0.0.3" ]; then
 	lm_functions_incorrect_version
+	if [ "${INPUT}" == "FAILED" ]; then
+		lm_failure
+	fi
 fi
 
 
@@ -164,6 +171,7 @@ lm_check_KVM_WORKSPACE
 
 
 KVM_WORKSPACE_ISO="${KVM_WORKSPACE}/iso"
+KVM_WORKSPACE_ISO="${KVM_WORKSPACE}/iso/test"
 echo ""
 #echo "${KVM_WORKSPACE}/iso/"
 echo "${KVM_WORKSPACE_ISO}"
@@ -172,6 +180,8 @@ echo "${KVM_WORKSPACE_ISO}"
 
 if [ ! -d "${KVM_WORKSPACE_ISO}" ]; then
 	echo "Directory '${KVM_WORKSPACE_ISO}' does not exist."
+	
+	lm_create_folder_recursive "${HOME}/kvm-workspace/iso"  || lm_failure
 fi
 
 
