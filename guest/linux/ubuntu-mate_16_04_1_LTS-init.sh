@@ -19,8 +19,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.11"
-CURRENT_SCRIPT_DATE="2017-11-25"
+CURRENT_SCRIPT_VER="0.0.12"
+CURRENT_SCRIPT_DATE="2017-11-26"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -295,6 +295,8 @@ lm_verify_and_download_to_folder "${URL_FILE}" "${KVM_WORKSPACE_ISO}" "${URL_PLA
 # $ cd /opt/kvm/vm_storage/
 # $ qemu-img create -f qcow2 /opt/kvm/vm_storage/ubuntu16_04.qcow2 20G
 # $ cp -v /usr/share/OVMF/OVMF_VARS.fd /opt/kvm/vm_storage/ubuntu16_04_VARS.fd
+# OVMF binary file. Do _NOT_ over write.
+OVMF_CODE="/usr/share/OVMF/OVMF_CODE.fd"
 OVMF_VARS="/usr/share/OVMF/OVMF_VARS.fd"
 KVM_WORKSPACE_VM_UBUNTU="${KVM_WORKSPACE}/vm/ubuntu16_04"
 OVMF_VARS_UBUNTU="${KVM_WORKSPACE_VM_UBUNTU}/ubuntu16_04_VARS.fd"
@@ -340,11 +342,69 @@ fi
 
 
 
+# TODO: How to get GPU bus address? Ask from user?
+#		Set to common file. Load from there.
+
+# Host device bus address
+#NVIDIA_GPU="01:00.0" # Nvidia GeForce GTX 1050 # ASUSTeK Computer Inc. Device
+#NVIDIA_SOUND="01:00.1"
+#NVIDIA_GPU="02:00.0" # Nvidia GeForce GT 710 # Micro-Star International Co., Ltd. [MSI] Device
+#NVIDIA_SOUND="02:00.1"
+
+
+
 # TODO: Set parameters for QEMU
+
+# -enable-kvm -> enable hardware virtualization
+PAR="-enable-kvm"
+
+# Mother board
+PAR="${PAR} -M q35"
+
+# Memory
+PAR="${PAR} -m 4096"
+
+# CPU
+PAR="${PAR} -cpu host,kvm=off"
+PAR="${PAR} -smp 4,sockets=1,cores=4,threads=1"
+
+# Boot menu
+PAR="${PAR} -boot menu=on"
+
+# Display   qxl
+PAR="${PAR} -vga qxl"
+PAR="${PAR} -display sdl"
+
+# OVMF
+PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
+PAR="${PAR} -drive file=${OVMF_VARS},if=pflash,format=raw,unit=1"
+
+# Add pcie bus
+#PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
+
+# VGA passthrough. GPU and sound.
+#PAR="${PAR} -device vfio-pci,host=${NVIDIA_GPU},bus=root.1,addr=00.0,multifunction=on,x-vga=on"
+#PAR="${PAR} -device vfio-pci,host=${NVIDIA_SOUND},bus=root.1,addr=00.1"
+
+# Virtual disk
+PAR="${PAR} -drive file=${VM_DISK_UBUNTU},format=qcow2,if=none,id=drive-ide0-0-0"
+PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
+
+# Ubuntu ISO file
+PAR="${PAR} -drive file=${LOCAL_FILE},format=raw,if=none,id=drive-ide1-0-0"
+PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
+
+# Sound card
+PAR="${PAR} -soundhw hda"
+
+# Network
+PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
 
 # Start the virtual machine with parameters
 #qemu-system-x86_64 ${PAR}
+sudo qemu-system-x86_64 ${PAR}
 
+#echo "qemu-system-x86_64 ${PAR}"
 
 
 echo ""
