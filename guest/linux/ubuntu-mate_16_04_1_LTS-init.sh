@@ -19,7 +19,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.10"
+CURRENT_SCRIPT_VER="0.0.11"
 CURRENT_SCRIPT_DATE="2017-11-25"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -288,6 +288,62 @@ lm_verify_and_download_to_folder "${URL_FILE}" "${KVM_WORKSPACE_ISO}" "${URL_PLA
 #	>&2 echo "FAILED: File download was not completed."
 #	lm_failure
 #fi
+
+
+
+
+# $ cd /opt/kvm/vm_storage/
+# $ qemu-img create -f qcow2 /opt/kvm/vm_storage/ubuntu16_04.qcow2 20G
+# $ cp -v /usr/share/OVMF/OVMF_VARS.fd /opt/kvm/vm_storage/ubuntu16_04_VARS.fd
+OVMF_VARS="/usr/share/OVMF/OVMF_VARS.fd"
+KVM_WORKSPACE_VM_UBUNTU="${KVM_WORKSPACE}/vm/ubuntu16_04"
+OVMF_VARS_UBUNTU="${KVM_WORKSPACE_VM_UBUNTU}/ubuntu16_04_VARS.fd"
+VM_DISK_UBUNTU="${KVM_WORKSPACE_VM_UBUNTU}/ubuntu16_04.qcow2"
+
+unset INPUT
+lm_read_to_INPUT "Do you wanna use folder ${KVM_WORKSPACE_VM_UBUNTU} for virtual machine?"
+case "${INPUT}" in
+	"YES" )
+		INPUT="YES" ;;
+	"NO" )
+		exit 1
+		;;
+	"FAILED" | * )
+		lm_failure_message
+		INPUT="FAILED" ;;
+esac
+
+# Create Ubuntu vm folder.
+lm_create_folder_recursive "${KVM_WORKSPACE_VM_UBUNTU}"  || lm_failure
+
+# OVMF file for vm. UEFI boot.
+if [[ -f "${OVMF_VARS}" ]]; then
+	if [[ ! -f "${OVMF_VARS_UBUNTU}" ]]; then
+		lm_copy_file "${OVMF_VARS}" "${OVMF_VARS_UBUNTU}"  || lm_failure
+	else
+		echo -e "\n File ${OVMF_VARS_UBUNTU} alrealy exists.\n"
+	fi
+else
+	>&2 echo -e "\n File ${OVMF_VARS} missing. Did you installed OVMF?  Aborting."
+	exit 1
+fi
+
+# Create Ubuntu vm virtual disk.
+if [[ ! -f "${VM_DISK_UBUNTU}" ]]; then
+	echo ""
+	echo "Createing file ${VM_DISK_UBUNTU}"
+	echo ""
+	qemu-img create -f qcow2 "${VM_DISK_UBUNTU}" 20G  || lm_failure
+else
+	echo -e "\n File ${VM_DISK_UBUNTU} alrealy exists.\n"
+fi
+
+
+
+# TODO: Set parameters for QEMU
+
+# Start the virtual machine with parameters
+#qemu-system-x86_64 ${PAR}
 
 
 

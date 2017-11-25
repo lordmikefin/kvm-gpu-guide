@@ -68,14 +68,14 @@
 #  - lm_file_size ()
 #  - lm_add_time_stamp_to_file ()
 #  - lm_rename_file ()
-
+#  - lm_copy_file ()
 
 
 
 
 unset LM_FUNCTIONS_VER LM_FUNCTIONS_DATE LM_FUNCTIONS_LOADED
 LM_FUNCTIONS_LOADED=false
-LM_FUNCTIONS_VER="0.0.10"
+LM_FUNCTIONS_VER="0.0.11"
 LM_FUNCTIONS_DATE="2017-11-25"
 #echo "LM functions version: ${LM_FUNCTIONS_VER} (${LM_FUNCTIONS_DATE})"
 
@@ -628,10 +628,26 @@ lm_rename_file () {
 		lm_max_argument "${3}"  || lm_failure
 		
 #		echo "mv -v ${FILE} ${NEW_NAME}"
-		mv -v ${FILE} ${NEW_NAME}  || lm_failure
+		mv -v "${FILE}" "${NEW_NAME}"  || lm_failure
 	)
 }
 
+lm_copy_file () {
+	# Copy file.
+	
+	# Usage:
+	#   lm_copy_file "${FILE}" "${NEW_NAME}"  || lm_failure
+	
+	( # subshell
+		FILE="$(lm_verify_argument "${1}")"  || lm_failure
+		NEW_NAME="$(lm_verify_argument "${2}")"  || lm_failure
+		
+		lm_max_argument "${3}"  || lm_failure
+		
+#		echo "cp -v ${FILE} ${NEW_NAME}"
+		cp -v "${FILE}" "${NEW_NAME}"  || lm_failure
+	)
+}
 
 
 #echo ""
