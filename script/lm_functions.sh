@@ -73,7 +73,7 @@
 
 unset LM_FUNCTIONS_VER LM_FUNCTIONS_DATE LM_FUNCTIONS_LOADED
 LM_FUNCTIONS_LOADED=false
-LM_FUNCTIONS_VER="0.0.8"
+LM_FUNCTIONS_VER="0.0.9"
 LM_FUNCTIONS_DATE="2017-11-25"
 #echo "LM functions version: ${LM_FUNCTIONS_VER} (${LM_FUNCTIONS_DATE})"
 
@@ -264,8 +264,22 @@ lm_check_KVM_WORKSPACE () {
 		echo ""
 		echo "Variable 'KVM_WORKSPACE' is not set."
 		echo "  I will use the default path: ${KVM_WORKSPACE_DEFAULT}"
-		echo ""
 		
+		# Show quide how to add environment variable
+		#   https://unix.stackexchange.com/questions/117467/how-to-permanently-set-environmental-variables
+		
+		# $ nano ~/.profile
+		
+		# This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
+		
+		##add lines at the bottom of the file:
+		#	export KVM_WORKSPACE="${HOME}/kvm-workspace"
+		
+		echo ""
+		echo "Set the variable by adding line at the bottom of the file ~/.profile :"
+		echo "  export KVM_WORKSPACE="${HOME}/kvm-workspace""
+		
+		echo ""
 		unset INPUT
 		lm_read_to_INPUT "Do you want to use defalut path?"
 		if [ "${INPUT}" == "YES" ]; then
