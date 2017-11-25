@@ -66,6 +66,8 @@
 #  - lm_download_to_folder ()
 #  - lm_verify_and_download_to_folder ()
 #  - lm_file_size ()
+#  - lm_add_time_stamp_to_file ()
+#  - lm_rename_file ()
 
 
 
@@ -73,7 +75,7 @@
 
 unset LM_FUNCTIONS_VER LM_FUNCTIONS_DATE LM_FUNCTIONS_LOADED
 LM_FUNCTIONS_LOADED=false
-LM_FUNCTIONS_VER="0.0.9"
+LM_FUNCTIONS_VER="0.0.10"
 LM_FUNCTIONS_DATE="2017-11-25"
 #echo "LM functions version: ${LM_FUNCTIONS_VER} (${LM_FUNCTIONS_DATE})"
 
@@ -490,7 +492,34 @@ lm_verify_and_download_to_folder () {
 				echo "TODO: Ask user to redownload."
 				echo "URL_FILE : ${URL_FILE}"
 				echo "LOCAL_FILE : ${LOCAL_FILE}"
-				lm_failure
+#				lm_failure
+				
+				unset INPUT
+				lm_read_to_INPUT "Do you wanna redownload it? (I'll backup the old file.)"
+				case "${INPUT}" in
+					"YES" )
+						FILE_STAMPED="$(lm_add_time_stamp_to_file "${FILE}")"  || lm_failure #"
+#						echo "FILE_STAMPED : ${FILE_STAMPED}"
+						NEW_NAME="${LOCAL_FOLDER}/${FILE_STAMPED}"
+#						lm_rename_file "${LOCAL_FILE}" "${NEW_NAME}" # Backup the file
+						lm_rename_file "${LOCAL_FILE}" "${NEW_NAME}"  || lm_failure
+						
+						lm_download_to_folder "${LOCAL_FOLDER}" "${URL_FILE}"  || lm_failure
+						LOCAL_SIZE="$(lm_file_size "${LOCAL_FILE}")"  || lm_failure #"
+			
+						if [[ "${REGEX_INTEGER}" != "" ]] && [[  "${LOCAL_SIZE}" =~ ${REGEX_INTEGER} ]]; then
+							LOCAL_FOUND=true
+							echo "Got size of local file: ${LOCAL_SIZE}"
+						else
+							echo "Could not get size of local file: ${LOCAL_SIZE}"
+						fi
+						;;
+					"NO" )
+						INPUT="NO" ;;
+					"FAILED" | * )
+						lm_failure_message
+						INPUT="FAILED" ;;
+				esac
 			fi
 		fi
 		
@@ -515,7 +544,20 @@ lm_verify_and_download_to_folder () {
 				echo "TODO: Redownload ???"
 				echo "URL_FILE : ${URL_FILE}"
 				echo "LOCAL_FILE : ${LOCAL_FILE}"
-				lm_failure
+#				lm_failure
+				
+				unset INPUT
+				lm_read_to_INPUT "Do you wanna use local file?"
+				case "${INPUT}" in
+					"YES" )
+						INPUT="YES" ;;
+					"NO" )
+						lm_failure
+						INPUT="NO" ;;
+					"FAILED" | * )
+						lm_failure_message
+						INPUT="FAILED" ;;
+				esac
 			fi
 		fi
 	)
@@ -528,9 +570,6 @@ lm_file_size () {
 
 	# Usage:
 	#   FILE_SIZE="$(lm_file_size "${FILE}")"  || lm_failure
-
-
-	#   lm_verify_and_download_to_folder "${FILE}" "${FOLDER}" "${URL}"  || lm_failure
 	
 	( # subshell
 		FILE="$(lm_verify_argument "${1}")"  || lm_failure
@@ -543,6 +582,53 @@ lm_file_size () {
 		LOCAL_SIZE="${LOCAL_ARRAY[4]}"
 		
 		echo "${LOCAL_SIZE}"
+	)
+}
+
+lm_add_time_stamp_to_file () {
+	# Return file name with time stamp.
+	
+	# NOTE: Do not echo enything into stdout! All stdout echoes are used as return value.
+
+	# Usage:
+	#   FILE_STAMPED="$(lm_add_time_stamp_to_file "${FILE}")"  || lm_failure
+	
+	( # subshell
+		FILE="$(lm_verify_argument "${1}")"  || lm_failure
+		
+		lm_max_argument "${2}"  || lm_failure
+		
+		TIMESTAMP=$(date +"%y-%m-%d_%H-%M-%S")  || lm_failure
+		FILE_BASE="$(basename ${FILE})"  || lm_failure
+		FILENAME="${FILE%.*}"
+		
+#		EXTENSION="${FILE##*.}"
+		if [[ "${FILE_BASE}" == *.* ]]; then
+			EXTENSION="${FILE##*.}"
+			FILE_STAMPED="${FILENAME}_${TIMESTAMP}.${EXTENSION}"
+		else
+			EXTENSION=""
+			FILE_STAMPED="${FILENAME}_${TIMESTAMP}"
+		fi
+		
+		echo "${FILE_STAMPED}"
+	)
+}
+
+lm_rename_file () {
+	# Rename (move) the file.
+	
+	# Usage:
+	#   lm_rename_file "${FILE}" "${NEW_NAME}"  || lm_failure
+	
+	( # subshell
+		FILE="$(lm_verify_argument "${1}")"  || lm_failure
+		NEW_NAME="$(lm_verify_argument "${2}")"  || lm_failure
+		
+		lm_max_argument "${3}"  || lm_failure
+		
+#		echo "mv -v ${FILE} ${NEW_NAME}"
+		mv -v ${FILE} ${NEW_NAME}  || lm_failure
 	)
 }
 

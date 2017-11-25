@@ -19,7 +19,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.9"
+CURRENT_SCRIPT_VER="0.0.10"
 CURRENT_SCRIPT_DATE="2017-11-25"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -194,6 +194,12 @@ lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
 # $ wget --spider -r --no-parent --accept-regex=.*-desktop-amd64.iso cdimage.ubuntu.com/ubuntu-mate/releases/16.04.3/release/
 
 # $ wget --spider -r --no-parent --accept-regex=.*-desktop-amd64.iso cdimage.ubuntu.com/ubuntu-mate/releases/*/*/
+
+
+
+# TODO: Check if there is newer version of file in the server.
+
+
 URL_FILE="ubuntu-mate-16.04.3-desktop-amd64.iso"
 URL_PLAIN="cdimage.ubuntu.com/ubuntu-mate/releases/16.04.3/release"
 URL="${URL_PLAIN}/${URL_FILE}"
