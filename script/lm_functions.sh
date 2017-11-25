@@ -37,7 +37,10 @@
 #
 #	source ${IMPORT_FUNCTIONS}
 #
-#	if [ ${LM_FUNCTIONS_VER} != "0.0.3" ]; then
+#	if [ ${LM_FUNCTIONS_LOADED} == false ]; then
+#		>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Something went wrong with loading funcions."
+#		exit 1
+#	elif [ ${LM_FUNCTIONS_VER} != "0.0.3" ]; then
 #		lm_functions_incorrect_version
 #		if [ "${INPUT}" == "FAILED" ]; then
 #			lm_failure
@@ -61,14 +64,17 @@
 #  - lm_string_to_lower_case ()
 #  - lm_create_folder_recursive ()
 #  - lm_download_to_folder ()
+#  - lm_verify_and_download_to_folder ()
+#  - lm_file_size ()
 
 
 
 
 
-unset LM_FUNCTIONS_VER LM_FUNCTIONS_DATE
-LM_FUNCTIONS_VER="0.0.7"
-LM_FUNCTIONS_DATE="2017-11-19"
+unset LM_FUNCTIONS_VER LM_FUNCTIONS_DATE LM_FUNCTIONS_LOADED
+LM_FUNCTIONS_LOADED=false
+LM_FUNCTIONS_VER="0.0.8"
+LM_FUNCTIONS_DATE="2017-11-25"
 #echo "LM functions version: ${LM_FUNCTIONS_VER} (${LM_FUNCTIONS_DATE})"
 
 
@@ -111,14 +117,15 @@ fi
 unset INCORRECT_VERSION
 
 # Check Bash version.
+TESTED_BASH_VERSION=(4 3 46)
 INCORRECT_VERSION=false
-if [[ "${BASH_VERSINFO[0]}" -lt  4  ]] ; then
+if [[ "${BASH_VERSINFO[0]}" -lt  "${TESTED_BASH_VERSION[0]}"  ]] ; then
 	INCORRECT_VERSION=true
 else
-	if [[ "${BASH_VERSINFO[1]}" -lt  3  ]] ; then
+	if [[ "${BASH_VERSINFO[1]}" -lt  "${TESTED_BASH_VERSION[1]}"  ]] ; then
 		INCORRECT_VERSION=true
 	else
-		if [[ "${BASH_VERSINFO[2]}" -lt  46  ]] ; then
+		if [[ "${BASH_VERSINFO[2]}" -lt  "${TESTED_BASH_VERSION[2]}"  ]] ; then
 			INCORRECT_VERSION=true
 		fi
 	fi
@@ -126,7 +133,11 @@ fi
 
 #echo "INCORRECT_VERSION : ${INCORRECT_VERSION}"
 if [ "${INCORRECT_VERSION}" == true ] ; then
-	>&2 echo -e "\n This script is tested only with Bash version 4.3.46 (or higher).  Aborting."
+	IFS_BACKUP="${IFS}"
+	IFS="."
+#	>&2 echo -e "\n This script is tested only with Bash version 4.3.46 (or higher).  Aborting."
+	>&2 echo -e "\n This script is tested only with Bash version ${TESTED_BASH_VERSION[*]} (or higher).  Aborting."
+	IFS="${IFS_BACKUP}"
 	exit 1
 fi
 
@@ -372,7 +383,7 @@ lm_create_folder_recursive () {
 }
 
 lm_download_to_folder () {
-	# Create given folder. Recursively.
+	# Download file from the URL into the folder.
 	
 	# Usage:
 	#   lm_download_to_folder "${FOLDER}" "${URL}"  || lm_failure
@@ -386,8 +397,9 @@ lm_download_to_folder () {
 		cd ${PATH_FOLDER}  || exit 1
 		#echo ${PWD}
 		
-		echo "Downloading  ${URL}"
-		echo "into  ${PATH_FOLDER}"
+		echo -e "\n Downloading  ${URL} \n"
+		#echo "into  ${PATH_FOLDER}"
+		
 		wget ${URL}  || exit 1
 		
 		cd ${WORK_DIR}  || exit 1
@@ -395,10 +407,136 @@ lm_download_to_folder () {
 	)
 }
 
+lm_verify_and_download_to_folder () {
+	# Check file in the URl.
+	# Check file in destination folder.
+	# Verify sizes.
+	# If all ok, then download file from the URL into the folder.
+	
+	# Usage:
+	#   lm_verify_and_download_to_folder "${FILE}" "${FOLDER}" "${URL}"  || lm_failure
+	
+	( # subshell
+		FILE="$(lm_verify_argument "${1}")"  || lm_failure
+		LOCAL_FOLDER="$(lm_verify_argument "${2}")"  || lm_failure
+		URL="$(lm_verify_argument "${3}")"  || lm_failure
+		
+		lm_max_argument "${4}"  || lm_failure
+		
+		
+		URL_FILE="${URL}/${FILE}"
+		LOCAL_FILE="${LOCAL_FOLDER}/${FILE}"
+		
+		
+		URL_INFO="$(wget --spider "${URL_FILE}" 2>&1)"  #  || { 
+#			# Must print the error. Because errors was directed to veriable.
+#			>&2 echo -e "\n${URL_INFO}\n"; 
+#			lm_failure; 
+#		}
+		URL_LENGTH_INFO="$(echo "${URL_INFO}" | grep -i "Length:")"
+		URL_ARRAY=(${URL_LENGTH_INFO})
+		URL_SIZE="${URL_ARRAY[1]}"
+		URL_FOUND=false
+		
+		REGEX_INTEGER="^[0-9]+$"
+		if [[ "${REGEX_INTEGER}" != "" ]] && [[  "${URL_SIZE}" =~ ${REGEX_INTEGER} ]]; then
+			URL_FOUND=true
+			echo "Got size of file from server: ${URL_SIZE}"
+		else
+			echo "Could not get size of file from server: ${URL_SIZE}"
+		fi
+		
+##		LOCAL_FILE_INFO="$(ls -l "${LOCAL_FILE}")"  || lm_failure
+#		LOCAL_FILE_INFO="$(ls -l "${LOCAL_FILE}")"
+#		LOCAL_ARRAY=(${LOCAL_FILE_INFO})
+#		LOCAL_SIZE="${LOCAL_ARRAY[4]}"
+		LOCAL_SIZE="$(lm_file_size "${LOCAL_FILE}")"  || lm_failure
+		LOCAL_FOUND=false
+		
+		if [[ "${REGEX_INTEGER}" != "" ]] && [[  "${LOCAL_SIZE}" =~ ${REGEX_INTEGER} ]]; then
+			LOCAL_FOUND=true
+			echo "Got size of local file: ${LOCAL_SIZE}"
+		else
+			echo "Could not get size of local file: ${LOCAL_SIZE}"
+		fi
+
+		if [ ${LOCAL_FOUND} == false ] && [ ${URL_FOUND} == false ]; then
+			>&2 echo "FAILED: No local file. Can not downolad file."
+			# Must print the error. Because errors was directed to veriable.
+			>&2 echo -e "\n${URL_INFO}\n"; 
+			lm_failure
+		fi
+		
+		if [ ${LOCAL_FOUND} == true ] && [ ${URL_FOUND} == true ]; then
+			if [ "${URL_SIZE}" == "${LOCAL_SIZE}" ]; then
+				echo "File exists. URL and local file are same size."
+			else
+				>&2 echo "FAILED: URL and local file are different size."
+				echo "TODO: Redownload ???"
+				echo "TODO: Ask user to redownload."
+				echo "URL_FILE : ${URL_FILE}"
+				echo "LOCAL_FILE : ${LOCAL_FILE}"
+				lm_failure
+			fi
+		fi
+		
+		if [ ${LOCAL_FOUND} == false ] && [ ${URL_FOUND} == true ]; then
+			lm_download_to_folder "${LOCAL_FOLDER}" "${URL_FILE}"  || lm_failure
+			LOCAL_SIZE="$(lm_file_size "${LOCAL_FILE}")"  || lm_failure
+			
+			if [[ "${REGEX_INTEGER}" != "" ]] && [[  "${LOCAL_SIZE}" =~ ${REGEX_INTEGER} ]]; then
+				LOCAL_FOUND=true
+				echo "Got size of local file: ${LOCAL_SIZE}"
+			else
+				echo "Could not get size of local file: ${LOCAL_SIZE}"
+			fi
+		fi
+		
+		
+		if [ ${URL_FOUND} == true ]; then
+			if [ "${URL_SIZE}" == "${LOCAL_SIZE}" ]; then
+				echo "File download complete."
+			else
+				>&2 echo "FAILED: File download was not completed."
+				echo "TODO: Redownload ???"
+				echo "URL_FILE : ${URL_FILE}"
+				echo "LOCAL_FILE : ${LOCAL_FILE}"
+				lm_failure
+			fi
+		fi
+	)
+}
+
+lm_file_size () {
+	# Return size of file.
+	
+	# NOTE: Do not echo enything into stdout! All stdout echoes are used as return value.
+
+	# Usage:
+	#   FILE_SIZE="$(lm_file_size "${FILE}")"  || lm_failure
+
+
+	#   lm_verify_and_download_to_folder "${FILE}" "${FOLDER}" "${URL}"  || lm_failure
+	
+	( # subshell
+		FILE="$(lm_verify_argument "${1}")"  || lm_failure
+		
+		lm_max_argument "${2}"  || lm_failure
+		
+#		LOCAL_FILE_INFO="$(ls -l "${FILE}")"  || lm_failure
+		LOCAL_FILE_INFO="$(ls -l "${FILE}")"
+		LOCAL_ARRAY=(${LOCAL_FILE_INFO})
+		LOCAL_SIZE="${LOCAL_ARRAY[4]}"
+		
+		echo "${LOCAL_SIZE}"
+	)
+}
 
 
 
 #echo ""
 #echo "Functions loaded from: '${LM_FUNCTIONS}'"
 #echo ""
+
+LM_FUNCTIONS_LOADED=true
 

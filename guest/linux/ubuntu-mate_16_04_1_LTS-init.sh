@@ -19,8 +19,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.8"
-CURRENT_SCRIPT_DATE="2017-11-19"
+CURRENT_SCRIPT_VER="0.0.9"
+CURRENT_SCRIPT_DATE="2017-11-25"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -60,7 +60,10 @@ fi
 
 source ${IMPORT_FUNCTIONS}
 
-if [ ${LM_FUNCTIONS_VER} != "0.0.3" ]; then
+if [ ${LM_FUNCTIONS_LOADED} == false ]; then
+	>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Something went wrong with loading funcions."
+	exit 1
+elif [ ${LM_FUNCTIONS_VER} != "0.0.3" ]; then
 	lm_functions_incorrect_version
 	if [ "${INPUT}" == "FAILED" ]; then
 		lm_failure
@@ -191,13 +194,94 @@ lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
 # $ wget --spider -r --no-parent --accept-regex=.*-desktop-amd64.iso cdimage.ubuntu.com/ubuntu-mate/releases/16.04.3/release/
 
 # $ wget --spider -r --no-parent --accept-regex=.*-desktop-amd64.iso cdimage.ubuntu.com/ubuntu-mate/releases/*/*/
+URL_FILE="ubuntu-mate-16.04.3-desktop-amd64.iso"
+URL_PLAIN="cdimage.ubuntu.com/ubuntu-mate/releases/16.04.3/release"
+URL="${URL_PLAIN}/${URL_FILE}"
 
-URL="cdimage.ubuntu.com/ubuntu-mate/releases/16.04.3/release/ubuntu-mate-16.04.3-desktop-amd64.iso"
-lm_download_to_folder "${KVM_WORKSPACE_ISO}" "${URL}"  || lm_failure
+LOCAL_FILE="${KVM_WORKSPACE_ISO}/${URL_FILE}"
+
+#lm_download_to_folder "${KVM_WORKSPACE_ISO}" "${URL}"  || lm_failure
 
 
+lm_verify_and_download_to_folder "${URL_FILE}" "${KVM_WORKSPACE_ISO}" "${URL_PLAIN}"  || lm_failure
+
+
+# TODO: Before download check if file already exists.
+#       'wget' will creat new file if exists.
 
 # TODO: Verify that whole file was downloaded.
+
+
+#TEST="$(wget --spider cdimage.ubuntu.com/ubuntu-mate/releases/16.04.3/release/ubuntu-mate-16.04.3-desktop-amd64.iso 2>&1)"  || lm_failure
+#TEST=$(wget --spider cdimage.ubuntu.com/ubuntu-mate/releases/16.04.3/release/ubuntu-mate-16.04.3-desktop-amd64.iso 2>&1)  || lm_failure
+#echo ""
+#echo "TEST : ${TEST}" | grep -i "Length:"
+#LENGTH="$(echo "${TEST}" | grep -i "Length:")"
+#LENGTH=$(echo "${TEST}" | grep -i "Length:")
+#echo "LENGTH[0] : ${LENGTH[0]}"
+#echo "LENGTH[1] : ${LENGTH[1]}"
+
+#ATEST=(${LENGTH})
+#echo "ATEST[0] : ${ATEST[0]}"
+
+
+#ARRAY=(${LENGTH})
+#	IFS_BACKUP="${IFS}"
+#	IFS=" "
+#	unset ARRAY
+#	#for XXX in "${TEST}"
+#	i=0
+#	for XXX in ${LENGTH}; do
+#		echo "XXX : ${XXX}"
+#		ARRAY[i]="${XXX}"
+#		i=$i+1
+#	done
+#	IFS="${IFS_BACKUP}"
+
+#REGEX_INTEGER="^[0-9]+$"
+#REGEX=""
+#if [  "aa${ARRAY[1]}" > 0 ]; then
+#if [[  "${ARRAY[1]}" =~ "^[0-9]+$" ]]; then
+#if [[  123 =~ ^[0-9]+$ ]]; then
+#if [[  "${ARRAY[1]}" =~ "${REGEX}" ]]; then
+#if [[ "${REGEX_INTEGER}" != "" ]] && [[  "${ARRAY[1]}" =~ ${REGEX_INTEGER} ]]; then
+#	echo "ARRAY[1]   is number ??"
+#else
+#	echo "ARRAY[1]   is NOT number ??"
+#fi
+
+#echo "ARRAY[1] : ${ARRAY[1]}"
+#URL_SIZE="${ARRAY[1]}"
+
+
+
+#LS_LOCAL_FILE="$(ls -l "${LOCAL_FILE}")"
+#
+#IFS_BACKUP="${IFS}"
+#IFS=" "
+#unset ARRAY
+#i=0
+#for XXX in ${LS_LOCAL_FILE}; do
+#	echo "XXX : ${XXX}"
+#	ARRAY[i]="${XXX}"
+#	i=$i+1
+#done
+#IFS="${IFS_BACKUP}"
+
+#echo "ARRAY : ${ARRAY[4]}"
+#LOCAL_SIZE="${ARRAY[4]}"
+
+
+#echo "URL_SIZE   : ${URL_SIZE}"
+#echo "LOCAL_SIZE : ${LOCAL_SIZE}"
+
+
+#if [ "${URL_SIZE}" == "${LOCAL_SIZE}" ]; then
+#	echo "File download complete."
+#else
+#	>&2 echo "FAILED: File download was not completed."
+#	lm_failure
+#fi
 
 
 
