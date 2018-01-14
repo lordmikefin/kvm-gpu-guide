@@ -18,7 +18,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_VER="0.0.3"
 CURRENT_SCRIPT_DATE="2018-01-14"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -187,14 +187,11 @@ echo ""
 
 
 
+
+
 # TODO: How to get GPU bus address? Ask from user?
 #		Set to common file. Load from there.
 
-# Host device bus address
-#NVIDIA_GPU="01:00.0" # Nvidia GeForce GTX 1050 # ASUSTeK Computer Inc. Device
-#NVIDIA_SOUND="01:00.1"
-#NVIDIA_GPU="02:00.0" # Nvidia GeForce GT 710 # Micro-Star International Co., Ltd. [MSI] Device
-#NVIDIA_SOUND="02:00.1"
 
 
 VM_GPUS_CONF_FILE="$(realpath "${CURRENT_SCRIPT_DIR}/../../host/ubuntu-mate_16_04_1_LTS/vm_GPUs.conf")"
@@ -220,7 +217,8 @@ echo ""
 #   https://stackoverflow.com/questions/8880603/loop-through-an-array-of-strings-in-bash
 
 ## declare an array variable
-declare -a arr=("element1" "element2" "element3")
+#declare -a arr=("element1" "element2" "element3")
+arr=("element1" "element2" "element3")
 echo ""
 echo "${arr[@]}"
 echo "${arr[1]}"
@@ -236,21 +234,119 @@ do
 done
 
 
+#declare -a arr_test=(arr)
+declare -a arr_test=("${arr_test[0]}")
+echo ""
+echo "${arr_test[@]}"
+echo "${arr_test[0]}"
+echo ""
+
+
 BACKUP_IFS="${IFS}"
 #IFS="
 #"
 IFS=$'\n'
 COUNT=0
+COUNT_DEV=0
+SELECTIONS_STR="0,"
+SELECTIONS=(" #0	NONE") # Declare array
+PCI_BUS_VGA=() # Declare array
+PCI_BUS_AUDIO=() # Declare array
 echo "LINE ${COUNT} : ${LINE}"
 for LINE in $(cat "${VM_GPUS_CONF_FILE}") ; do
 	let COUNT=COUNT+1
-	echo "LINE ${COUNT} : ${LINE}"
+	#echo "LINE ${COUNT} : ${LINE}"
+	if [ ${COUNT} == 1 ]; then
+		SELECTIONS+=(${LINE}) # Append to array
+		#echo "LINE : ${LINE}"
+		#echo "COUNT : ${COUNT}"
+	elif [ ${COUNT} == 2 ]; then
+		PCI_BUS_VGA+=(${LINE}) # Append to array
+		#echo "COUNT : ${COUNT}"
+	elif [ ${COUNT} == 3 ]; then
+		PCI_BUS_AUDIO+=(${LINE}) # Append to array
+		COUNT=0
+		let COUNT_DEV=COUNT_DEV+1
+		SELECTIONS_STR+="${COUNT_DEV},"
+	fi
 done
 
 IFS="${BACKUP_IFS}"
 
 echo ""
+echo "SELECTIONS : ${SELECTIONS[@]}"
 echo ""
+echo "PCI_BUS_VGA : ${PCI_BUS_VGA[@]}"
+echo "PCI_BUS_AUDIO : ${PCI_BUS_AUDIO[@]}"
+echo "SELECTIONS_STR : ${SELECTIONS_STR}"
+echo ""
+
+#INPUT=2
+#if [[ ${SELECTIONS_STR} == *"${INPUT},"* ]]; then
+#	echo "FOUND"
+#fi
+
+unset SELECTED
+unset INPUT
+for LINE in "${SELECTIONS[@]}" ; do
+	echo " ${LINE}"
+done
+while [[ -z ${INPUT} ]]; do
+#	echo -n "Select one device: "
+#	for LINE in "${SELECTIONS[@]}" ; do
+#		echo " ${LINE}"
+#	done
+	
+	echo -n "Select one device: "
+	read INPUT
+	
+	STRING_LOW_CASE="$(lm_string_to_lower_case "${INPUT}")"  || { STRING_LOW_CASE="FAILED";  lm_failure_message; }
+
+	if [[ -z ${INPUT} ]]; then
+		INPUT="N/A"
+	fi
+	
+	if [[ ${SELECTIONS_STR} == *"${STRING_LOW_CASE},"* ]]; then
+		echo "FOUND"
+		SELECTED=${STRING_LOW_CASE}
+	else
+		unset INPUT  # Clear input ( = stay in while loop )
+	fi
+	
+#	case "${STRING_LOW_CASE}" in
+#		"yes" | "ye" | "y" )
+#			INPUT="YES" ;;
+#		"no" | "n" | "" )
+#			INPUT="NO" ;;
+#		"FAILED" )
+#			INPUT="FAILED" ;;
+#		* )
+#			unset INPUT ;; # Clear input ( = stay in while loop )
+#	esac
+
+done
+
+echo ""
+echo "SELECTED : ${SELECTED}"
+echo $((${SELECTED}-1))
+
+
+
+# Host device bus address
+#NVIDIA_GPU="01:00.0" # Nvidia GeForce GTX 1050 # ASUSTeK Computer Inc. Device
+#NVIDIA_SOUND="01:00.1"
+#NVIDIA_GPU="02:00.0" # Nvidia GeForce GT 710 # Micro-Star International Co., Ltd. [MSI] Device
+#NVIDIA_SOUND="02:00.1"
+SEL=$((${SELECTED}-1))
+if [[ $((${SEL})) -gt 0 ]]; then
+	NVIDIA_GPU="${PCI_BUS_VGA[${SEL}]}"
+	NVIDIA_SOUND="${PCI_BUS_AUDIO[${SEL}]}"
+	echo ""
+	echo "PCI_BUS_VGA : ${PCI_BUS_VGA[$((${SEL}-1))]}"
+	echo "PCI_BUS_AUDIO : ${PCI_BUS_AUDIO[$((${SEL}-1))]}"
+fi
+
+
 
 # USB passthrough. Keyboard and mouse.
 # TODO: parameterize. Or auto find.
@@ -287,11 +383,17 @@ PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
 PAR="${PAR} -drive file=${OVMF_VARS_UBUNTU},if=pflash,format=raw,unit=1"
 
 # Add pcie bus
-#PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
+PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
 
 # VGA passthrough. GPU and sound.
-#PAR="${PAR} -device vfio-pci,host=${NVIDIA_GPU},bus=root.1,addr=00.0,multifunction=on,x-vga=on"
-#PAR="${PAR} -device vfio-pci,host=${NVIDIA_SOUND},bus=root.1,addr=00.1"
+if [[ ! -z ${NVIDIA_GPU} ]]; then
+	PAR="${PAR} -device vfio-pci,host=${NVIDIA_GPU},bus=root.1,addr=00.0,multifunction=on,x-vga=on"
+fi
+
+if [[ ! -z ${NVIDIA_SOUND} ]]; then
+	PAR="${PAR} -device vfio-pci,host=${NVIDIA_SOUND},bus=root.1,addr=00.1"
+fi
+
 
 # Virtual disk
 PAR="${PAR} -drive file=${VM_DISK_UBUNTU},format=qcow2,if=none,id=drive-ide0-0-0"
