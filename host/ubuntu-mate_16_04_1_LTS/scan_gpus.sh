@@ -19,28 +19,64 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.3"
-CURRENT_SCRIPT_DATE="2017-10-14"
+CURRENT_SCRIPT_VER="0.0.4"
+CURRENT_SCRIPT_DATE="2018-01-14"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
 # NOTE to myself: Read more about Bash exit codes.
 #   ( http://tldp.org/LDP/abs/html/exitcodes.html )
 
+
+
+# NOTE to myself: How to get absolute path of file. 
+#   ( https://stackoverflow.com/questions/17577093/how-do-i-get-the-absolute-directory-of-a-file-in-bash )
+
+unset CURRENT_SCRIPT CURRENT_SCRIPT_REALPATH CURRENT_SCRIPT_DIR WORK_DIR
+#CURRENT_SCRIPT_REALPATH="$(realpath ${0})"
+CURRENT_SCRIPT_REALPATH="$(realpath ${BASH_SOURCE[0]})"
+CURRENT_SCRIPT="$(basename ${CURRENT_SCRIPT_REALPATH})"
+CURRENT_SCRIPT_DIR="$(dirname ${CURRENT_SCRIPT_REALPATH})"
+WORK_DIR="${PWD}"
+echo ""
+echo "CURRENT_SCRIPT: ${CURRENT_SCRIPT}"
+echo "CURRENT_SCRIPT_REALPATH: ${CURRENT_SCRIPT_REALPATH}"
+echo "CURRENT_SCRIPT_DIR: ${CURRENT_SCRIPT_DIR}"
+echo "WORK_DIR: ${WORK_DIR}"
+
+
+
+unset LM_FUNCTIONS_VER LM_FUNCTIONS_DATE
+unset LM_FUNCTIONS LM_FUNCTIONS_REALPATH LM_FUNCTIONS_DIR LM_FUNCTIONS_WORK_DIR
+unset CALLER_SCRIPT_REALPATH
 unset OS_NAME OS_VER OS_ARCH CURRENT_SHELL
-OS_NAME="$(uname)"
-OS_VER="$(uname -r)"
-OS_ARCH="$(uname -m)"
-if [[ ${OS_NAME} != "Linux" ]] ; then
-	echo -e "\n System is not Linux. This script is tested only with Linux.  Aborting." >&2
-	exit 1 # 127
+unset INPUT
+
+#STORE_REALPATH="$(realpath "${BASH_SOURCE[0]}")"
+#STORE_DIRNAME="$(dirname "${STORE_REALPATH}")"
+#IMPORT_FUNCTIONS="$(realpath "${STORE_DIRNAME}/../../script/lm_functions.sh")"
+CURRENT_SCRIPT_REALPATH="$(realpath ${BASH_SOURCE[0]})"
+CURRENT_SCRIPT_DIR="$(dirname ${CURRENT_SCRIPT_REALPATH})"
+IMPORT_FUNCTIONS="$(realpath "${CURRENT_SCRIPT_DIR}/../../script/lm_functions.sh")"
+if [[ ! -f "${IMPORT_FUNCTIONS}" ]]; then
+	>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Source script '${IMPORT_FUNCTIONS}' missing!"
+	exit 1
 fi
 
-CURRENT_SHELL="$(basename $SHELL)"
-if [[ ${CURRENT_SHELL} != "bash" ]] ; then
-	echo -e "\n This script is tested only with Bash.  Aborting." >&2
-	exit 1 # 127
+source ${IMPORT_FUNCTIONS}
+
+if [ ${LM_FUNCTIONS_LOADED} == false ]; then
+	>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Something went wrong with loading funcions."
+	exit 1
+elif [ ${LM_FUNCTIONS_VER} != "0.0.12" ]; then
+	lm_functions_incorrect_version
+	if [ "${INPUT}" == "FAILED" ]; then
+		lm_failure
+	fi
 fi
+
+
+
 
 
 
@@ -104,29 +140,11 @@ fi
 
 
 
-# NOTE to myself: How to get absolute path of file. 
-#   ( https://stackoverflow.com/questions/17577093/how-do-i-get-the-absolute-directory-of-a-file-in-bash )
-
-unset CURRENT_SCRIPT CURRENT_SCRIPT_REALPATH CURRENT_SCRIPT_DIR WORK_DIR
-#CURRENT_SCRIPT_REALPATH="$(realpath ${0})"
-CURRENT_SCRIPT_REALPATH="$(realpath ${BASH_SOURCE[0]})"
-CURRENT_SCRIPT="$(basename ${CURRENT_SCRIPT_REALPATH})"
-CURRENT_SCRIPT_DIR="$(dirname ${CURRENT_SCRIPT_REALPATH})"
-WORK_DIR="${PWD}"
-#echo ""
-#echo "CURRENT_SCRIPT: ${CURRENT_SCRIPT}"
-#echo "CURRENT_SCRIPT_REALPATH: ${CURRENT_SCRIPT_REALPATH}"
-#echo "CURRENT_SCRIPT_DIR: ${CURRENT_SCRIPT_DIR}"
-#echo "WORK_DIR: ${WORK_DIR}"
-
-
-
-
-
 
 
 # Output file will contain information about found applications.
 unset MY_GPUS_TXT OUTPUT_FILE TEXT VFIO_CONF_FILE OUTPUT_VFIO_CONF_FILE
+unset VM_GPUS_CONF_FILE OUTPUT_VM_GPUS_CONF_FILE
 LANG="en_US.UTF-8" # Prevent output localization. Not really required ;)
 MY_GPUS_TXT="MyGPUs.txt"
 OUTPUT_FILE="${CURRENT_SCRIPT_DIR}/${MY_GPUS_TXT}"
@@ -141,29 +159,26 @@ VFIO_CONF_FILE="vfio.conf"
 OUTPUT_VFIO_CONF_FILE="${CURRENT_SCRIPT_DIR}/${VFIO_CONF_FILE}"
 
 
+# Store found GPUs in separate file. This will be used by vm scripts.
+VM_GPUS_CONF_FILE="vm_GPUs.conf"
+OUTPUT_VM_GPUS_CONF_FILE="${CURRENT_SCRIPT_DIR}/${VM_GPUS_CONF_FILE}"
 
 
 
 
 # Check OUTPUT_FILE
-unset USER_INPUT
 if [ -a "${OUTPUT_FILE}" ] ; then
 	echo ""
 	echo "File exists:  ${OUTPUT_FILE}"
-	while [[ -z ${USER_INPUT} ]]; do
-		echo -n "Do you want to overwrite the file (Yes/[No]): "
-		read USER_INPUT
-		case "${USER_INPUT}" in
-			Yes | YES | yes | y )
-				USER_INPUT="YES" ;;
-			No | NO | no | n | "" )
-				USER_INPUT="NO"
-				unset OUTPUT_FILE # Clear file name. No file to overwrite.
-				;;
-			* )
-				unset USER_INPUT ;; # Clear input ( = stay in while loop )
-		esac
-	done
+	unset INPUT
+	lm_read_to_INPUT "Do you want to overwrite the file?"
+	case "${INPUT}" in
+		"YES" ) ;;
+		"NO" )
+			unset OUTPUT_FILE ;; # Clear file name. No file to overwrite.
+		"FAILED" | * )
+			lm_failure_message; exit 1 ;;
+	esac
 fi
 
 if [ -z "${OUTPUT_FILE}" ] ; then
@@ -191,6 +206,8 @@ VGA=$(lspci -nn | grep -i vga)
 COUNT=0
 HAS_NVIDIA=0
 NVIDIA_DEVICES=""
+NVIDIA_DEVICES_SELECTIONS=""
+COUNT_SELECTIONS=0
 
 # Set array separator as newline.
 BACKUP_IFS="${IFS}"
@@ -265,6 +282,24 @@ for i in ${VGA} ; do
 		echo $(lspci -nnk -s ${PCI_BUS_AUDIO})  | tee -a ${OUTPUT_FILE}
 		#NVIDIA_DEVICES=${NVIDIA_DEVICES},${DEVICE_TYPE},${DEVICE_TYPE_AUDIO}
 		NVIDIA_DEVICES=${NVIDIA_DEVICES}${DEVICE_TYPE}${DEVICE_TYPE_AUDIO}
+		
+		# Collect all NVIDA device adresses into file. It will be use by vm scripts.
+		let COUNT_SELECTIONS=COUNT_SELECTIONS+1
+#		NVIDIA_DEVICES_SELECTIONS=" #${COUNT_SELECTIONS} $(lspci -nnk -s ${PCI_BUS_VGA} | grep -i subsystem)"
+#		NVIDIA_DEVICES_SELECTIONS="${PCI_BUS_VGA}"
+#		NVIDIA_DEVICES_SELECTIONS="${NVIDIA_DEVICES_SELECTIONS}${PCI_BUS_AUDIO}"
+		NVIDIA_DEVICES_SELECTIONS="${NVIDIA_DEVICES_SELECTIONS} #${COUNT_SELECTIONS} $(lspci -nnk -s ${PCI_BUS_VGA} | grep -i subsystem) 
+${PCI_BUS_VGA}
+${PCI_BUS_AUDIO}
+"
+#		echo ""
+#		echo " #${COUNT} $(lspci -nnk -s ${PCI_BUS_VGA} | grep -i subsystem)"
+#		echo " #${COUNT} $(lspci -nnk -s ${PCI_BUS_VGA} | grep -i subsystem_)"
+#		echo ""
+#		echo "PCI_BUS_VGA   : ${PCI_BUS_VGA}"
+#		echo "PCI_BUS_AUDIO : ${PCI_BUS_AUDIO}"
+#		echo ""
+		
 	fi
 	if [ ${IS_INTEL} == 1 ] ; then
 		echo "Card is Intel"  | tee -a ${OUTPUT_FILE}
@@ -289,24 +324,18 @@ IFS="${BACKUP_IFS}"
 
 
 # Check OUTPUT_VFIO_CONF_FILE
-unset USER_INPUT
 if [ -a "${OUTPUT_VFIO_CONF_FILE}" ] ; then
 	echo ""
 	echo "File exists:  ${OUTPUT_VFIO_CONF_FILE}"
-	while [[ -z ${USER_INPUT} ]]; do
-		echo -n "Do you want to overwrite the file (Yes/[No]): "
-		read USER_INPUT
-		case "${USER_INPUT}" in
-			Yes | YES | yes | y )
-				USER_INPUT="YES" ;;
-			No | NO | no | n | "" )
-				USER_INPUT="NO"
-				unset OUTPUT_VFIO_CONF_FILE # Clear file name. No file to overwrite.
-				;;
-			* )
-				unset USER_INPUT ;; # Clear input ( = stay in while loop )
-		esac
-	done
+	unset INPUT
+	lm_read_to_INPUT "Do you want to overwrite the file?"
+	case "${INPUT}" in
+		"YES" ) ;;
+		"NO" )
+			unset OUTPUT_VFIO_CONF_FILE ;; # Clear file name. No file to overwrite.
+		"FAILED" | * )
+			lm_failure_message; exit 1 ;;
+	esac
 fi
 
 if [ -z "${OUTPUT_VFIO_CONF_FILE}" ] ; then
@@ -374,6 +403,47 @@ fi
 echo ""  | tee -a ${OUTPUT_VFIO_CONF_FILE}
 
 
+IFS="${BACKUP_IFS}"
+
+
+
+
+
+
+# Store found GPUs in separate file. This will be used by vm scripts.
+
+# Check OUTPUT_VM_GPUS_CONF_FILE
+if [ -a "${OUTPUT_VM_GPUS_CONF_FILE}" ] ; then
+	echo ""
+	echo "File exists:  ${OUTPUT_VM_GPUS_CONF_FILE}"
+	unset INPUT
+	lm_read_to_INPUT "Do you want to overwrite the file?"
+	case "${INPUT}" in
+		"YES" ) ;;
+		"NO" )
+			unset OUTPUT_VM_GPUS_CONF_FILE ;; # Clear file name. No file to overwrite.
+		"FAILED" | * )
+			lm_failure_message; exit 1 ;;
+	esac
+fi
+
+if [ -z "${OUTPUT_VM_GPUS_CONF_FILE}" ] ; then
+	echo "No output file will be created."
+else
+	echo "Writing info into file:"
+	echo "${OUTPUT_VM_GPUS_CONF_FILE}"
+fi
+
+
+# NVIDIA_DEVICES_SELECTIONS
+# OUTPUT_VM_GPUS_CONF_FILE
+#echo ""
+#echo "NVIDIA_DEVICES_SELECTIONS : ${NVIDIA_DEVICES_SELECTIONS}"
+#echo ""
+
+#echo "" | tee ${OUTPUT_VM_GPUS_CONF_FILE} # Clear the output file
+#echo "${NVIDIA_DEVICES_SELECTIONS}"  | tee -a ${OUTPUT_VM_GPUS_CONF_FILE}
+echo "${NVIDIA_DEVICES_SELECTIONS}"  | tee ${OUTPUT_VM_GPUS_CONF_FILE}
 
 
 
