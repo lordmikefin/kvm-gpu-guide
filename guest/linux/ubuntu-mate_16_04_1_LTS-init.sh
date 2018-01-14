@@ -19,8 +19,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.13"
-CURRENT_SCRIPT_DATE="2017-11-26"
+CURRENT_SCRIPT_VER="0.0.14"
+CURRENT_SCRIPT_DATE="2018-01-14"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -63,7 +63,7 @@ source ${IMPORT_FUNCTIONS}
 if [ ${LM_FUNCTIONS_LOADED} == false ]; then
 	>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Something went wrong with loading funcions."
 	exit 1
-elif [ ${LM_FUNCTIONS_VER} != "0.0.3" ]; then
+elif [ ${LM_FUNCTIONS_VER} != "0.0.12" ]; then
 	lm_functions_incorrect_version
 	if [ "${INPUT}" == "FAILED" ]; then
 		lm_failure
@@ -398,7 +398,7 @@ PAR="${PAR} -display sdl"
 
 # OVMF
 PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
-PAR="${PAR} -drive file=${OVMF_VARS},if=pflash,format=raw,unit=1"
+PAR="${PAR} -drive file=${OVMF_VARS_UBUNTU},if=pflash,format=raw,unit=1"
 
 # Add pcie bus
 #PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
