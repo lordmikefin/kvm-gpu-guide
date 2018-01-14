@@ -75,8 +75,8 @@
 
 unset LM_FUNCTIONS_VER LM_FUNCTIONS_DATE LM_FUNCTIONS_LOADED
 LM_FUNCTIONS_LOADED=false
-LM_FUNCTIONS_VER="0.0.11"
-LM_FUNCTIONS_DATE="2017-11-25"
+LM_FUNCTIONS_VER="0.0.12"
+LM_FUNCTIONS_DATE="2018-01-14"
 #echo "LM functions version: ${LM_FUNCTIONS_VER} (${LM_FUNCTIONS_DATE})"
 
 
@@ -280,6 +280,12 @@ lm_check_KVM_WORKSPACE () {
 		echo ""
 		echo "Set the variable by adding line at the bottom of the file ~/.profile :"
 		echo "  export KVM_WORKSPACE="${HOME}/kvm-workspace""
+		
+		echo ""
+		echo "NOTE: If you are running bash script as sudoer, then all environment variables"
+		echo "      are not preserved. Use sudo flag '-E, --preserve-env'."
+		echo ""
+		echo "  $ sudo -E ./script/test.sh"
 		
 		echo ""
 		unset INPUT
