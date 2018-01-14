@@ -10,7 +10,7 @@
 #   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/LICENSE.rst
 # 
 # Latest version of this script file:
-#   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/script/...
+#   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/script/test.sh
 
 
 # NOTE: If you are running bash script as sudoer, then all environment variables
