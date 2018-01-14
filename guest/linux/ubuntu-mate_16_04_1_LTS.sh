@@ -18,7 +18,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
+CURRENT_SCRIPT_VER="0.0.2"
 CURRENT_SCRIPT_DATE="2018-01-14"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -156,14 +156,10 @@ VM_DISK_UBUNTU="${KVM_WORKSPACE_VM_UBUNTU}/ubuntu16_04.qcow2"
 unset INPUT
 lm_read_to_INPUT "Do you wanna use folder ${KVM_WORKSPACE_VM_UBUNTU} for virtual machine?"
 case "${INPUT}" in
-	"YES" )
-		INPUT="YES" ;;
-	"NO" )
-		exit 1
-		;;
+	"YES" ) ;;
+	"NO" ) exit 1 ;;
 	"FAILED" | * )
-		lm_failure_message
-		INPUT="FAILED" ;;
+		lm_failure_message; exit 1 ;;
 esac
 
 
@@ -201,6 +197,60 @@ echo ""
 #NVIDIA_SOUND="02:00.1"
 
 
+VM_GPUS_CONF_FILE="$(realpath "${CURRENT_SCRIPT_DIR}/../../host/ubuntu-mate_16_04_1_LTS/vm_GPUs.conf")"
+if [[ ! -f "${VM_GPUS_CONF_FILE}" ]]; then
+	# >&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Source script '${IMPORT_FUNCTIONS}' missing!"
+	lm_failure_message "${BASH_SOURCE[0]}" "${LINENO}" "Config file '${VM_GPUS_CONF_FILE}' missing!"
+	exit 1
+fi
+
+echo ""
+echo "VM_GPUS_CONF_FILE : ${VM_GPUS_CONF_FILE}"
+echo ""
+echo "$(cat "${VM_GPUS_CONF_FILE}")"
+echo "length : ${#VM_GPUS_CONF_FILE}"
+echo ""
+
+
+echo ""
+echo "Select card to use with the vm."
+echo ""
+
+# NOTE: Read more about arrays
+#   https://stackoverflow.com/questions/8880603/loop-through-an-array-of-strings-in-bash
+
+## declare an array variable
+declare -a arr=("element1" "element2" "element3")
+echo ""
+echo "${arr[@]}"
+echo "${arr[1]}"
+echo ""
+
+# get length of an array
+arraylength=${#arr[@]}
+
+# use for loop to read all values and indexes
+for (( i=1; i<${arraylength}+1; i++ ));
+do
+	echo $i " / " ${arraylength} " : " ${arr[$i-1]}
+done
+
+
+BACKUP_IFS="${IFS}"
+#IFS="
+#"
+IFS=$'\n'
+COUNT=0
+echo "LINE ${COUNT} : ${LINE}"
+for LINE in $(cat "${VM_GPUS_CONF_FILE}") ; do
+	let COUNT=COUNT+1
+	echo "LINE ${COUNT} : ${LINE}"
+done
+
+IFS="${BACKUP_IFS}"
+
+echo ""
+echo ""
 
 # USB passthrough. Keyboard and mouse.
 # TODO: parameterize. Or auto find.
@@ -256,9 +306,9 @@ PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
 
 # Start the virtual machine with parameters
 #qemu-system-x86_64 ${PAR}
-sudo qemu-system-x86_64 ${PAR}
+#sudo qemu-system-x86_64 ${PAR}
 
-#echo "qemu-system-x86_64 ${PAR}"
+echo "qemu-system-x86_64 ${PAR}"
 
 
 echo ""
