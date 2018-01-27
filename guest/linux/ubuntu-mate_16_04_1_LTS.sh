@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.3"
-CURRENT_SCRIPT_DATE="2018-01-14"
+CURRENT_SCRIPT_VER="0.0.4"
+CURRENT_SCRIPT_DATE="2018-01-27"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -218,28 +218,28 @@ echo ""
 
 ## declare an array variable
 #declare -a arr=("element1" "element2" "element3")
-arr=("element1" "element2" "element3")
-echo ""
-echo "${arr[@]}"
-echo "${arr[1]}"
-echo ""
+#arr=("element1" "element2" "element3")
+#echo ""
+#echo "${arr[@]}"
+#echo "${arr[1]}"
+#echo ""
 
 # get length of an array
-arraylength=${#arr[@]}
+#arraylength=${#arr[@]}
 
 # use for loop to read all values and indexes
-for (( i=1; i<${arraylength}+1; i++ ));
-do
-	echo $i " / " ${arraylength} " : " ${arr[$i-1]}
-done
+#for (( i=1; i<${arraylength}+1; i++ ));
+#do
+#	echo $i " / " ${arraylength} " : " ${arr[$i-1]}
+#done
 
 
 #declare -a arr_test=(arr)
-declare -a arr_test=("${arr_test[0]}")
-echo ""
-echo "${arr_test[@]}"
-echo "${arr_test[0]}"
-echo ""
+#declare -a arr_test=("${arr_test[0]}")
+#echo ""
+#echo "${arr_test[@]}"
+#echo "${arr_test[0]}"
+#echo ""
 
 
 BACKUP_IFS="${IFS}"
@@ -328,7 +328,7 @@ done
 
 echo ""
 echo "SELECTED : ${SELECTED}"
-echo $((${SELECTED}-1))
+#echo $((${SELECTED}-1))
 
 
 
@@ -338,7 +338,7 @@ echo $((${SELECTED}-1))
 #NVIDIA_GPU="02:00.0" # Nvidia GeForce GT 710 # Micro-Star International Co., Ltd. [MSI] Device
 #NVIDIA_SOUND="02:00.1"
 SEL=$((${SELECTED}-1))
-if [[ $((${SEL})) -gt 0 ]]; then
+if [[ $((${SELECTED})) -gt 0 ]]; then
 	NVIDIA_GPU="${PCI_BUS_VGA[${SEL}]}"
 	NVIDIA_SOUND="${PCI_BUS_AUDIO[${SEL}]}"
 	echo ""
@@ -408,9 +408,9 @@ PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
 
 # Start the virtual machine with parameters
 #qemu-system-x86_64 ${PAR}
-#sudo qemu-system-x86_64 ${PAR}
+sudo qemu-system-x86_64 ${PAR}
 
-echo "qemu-system-x86_64 ${PAR}"
+#echo "qemu-system-x86_64 ${PAR}"
 
 
 echo ""
