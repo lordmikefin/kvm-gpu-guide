@@ -1,0 +1,74 @@
+
+-- Can not get Nvidia display card to work. 
+# Nvidia GeForce GTX 1050 Micro-Star International Co., Ltd. [MSI] Device [1462:8c93] 
+
+-- (Mikko) Will ubuntu repo driver work ?
+--   hmm ... drivers are not installed by default ??
+
+
+-- Somethig is always loading 'nouveau' driver ??
+
+
+Just install nvidia driver.
+
+ $ sudo apt-get update
+ ($ sudo apt-get install nvidia-375)
+ $ sudo apt-get install nvidia-384
+
+
+--
+
+https://askubuntu.com/questions/481414/install-nvidia-driver-instead-of-nouveau
+
+ $ sudo nano /etc/modprobe.d/blacklist-nouveau.conf
+
+…and add these lines at the end:
+
+blacklist nouveau
+blacklist lbm-nouveau
+options nouveau modeset=0
+alias nouveau off
+alias lbm-nouveau off
+
+blacklist amd76x_edac 
+
+blacklist vga16fb
+blacklist nouveau
+blacklist rivafb
+blacklist nvidiafb
+blacklist rivatv
+
+
+ $ sudo update-initramfs -u
+
+
+--
+
+http://www.nvidia.com/Download/index.aspx?lang=en-us
+
+http://www.nvidia.com/download/driverResults.aspx/128737/en-us
+
+
+ $ cd /home/lordmike/kvm-workspace/software/linux/cuda/
+ $ wget http://us.download.nvidia.com/XFree86/Linux-x86_64/384.111/NVIDIA-Linux-x86_64-384.111.run
+
+
+
+--
+
+https://askubuntu.com/questions/760934/graphics-issues-after-while-installing-ubuntu-16-04-16-10-with-nvidia-graphics
+
+ $ sudo apt-get purge nvidia-*
+ $ sudo add-apt-repository ppa:graphics-drivers/ppa
+ $ sudo apt-get update
+ $ sudo apt-get install nvidia-375
+
+
+---------------------------
+    Log into your account in the TTY.
+    Run sudo apt-get purge nvidia-*
+    Run sudo add-apt-repository ppa:graphics-drivers/ppa and then sudo apt-get update.
+    Run sudo apt-get install nvidia-375.
+    Reboot and your graphics issue should be fixed.
+---------------------------
+

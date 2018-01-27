@@ -1,0 +1,29 @@
+
+
+https://developer.nvidia.com/cuda-downloads
+
+https://developer.nvidia.com/compute/cuda/9.1/Prod/local_installers/cuda-repo-ubuntu1604-9-1-local_9.1.85-1_amd64
+
+
+ $ cd /home/lordmike/kvm-workspace/software/linux/cuda/
+ $ wget https://developer.nvidia.com/compute/cuda/9.1/Prod/local_installers/cuda-repo-ubuntu1604-9-1-local_9.1.85-1_amd64
+
+
+
+TODO: Create bash script. And use function lm_verify_and_download_to_folder()
+
+
+----- Guide from download page -----
+Installation Instructions:
+
+    `sudo dpkg -i cuda-repo-ubuntu1604-9-1-local_9.1.85-1_amd64.deb`
+    `sudo apt-key add /var/cuda-repo-<version>/7fa2af80.pub`
+    `sudo apt-get update`
+    `sudo apt-get install cuda`
+
+Other installation options are available in the form of meta-packages. For example, to install all the library packages, replace "cuda" with the "cuda-libraries-9-1" meta package. For more information on all the available meta packages click here.
+----- Guide from download page -----
+
+
+
+

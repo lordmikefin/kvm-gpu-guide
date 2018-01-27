@@ -19,8 +19,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.14"
-CURRENT_SCRIPT_DATE="2018-01-14"
+CURRENT_SCRIPT_VER="0.0.15"
+CURRENT_SCRIPT_DATE="2018-01-27"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -393,19 +393,40 @@ PAR="${PAR} -smp 4,sockets=1,cores=4,threads=1"
 PAR="${PAR} -boot menu=on"
 
 # Display   qxl
+# TODO: Ask user if virtual display is needed.
 PAR="${PAR} -vga qxl"
-PAR="${PAR} -display sdl"
+#PAR="${PAR} -display sdl"
+#PAR="${PAR} -display none"
+
+# Monitoring screen
+PAR="${PAR} -monitor stdio"
+
+# USB passthrough. Keyboard and mouse.
+# TODO: parameterize. Or auto find.
+PAR="${PAR} -usb -usbdevice host:046d:c077"
+PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4"
+#PAR="${PAR} -usbdevice tablet"
 
 # OVMF
 PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
 PAR="${PAR} -drive file=${OVMF_VARS_UBUNTU},if=pflash,format=raw,unit=1"
 
 # Add pcie bus
-#PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
+PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
 
 # VGA passthrough. GPU and sound.
-#PAR="${PAR} -device vfio-pci,host=${NVIDIA_GPU},bus=root.1,addr=00.0,multifunction=on,x-vga=on"
-#PAR="${PAR} -device vfio-pci,host=${NVIDIA_SOUND},bus=root.1,addr=00.1"
+# TODO: Ask user which card should be used.
+NVIDIA_GPU="01:00.0"
+NVIDIA_SOUND="01:00.1"
+#NVIDIA_GPU="02:00.0"
+#NVIDIA_SOUND="02:00.1"
+if [[ ! -z ${NVIDIA_GPU} ]]; then
+	PAR="${PAR} -device vfio-pci,host=${NVIDIA_GPU},bus=root.1,addr=00.0,multifunction=on,x-vga=on"
+fi
+
+if [[ ! -z ${NVIDIA_SOUND} ]]; then
+	PAR="${PAR} -device vfio-pci,host=${NVIDIA_SOUND},bus=root.1,addr=00.1"
+fi
 
 # Virtual disk
 PAR="${PAR} -drive file=${VM_DISK_UBUNTU},format=qcow2,if=none,id=drive-ide0-0-0"

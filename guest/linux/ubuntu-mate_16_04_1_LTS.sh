@@ -18,7 +18,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.4"
+CURRENT_SCRIPT_VER="0.0.5"
 CURRENT_SCRIPT_DATE="2018-01-27"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -152,12 +152,24 @@ OVMF_CODE="/usr/share/OVMF/OVMF_CODE.fd"
 KVM_WORKSPACE_VM_UBUNTU="${KVM_WORKSPACE}/vm/ubuntu16_04"
 OVMF_VARS_UBUNTU="${KVM_WORKSPACE_VM_UBUNTU}/ubuntu16_04_VARS.fd"
 VM_DISK_UBUNTU="${KVM_WORKSPACE_VM_UBUNTU}/ubuntu16_04.qcow2"
+KVM_WORKSPACE_SOFTWARE="${KVM_WORKSPACE}/software"
 
 unset INPUT
 lm_read_to_INPUT "Do you wanna use folder ${KVM_WORKSPACE_VM_UBUNTU} for virtual machine?"
 case "${INPUT}" in
 	"YES" ) ;;
 	"NO" ) exit 1 ;;
+	"FAILED" | * )
+		lm_failure_message; exit 1 ;;
+esac
+
+
+unset INPUT
+lm_read_to_INPUT "Do you wanna share folder ${KVM_WORKSPACE_SOFTWARE} with virtual machine?"
+case "${INPUT}" in
+	"YES" ) ;;
+	"NO" ) 
+		KVM_WORKSPACE_SOFTWARE="" ;;
 	"FAILED" | * )
 		lm_failure_message; exit 1 ;;
 esac
@@ -348,11 +360,6 @@ fi
 
 
 
-# USB passthrough. Keyboard and mouse.
-# TODO: parameterize. Or auto find.
-#PAR="${PAR} -usb -usbdevice host:046d:c077"
-#PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4"
-#PAR="${PAR} -usbdevice tablet"
 
 
 
@@ -375,8 +382,20 @@ PAR="${PAR} -smp 4,sockets=1,cores=4,threads=1"
 PAR="${PAR} -boot menu=on"
 
 # Display   qxl
+# TODO: Ask user if virtual display is needed.
 PAR="${PAR} -vga qxl"
-PAR="${PAR} -display sdl"
+#PAR="${PAR} -display sdl"
+#PAR="${PAR} -display none"
+
+# Monitoring screen
+PAR="${PAR} -monitor stdio"
+
+# USB passthrough. Keyboard and mouse.
+# TODO: parameterize. Or auto find.
+PAR="${PAR} -usb -usbdevice host:046d:c077"
+PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4"
+#PAR="${PAR} -usbdevice tablet"
+
 
 # OVMF
 PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
@@ -393,6 +412,15 @@ fi
 if [[ ! -z ${NVIDIA_SOUND} ]]; then
 	PAR="${PAR} -device vfio-pci,host=${NVIDIA_SOUND},bus=root.1,addr=00.1"
 fi
+
+# Samba share. As default samba server address is  \\10.0.2.4\qemu\
+if [[ ! -z ${KVM_WORKSPACE_SOFTWARE} ]]; then
+	PAR="${PAR} -smb ${KVM_WORKSPACE_SOFTWARE}"
+fi
+
+# TODO: Use 9p instead of cifs-samba share
+# -device virtio-9p-pci,id=fs0,fsdev=fsdev-fs0,mount_tag=opt-kvm,bus=pcie.0,addr=0x9 
+# $ sudo mount opt-kvm /opt/kvm -t 9p -o trans=virtio
 
 
 # Virtual disk

@@ -1,0 +1,44 @@
+
+Connect smb share.
+Download linux cuda toolkit.
+( Install nvidia driver. )
+
+ $ sudo apt-get install linux-headers-$(uname -r)
+
+ $ cd /mnt/software-share/linux/cuda/
+ $ sudo dpkg -i cuda-repo-ubuntu1604-9-1-local_9.1.85-1_amd64
+ $ sudo apt-key add /var/cuda-repo-9-1-local/7fa2af80.pub
+ $ sudo apt-get update
+ $ sudo apt-get install cuda
+
+ $ nvcc --version
+ $ /usr/local/cuda/bin/nvcc --version
+ $ nvidia-smi
+
+ $ cd /usr/local/cuda/samples
+ $ sudo make
+ $ ./bin/x86_64/linux/release/deviceQuery
+ $ ./bin/x86_64/linux/release/bandwidthTest
+
+
+
+http://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html
+
+http://xcat-docs.readthedocs.io/en/stable/advanced/gpu/nvidia/verify_cuda_install.html
+
+
+--
+https://askubuntu.com/questions/799184/how-can-i-install-cuda-on-ubuntu-16-04
+
+Update system PATH in .bashrc
+export PATH=$PATH:/usr/local/cuda/bin
+--
+
+
+https://askubuntu.com/questions/902636/nvidia-smi-command-not-found-ubuntu-16-04
+In my case, just disabling secure boot in the BIOS solved the problem.
+--
+
+
+
+
