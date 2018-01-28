@@ -1,6 +1,11 @@
 
+
 -- Can not get Nvidia display card to work. 
 # Nvidia GeForce GTX 1050 Micro-Star International Co., Ltd. [MSI] Device [1462:8c93] 
+
+Nvidia kernel driver is not loaded with CUDA 9.
+Use CUDA 8. It works.
+
 
 -- (Mikko) Will ubuntu repo driver work ?
 --   hmm ... drivers are not installed by default ??
@@ -14,6 +19,7 @@ Just install nvidia driver.
  $ sudo apt-get update
  ($ sudo apt-get install nvidia-375)
  $ sudo apt-get install nvidia-384
+	NOTE: There is conflicts. Use 'aptitude' to exam them.
 
 
 --
