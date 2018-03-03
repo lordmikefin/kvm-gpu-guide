@@ -19,8 +19,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
-CURRENT_SCRIPT_DATE="2018-02-11"
+CURRENT_SCRIPT_VER="0.0.3"
+CURRENT_SCRIPT_DATE="2018-03-03"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -178,13 +178,30 @@ lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
 # TODO: Check if there is newer version of file in the server.
 
 
+# TODO: Create win10.iso file with MediaCreationTool.exe
+# https://www.microsoft.com/en-us/software-download/windows10
+# Windows10_DVD_2018-02-11.iso
+# Windows10_USB_2018-02-11.iso
+
+# NOTE: DVD one will not start installation correctly ?!?!?!
+#       Downloaded is DVD one ???
+
+
 
 #URL_FILE="Win10_1703_English_x64.iso"
-URL_FILE="Win10_1709_English_x64.iso"
+#URL_FILE="Win10_1709_English_x64.iso"
+URL_FILE="Windows10_USB_2018-02-11.iso"
 #URL_PLAIN="https://software-download.microsoft.com/pr"
 #URL="${URL_PLAIN}/${URL_FILE}"
 
 LOCAL_FILE="${KVM_WORKSPACE_ISO}/${URL_FILE}"
+
+#URL_FILE_UBUNTU="ubuntu-mate-16.04.3-desktop-amd64.iso"
+#LOCAL_FILE_UBUNTU="${KVM_WORKSPACE_ISO}/${URL_FILE_UBUNTU}"
+
+#ISO_FILE="/media/4TB_Store/kvm-qemu-backup/iso-install/Win10_1703_English_x64.iso"
+#ISO_FILE_USB="/media/4TB_Store/kvm-qemu-backup/iso-install/windows10.iso"
+
 
 
 # Ask user to download file Win10_1703_English_x64.iso
@@ -245,6 +262,7 @@ KVM_WORKSPACE_VM_WIN10="${KVM_WORKSPACE}/vm/windows_10"
 OVMF_VARS_WIN10="${KVM_WORKSPACE_VM_WIN10}/windows_10_VARS.fd"
 VM_DISK_WIN10="${KVM_WORKSPACE_VM_WIN10}/windows_10.qcow2"
 
+
 unset INPUT
 lm_read_to_INPUT "Do you wanna use folder ${KVM_WORKSPACE_VM_WIN10} for virtual machine?"
 case "${INPUT}" in
@@ -272,7 +290,7 @@ else
 	exit 1
 fi
 
-# Create Ubuntu vm virtual disk.
+# Create Windows vm virtual disk.
 if [[ ! -f "${VM_DISK_WIN10}" ]]; then
 	echo ""
 	echo "Createing file ${VM_DISK_WIN10}"
@@ -371,12 +389,20 @@ if [[ ! -z ${NVIDIA_SOUND} ]]; then
 fi
 
 # Virtual disk
+#PAR="${PAR} -drive file=${VM_DISK_WIN10},format=qcow2 "
 PAR="${PAR} -drive file=${VM_DISK_WIN10},format=qcow2,if=none,id=drive-ide0-0-0"
 PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
 
-# Ubuntu ISO file
+# Windows 10 ISO file
+#PAR="${PAR} -drive file=${LOCAL_FILE},id=isocd,format=raw,index=2 "
+#PAR="${PAR} -drive file=${ISO_FILE},format=raw,if=none,id=drive-ide1-0-0"
+#PAR="${PAR} -drive file=${ISO_FILE_USB},format=raw,if=none,id=drive-ide1-0-0"
 PAR="${PAR} -drive file=${LOCAL_FILE},format=raw,if=none,id=drive-ide1-0-0"
 PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
+
+# Ubuntu ISO file
+#PAR="${PAR} -drive file=${LOCAL_FILE_UBUNTU},format=raw,if=none,id=drive-ide1-0-0"
+#PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
 
 # Sound card
 PAR="${PAR} -soundhw hda"
@@ -385,10 +411,11 @@ PAR="${PAR} -soundhw hda"
 PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
 
 # Start the virtual machine with parameters
-#qemu-system-x86_64 ${PAR}
-#sudo qemu-system-x86_64 ${PAR}
-
 echo "qemu-system-x86_64 ${PAR}"
+echo ""
+#qemu-system-x86_64 ${PAR}
+sudo qemu-system-x86_64 ${PAR}
+
 
 
 echo ""
