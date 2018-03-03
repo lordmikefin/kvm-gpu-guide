@@ -18,7 +18,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_VER="0.0.3"
 CURRENT_SCRIPT_DATE="2018-03-03"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -363,8 +363,8 @@ PAR="${PAR} -boot menu=on"
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
 #PAR="${PAR} -vga qxl"
-#PAR="${PAR} -display sdl"
-PAR="${PAR} -display none"
+PAR="${PAR} -display sdl"
+#PAR="${PAR} -display none"
 
 
 # Monitoring screen
