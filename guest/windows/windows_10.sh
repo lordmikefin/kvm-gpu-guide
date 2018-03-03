@@ -18,7 +18,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.3"
+CURRENT_SCRIPT_VER="0.0.4"
 CURRENT_SCRIPT_DATE="2018-03-03"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -161,6 +161,8 @@ KVM_WORKSPACE_VM_WIN10="${KVM_WORKSPACE}/vm/windows_10"
 OVMF_VARS_WIN10="${KVM_WORKSPACE_VM_WIN10}/windows_10_VARS.fd"
 VM_DISK_WIN10="${KVM_WORKSPACE_VM_WIN10}/windows_10.qcow2"
 KVM_WORKSPACE_SOFTWARE="${KVM_WORKSPACE}/software"
+VM_DISK_DATA="${KVM_WORKSPACE_VM_WIN10}/windows_10_data_d_drive.qcow2"
+
 
 unset INPUT
 lm_read_to_INPUT "Do you wanna use folder ${KVM_WORKSPACE_VM_WIN10} for virtual machine?"
@@ -201,6 +203,17 @@ if [[ ! -f "${VM_DISK_WIN10}" ]]; then
 	exit 1
 fi
 
+
+
+# Create data disk d-drive.
+if [[ ! -f "${VM_DISK_DATA}" ]]; then
+	echo ""
+	echo "Createing file ${VM_DISK_DATA}"
+	echo ""
+	qemu-img create -f qcow2 "${VM_DISK_DATA}" 200G  || lm_failure
+else
+	echo -e "\n File ${VM_DISK_DATA} alrealy exists.\n"
+fi
 
 
 
@@ -406,6 +419,10 @@ fi
 #PAR="${PAR} -drive file=${VM_DISK_WIN10},format=qcow2 "
 PAR="${PAR} -drive file=${VM_DISK_WIN10},format=qcow2,if=none,id=drive-ide0-0-0"
 PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
+
+# Virtual data disk d-drive
+PAR="${PAR} -drive file=${VM_DISK_DATA},format=qcow2,if=none,id=drive-ide1-0-0"
+PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
 
 # Windows 10 ISO file
 #PAR="${PAR} -drive file=${LOCAL_FILE},id=isocd,format=raw,index=2 "
