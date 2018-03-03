@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.5"
-CURRENT_SCRIPT_DATE="2018-01-27"
+CURRENT_SCRIPT_VER="0.0.6"
+CURRENT_SCRIPT_DATE="2018-03-03"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -375,7 +375,8 @@ PAR="${PAR} -M q35"
 PAR="${PAR} -m 4096"
 
 # CPU
-PAR="${PAR} -cpu host,kvm=off"
+#PAR="${PAR} -cpu host,kvm=off"
+PAR="${PAR} -cpu host"
 PAR="${PAR} -smp 4,sockets=1,cores=4,threads=1"
 
 # Boot menu
@@ -383,8 +384,8 @@ PAR="${PAR} -boot menu=on"
 
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
-PAR="${PAR} -vga qxl"
-#PAR="${PAR} -display sdl"
+#PAR="${PAR} -vga qxl"
+PAR="${PAR} -display sdl"
 #PAR="${PAR} -display none"
 
 # Monitoring screen
