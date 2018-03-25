@@ -349,7 +349,7 @@ lm_max_argument () {
 }
 
 lm_string_to_lower_case () {
-	# Create given folder. Recursively.
+	# Convert given sting to lower case string.
 	
 	# NOTE: Do not echo enything into stdout! All stdout echoes are used as return value.
 	
