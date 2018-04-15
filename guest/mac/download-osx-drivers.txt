@@ -1,0 +1,134 @@
+
+Download following file from these two sites:
+
+---------------------------------------------------
+
+
+https://github.com/kholia/OSX-KVM/issues/71#issuecomment-302892760
+
+Quick guide.
+
+To install Sierra 10.12.5 then some patches for QEMU is required to work correctly.
+	( http://www.contrib.andrew.cmu.edu/%7Esomlo/OSXKVM/ )
+
+Inside your VM, download the following files:
+
+    Clover Bootloader w/ QEMU patches
+		( http://s3.nicksherlock.com/forumposts/2016/Clover_v2.4k_r4061_edk2_r24132_qemu_patch.pkg )
+    Clover config.plist
+		( http://s3.nicksherlock.com/forumposts/2016/config.plist )
+    q35-acpi-dsdt.aml
+		( http://s3.nicksherlock.com/forumposts/2016/q35-acpi-dsdt.aml )
+    Nvidia WebDriver 378.05.05
+		( https://images.nvidia.com/mac/pkg/378/WebDriver-378.05.05.15f01.pkg )
+
+----
+
+
+
+https://zllovesuki.git.sx/essays/tags/qemu/
+
+Long guide with Virtio-net for OSX.
+How to create USB installer image for QEMU-KVM.
+
+
+You will need:
+
+    A Real Mac
+    El Capitan Installer.app
+    Pacifist
+    Virtio-net for OSX, put it under your temporary folder
+		( https://raw.githubusercontent.com/pmj/virtio-net-osx/master/bin/Virtio-Net-Driver-0.9.4.pkg )
+    Assuming that you have a temporary directory at /tmp/osx
+--
+
+OVMF (UEFI Approach)
+
+For this approach, you will need additional files under your temporary folder:
+
+    Clover. As the time of writing, I'm using r3625
+	  ( https://sourceforge.net/projects/cloverefiboot/files/Installer/ )
+	  ( https://sourceforge.net/projects/cloverefiboot/files/Installer/Clover_v2.4k_r4114.zip/download )
+    Clover Configurator
+	  ( http://mackie100projects.altervista.org/download-clover-configurator/ )
+	  ( mackie100projects.altervista.org/download-mac.php?version=classic )
+    q35-acpi-dsdt.aml
+    HFSPlus.efi
+	  ( https://raw.githubusercontent.com/JrCs/CloverGrowerPro/9fc3991c7a82be1a0d096c3a2179098f35b69264/Files/HFSPlus/X64/HFSPlus.efi )
+
+----
+
+
+
+http://www.nvidia.com/object/mac-driver-archive.html
+
+CUDA Drivers for MAC Archive
+
+
+http://www.nvidia.com/download/driverResults.aspx/114670/en-us
+
+http://us.download.nvidia.com/Mac/Quadro_Certified/346.03.15f06/WebDriver-346.03.15f06.pkg
+
+Quadro & GeForce Mac OS X Driver Release 346.03.15
+
+Release Date: 	2017.1.25
+Operating System: 	macOS El Capitan 10.11.6
+CUDA Toolkit: 	7.5 
+
+
+
+http://www.nvidia.com/download/driverResults.aspx/105589/en-us
+
+http://us.download.nvidia.com/Mac/Quadro_Certified/346.03.15f01/WebDriver-346.03.15f01.pkg
+
+Quadro & GeForce Mac OS X Driver Release 346.03.15
+ 
+Graphics driver updated for Mac OS X El Capitan 10.11.6 (15G31)
+
+Version: 	346.03.15f01
+Release Date: 	2016.7.19
+Operating System: 	macOS El Capitan 10.11.6
+CUDA Toolkit: 	7.5
+Language: 	English (US)
+File Size: 	70.92 MB 
+----
+
+
+
+
+https://developer.nvidia.com/cuda-75-downloads-archive
+
+developer.download.nvidia.com/compute/cuda/7.5/Prod/local_installers/cuda_7.5.27_mac.dmg
+
+Download Target Installer for Mac OSX 10.11 x86_64
+cuda_7.5.27_mac.dmg (md5sum: cfdcbbef8941764e764ecd40dd7a49a8)
+
+Installation Instructions:
+
+    Open cuda_7.5.27_mac.dmg
+    Launch the installer
+    Follow the on-screen prompts
+
+
+----
+
+
+Older versions of Xcode can be downloaded from the Apple Developer Download Page.
+
+  https://developer.apple.com/downloads
+
+ - Download Xcode 7.2
+ ( https://download.developer.apple.com/Developer_Tools/Xcode_8.2.1/Xcode_8.2.1.xip )
+ ( https://download.developer.apple.com/Developer_Tools/Xcode_7.2/Xcode_7.2.dmg )
+
+----
+
+
+Now run script:
+
+$ sudo ./create_driver_disk.sh
+
+
+
+
+

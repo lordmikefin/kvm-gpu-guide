@@ -1,0 +1,27 @@
+
+https://www.contrib.andrew.cmu.edu/~somlo/OSXKVM/
+-------------------------------------------------
+
+1. Prerequisites
+You will need the following:
+
+    Tools: git, gcc[-c++], nasm, [auto]make, iasl, kernel-devel, etc.
+    Linux kernel ≥ 4.7
+    QEMU ≥ 2.6.0
+    Patched OVMF firmware, built from source 
+
+I currently use Fedora 26. Anything close to it in terms of "freshness" should likely do just fine.
+
+To build the patched OVMF firmware blob, follow these instructions:
+
+    git clone https://github.com/gsomlo/edk2.git
+    cd edk2
+    git checkout gls-miscopt
+    make -C BaseTools
+    . edksetup.sh BaseTools
+    build -a X64 -t GCC5 -p OvmfPkg/OvmfPkgX64.dsc
+    cp $(find ./Build/ -name OVMF.fd) ~/
+
+The result of this process is a firmware blob named OVMF.fd, which will be copied to your home directory by the last command shown above. A binary OVMF blob built by applying my patches on top of the current edk2 master branch (as indicated by the abbreviated commit ID in the file name) is available to help speed things up, but you're strongly encouraged to build your own :) 
+
+

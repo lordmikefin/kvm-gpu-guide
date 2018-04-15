@@ -1,0 +1,115 @@
+
+https://zllovesuki.git.sx/essays/2016/07/os-x-el-capitan-on-qemu/
+
+
+$ cd /Volumes/Untitled
+
+Extract “Clover_v2.4k_r4114.zip” and “CCC.zip”
+
+
+
+$ cd "/Volumes/Untitled 1"/
+
+$ mkfile -n 8g ./mac_10_11_6_clover_usb.img
+
+$ hdiutil attach -imagekey diskimage-class=CRawDiskImage -nomount ./mac_10_11_6_clover_usb.img
+
+$ gpt create /dev/disk3
+
+
+Then use Disk Utility to Erase your "USB", with a name Untitled.
+
+
+$ sudo "/Applications/Install OS X El Capitan.app/Contents/Resources/createinstallmedia" --applicationpath "/Applications/Install OS X El Capitan.app" --nointeraction --volume "/Volumes/Untitled 2"/
+
+
+Now install Clover to the "USB".
+Run “/Volumes/Untitled/Clover_v2.4k_r4114/Clover_v2.4k_r4114.pkg”
+Click “Change Install Location ... “
+Click “Customize”
+
+ 1. Select Install for UEFI booting only
+ 2. Select a theme for Clover. I like the BootCamp theme
+ 3. Under Drivers64UEFI, select DataHubDxe-64 AND OsxAptioFix2Drv [1]
+
+( https://github.com/kholia/OSX-KVM/issues/71 )
+Under Drivers64UEFI, select OsxAptioFix2Drv-64 and PartitionDxe-64
+
+
+
+$ cp /Volumes/Untitled/q35-acpi-dsdt.aml /Volumes/ESP/EFI/CLOVER/ACPI/origin/
+
+$ cp /Volumes/Untitled/HFSPlus.efi /Volumes/ESP/EFI/CLOVER/drivers64UEFI/
+
+
+Now run Clover Configurator and edit: EFI/EFI/CLOVER/config.plist
+Run "/Volumes/Untitled/Clover Configurator.app"
+
+
+ 1. Under Cpu, select QEMU
+ 2. Under Devices, unselect all under USB, unselect ResetHDA
+ 3. Under Gui, select 1680x1050 as the resolution  ( safer 800x600 )
+ 4. Under Kernel and Kext Patches, unselect Apple RTC
+ 5. Under Rt Variables, clear MLB field
+ 6. Under SMBIOS,
+     1. You will decide what model of your Mac in here. Refer to this to generate correct SMBIOS. Please note that if you are choosing MacPro, do not select MacPro higher than 3,1., or AppleTyMCEDriver.kext will kernel panic because QEMU doesn't show that you have ECC RAM, and MacPro higher than 3,1 all requires ECC RAM
+
+
+
+Then edit /Volumes/ESP/EFI/CLOVER/config.plist manually:
+/Volumes/EFI/EFI/CLOVER/config.plist
+
+Under ACPI, replace everything between <dict> and </dict> with:
+------------------------------------------------------------------------
+		<key>DSDT</key>
+		<dict>
+			<key>Debug</key>
+			<false/>
+			<key>DropOEM_DSM</key>
+			<false/>
+			<key>Fixes</key>
+			<dict>
+				<key>AddPNLF_1000000</key>
+				<true/>
+				<key>DeleteUnused_400000</key>
+				<true/>
+				<key>FIX_ACST_4000000</key>
+				<true/>
+				<key>FIX_ADP1_800000</key>
+				<true/>
+				<key>FIX_RTC_20000</key>
+				<true/>
+				<key>FIX_S3D_2000000</key>
+				<true/>
+				<key>FiX_TMR_40000</key>
+				<true/>
+				<key>FixRegions_10000000</key>
+				<true/>
+				<key>FixSBUS_0080</key>
+				<true/>
+			</dict>
+			<key>Name</key>
+			<string>q35-acpi-dsdt.aml</string>
+			<key>ReuseFFFF</key>
+			<false/>
+		</dict>
+		<key>SSDT</key>
+		<dict>
+			<key>DropOem</key>
+			<false/>
+			<key>Generate</key>
+			<false/>
+		</dict>
+------------------------------------------------------------------------
+
+Under Boot, replace everything between <dict> and </dict> with:
+------------------------------------------------------------------------
+		<key>Arguments</key>
+		<string>-v</string>
+------------------------------------------------------------------------
+
+
+
+Unmount the partitions, and you are now ready to go
+
+

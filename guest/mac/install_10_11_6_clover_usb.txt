@@ -1,0 +1,237 @@
+
+
+https://zllovesuki.git.sx/essays/tags/qemu/
+
+
+
+ KVM OSX Guest 10.11 (El Capitan) with Clover.md 
+ ( https://gist.github.com/gordonturner/2a2e5ecde5e7860b52e2 )
+
+
+How To Enable Full Display Resolution in Clover Boot loader/ Clover UEFI [1080p/ 2560 / 4k] 
+https://www.youtube.com/watch?v=y6AvlWZ9y2o
+
+
+( https://github.com/kholia/OSX-KVM/blob/master/notes.md )
+( https://github.com/kholia/OSX-KVM/blob/master/boot-macOS.sh )
+( https://github.com/kholia/OSX-KVM/issues/71#issuecomment-302892760 )
+
+
+Other testings in file: "start-qemu-mac.txt"
+
+
+
+
+$ cd /media/4TB_Store/kvm-qemu-backup/mac
+
+
+Create clover usb installer image.
+ ( ./Mac_OS_X_El_Capitan_v10.11.6/mac_10_11_6_clover_usb.img )
+
+
+
+$ qemu-img create -f qcow2 ./mac_hdd_10_11_6.qcow2 60G
+$ cp -v /usr/share/OVMF/OVMF_VARS.fd ./mac_hdd_10_11_6_VARS.fd
+
+
+$ sudo qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,kvm=off,vendor=GenuineIntel \
+	  -machine pc-q35-2.4 \
+	  -smp 4,cores=2 \
+	  -usb -device usb-kbd -device usb-mouse \
+	  -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" \
+	  -drive file=/usr/share/OVMF/OVMF_CODE.fd,if=pflash,format=raw,unit=0,readonly=on  \
+	  -drive file=/media/4TB_Store/kvm-qemu-backup/mac/mac_hdd_10_11_6_VARS.fd,if=pflash,format=raw,unit=1 \
+	  -bios /usr/share/OVMF/OVMF_CODE.fd \
+	  -boot menu=on \
+	  -smbios type=2 \
+	  -device ich9-intel-hda -device hda-duplex \
+	  -device ide-drive,bus=ide.1,drive=MacHDD \
+	  -drive id=MacHDD,if=none,format=qcow2,file=./mac_hdd_10_11_6.qcow2 \
+	  -monitor stdio \
+	  -usb -usbdevice host:0781:5581 \
+	  -device ide-drive,bus=ide.0,drive=MacDVD \
+	  -drive id=MacDVD,if=none,snapshot=on,file=./Mac_OS_X_El_Capitan_v10.11.6/mac_10_11_6_clover_usb.img
+
+--
+	  -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1 \
+	  -device vfio-pci,host=01:00.0,bus=root.1,addr=00.0,multifunction=on,x-vga=on \
+	  -device vfio-pci,host=01:00.1,bus=root.1,addr=00.1 \
+
+--
+	  -device ide-drive,bus=ide.2,drive=MacDriver \
+	  -drive id=MacDriver,if=none,format=raw,file=./download/OSX-driver-disk.img \
+	  -device ide-drive,bus=ide.3,drive=MacElCapitan \
+	  -drive id=MacElCapitan,if=none,format=qcow2,file=./Mac_OS_X_El_Capitan_v10.11.6/El-Capitan-disk.qcow2 \
+	  -netdev user,id=user.0 \
+	  -device e1000-82545em,id=net0,mac=52:54:00:c9:18:27,netdev=user.0 
+--
+
+
+
+hmm ... Freazes after selected "Install El Capitan" from Clover bootloader screen.
+
+Remove  "-device vfio-pci ... "  lines from qemu script.
+
+They are here too soon.
+ ( https://gist.github.com/gordonturner/2a2e5ecde5e7860b52e2 )
+
+
+
+$ sudo qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,kvm=off,vendor=GenuineIntel \
+	  -machine pc-q35-2.4 \
+	  -smp 4,cores=2 \
+	  -usb -device usb-kbd -device usb-mouse \
+	  -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" \
+	  -bios /usr/share/OVMF/OVMF_CODE.fd \
+	  -boot menu=on \
+	  -device ich9-intel-hda -device hda-duplex \
+	  -drive file=/usr/share/OVMF/OVMF_CODE.fd,if=pflash,format=raw,unit=0,readonly=on  \
+	  -drive file=/media/4TB_Store/kvm-qemu-backup/mac/mac_hdd_10_11_6_VARS.fd,if=pflash,format=raw,unit=1 \
+	  -device ide-drive,bus=ide.1,drive=MacHDD \
+	  -drive id=MacHDD,if=none,format=qcow2,file=./mac_hdd_10_11_6.qcow2 \
+	  -monitor stdio \
+	  -usb -usbdevice host:0781:5581 \
+	  -device ide-drive,bus=ide.0,drive=MacDVD \
+	  -drive id=MacDVD,if=none,snapshot=on,file=./Mac_OS_X_El_Capitan_v10.11.6/mac_10_11_6_clover_usb.img
+--
+
+
+$ sudo qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,kvm=off,vendor=GenuineIntel \
+	  -machine pc-q35-2.4 \
+	  -smp 4,cores=2 \
+	  -usb -device usb-kbd -device usb-mouse \
+	  -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" \
+	  -smbios type=2 \
+	  -device ich9-intel-hda -device hda-duplex \
+	  -drive file=/usr/share/OVMF/OVMF_CODE.fd,if=pflash,format=raw,unit=0,readonly=on  \
+	  -drive file=/media/4TB_Store/kvm-qemu-backup/mac/mac_hdd_10_11_6_VARS.fd,if=pflash,format=raw,unit=1 \
+	  -device ide-drive,bus=ide.1,drive=MacHDD \
+	  -drive id=MacHDD,if=none,format=qcow2,file=./mac_hdd_10_11_6.qcow2 \
+	  -monitor stdio \
+	  -usb -usbdevice host:0781:5581 \
+	  -device ide-drive,bus=ide.0,drive=MacDVD \
+	  -drive id=MacDVD,if=none,snapshot=on,readonly=on,file=./Mac_OS_X_El_Capitan_v10.11.6/mac_10_11_6_clover_usb.img
+--
+
+
+$ sudo qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,kvm=off,vendor=GenuineIntel \
+	  -machine pc-q35-2.4 \
+	  -smp 4,cores=2 \
+	  -usb -device usb-kbd -device usb-mouse \
+	  -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" \
+	  -smbios type=2 \
+	  -device ich9-intel-hda -device hda-duplex \
+	  -drive file=/usr/share/OVMF/OVMF_CODE.fd,if=pflash,format=raw,unit=0,readonly=on  \
+	  -drive file=/media/4TB_Store/kvm-qemu-backup/mac/mac_hdd_10_11_6_VARS.fd,if=pflash,format=raw,unit=1 \
+	  -device ide-drive,bus=ide.1,drive=MacHDD \
+	  -drive id=MacHDD,if=none,format=qcow2,file=./mac_hdd_10_11_6.qcow2 \
+	  -monitor stdio \
+	  -usb -usbdevice host:0781:5581 \
+	  -device ide-drive,bus=ide.2,drive=MacDriver \
+	  -drive id=MacDriver,if=none,format=raw,file=./download/OSX-driver-disk.img \
+	  -device ide-drive,bus=ide.3,drive=MacElCapitan \
+	  -drive id=MacElCapitan,if=none,format=qcow2,file=./Mac_OS_X_El_Capitan_v10.11.6/El-Capitan-disk.qcow2 \
+	  -netdev user,id=user.0 \
+	  -device e1000-82545em,id=net0,mac=52:54:00:c9:18:27,netdev=user.0 
+--
+
+
+
+$ sudo qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,kvm=off,vendor=GenuineIntel \
+	  -machine pc-q35-2.4 \
+	  -smp 4,cores=2 \
+	  -usb -device usb-kbd -device usb-mouse \
+	  -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" \
+	  -smbios type=2 \
+	  -device ich9-intel-hda -device hda-duplex \
+	  -drive file=/usr/share/OVMF/OVMF_CODE.fd,if=pflash,format=raw,unit=0,readonly=on  \
+	  -device ide-drive,bus=ide.1,drive=MacHDD \
+	  -drive id=MacHDD,if=none,format=qcow2,file=./mac_hdd_10_11_6.qcow2 \
+	  -monitor stdio \
+	  -usb -usbdevice host:0781:5581 \
+	  -device ide-drive,bus=ide.2,drive=MacDriver \
+	  -drive id=MacDriver,if=none,format=raw,file=./download/OSX-driver-disk.img \
+	  -device ide-drive,bus=ide.3,drive=MacElCapitan \
+	  -drive id=MacElCapitan,if=none,format=qcow2,file=./Mac_OS_X_El_Capitan_v10.11.6/El-Capitan-disk.qcow2 \
+	  -netdev user,id=user.0 \
+	  -device e1000-82545em,id=net0,mac=52:54:00:c9:18:27,netdev=user.0 \
+	  -device ide-drive,bus=ide.0,drive=MacDVD \
+	  -drive id=MacDVD,if=none,snapshot=on,readonly=on,file=./Mac_OS_X_El_Capitan_v10.11.6/mac_10_11_6_clover_usb.img
+--
+
+	  -drive file=/media/4TB_Store/kvm-qemu-backup/mac/mac_hdd_10_11_6_VARS.fd,if=pflash,format=raw,unit=1 \
+
+
+
+
+Installer wrote EFI into the Clover USB disk. Not into the mac nvram disk. !?!?!
+
+Now just always use the Clover USB disk.  TODO: Figure out how to get efi stuff into NVRAM.
+
+
+
+
+
+$ sudo qemu-system-x86_64 -enable-kvm -m 6144 -cpu Penryn,kvm=off,vendor=GenuineIntel \
+	  -machine pc-q35-2.4 \
+	  -smp 4,cores=2 \
+	  -usb -device usb-kbd -device usb-mouse \
+	  -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" \
+	  -smbios type=2 \
+	  -device ich9-intel-hda -device hda-duplex \
+	  -drive file=/usr/share/OVMF/OVMF_CODE.fd,if=pflash,format=raw,unit=0,readonly=on  \
+	  -drive file=/media/4TB_Store/kvm-qemu-backup/mac/mac_hdd_10_11_6_VARS.fd,if=pflash,format=raw,unit=1 \
+	  -device ide-drive,bus=ide.1,drive=MacHDD \
+	  -drive id=MacHDD,if=none,format=qcow2,file=./mac_hdd_10_11_6.qcow2 \
+	  -monitor stdio \
+	  -usb -usbdevice host:0781:5581 \
+	  -device ide-drive,bus=ide.2,drive=MacDriver \
+	  -drive id=MacDriver,if=none,format=raw,file=./download/OSX-driver-disk.img \
+	  -device ide-drive,bus=ide.3,drive=MacElCapitan \
+	  -drive id=MacElCapitan,if=none,format=qcow2,file=./Mac_OS_X_El_Capitan_v10.11.6/El-Capitan-disk.qcow2 \
+	  -netdev user,id=user.0 \
+	  -device e1000-82545em,id=net0,mac=52:54:00:c9:18:27,netdev=user.0 \
+	  -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1 \
+	  -device vfio-pci,host=02:00.0,bus=root.1,addr=00.0,multifunction=on,x-vga=on \
+	  -device vfio-pci,host=02:00.1,bus=root.1,addr=00.1 \
+	  -vga none \
+	  -usb -usbdevice host:046d:c077 \
+	  -device usb-host,hostbus=1,hostaddr=4
+--
+
+	  -drive id=MacDVD,if=none,snapshot=on,readonly=on,file=./Mac_OS_X_El_Capitan_v10.11.6/mac_10_11_6_clover_usb.img \
+
+	  -device vfio-pci,host=01:00.0,bus=root.1,addr=00.0,multifunction=on,x-vga=on \
+	  -device vfio-pci,host=01:00.1,bus=root.1,addr=00.1 \
+
+
+Mac only shows data in one screen !?!?!?
+ -> Can not use KVM-QEMU virtual screen with HW GPU
+
+Install WebDriver-346.03.15f01.pkg  Nvidia driver.
+Set Mac to use the Web Driver
+ -> System Preferneces -> NVIDIA Driver Manager
+
+
+How To Enable Full Display Resolution in Clover Boot loader/ Clover UEFI [1080p/ 2560 / 4k] 
+https://www.youtube.com/watch?v=y6AvlWZ9y2o
+
+How to set your Hackintosh bootscreen to a widescreen resolution (VESA modes) 
+http://www.macbreaker.com/2012/06/how-to-set-your-hackintosh-bootscreen.html
+
+
+
+
+Nvidia GeForce GT 710   : host=02:00.0 -  is supported  -  Resolution works \o/
+Nvidia GeForce GTX 1050 : host=01:00.0 - not supported  -  No drivers on Mac. Resolution 800x600
+
+
+
+
+Install Clover. On the Mac OS disk.
+Run Clover Configurator. ( Same procedure as was done for clover installer usb disk )
+
+After Clover is installed on the "correct" disk, then USB disk can be removed.
+
+
+

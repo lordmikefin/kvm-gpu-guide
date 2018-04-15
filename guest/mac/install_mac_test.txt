@@ -1,0 +1,60 @@
+
+
+/media/4TB_Store/kvm-qemu-backup/mac/
+
+/home/lordmike/kvm-workspace/vm/mac_10/
+
+/home/lordmike/kvm-workspace/iso/
+
+
+$ sudo qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,kvm=off,vendor=GenuineIntel \
+	  -machine pc-q35-2.4 \
+	  -smp 4,cores=2 \
+	  -usb -device usb-kbd -device usb-mouse \
+	  -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" \
+	  -smbios type=2 \
+	  -device ich9-intel-hda -device hda-duplex \
+	  -drive file=/usr/share/OVMF/OVMF_CODE.fd,if=pflash,format=raw,unit=0,readonly=on  \
+	  -monitor stdio \
+	  -usb -usbdevice host:0781:5581 \
+	  -device ide-drive,bus=ide.2,drive=MacDriver \
+	  -drive id=MacDriver,if=none,format=raw,file=/media/4TB_Store/kvm-qemu-backup/mac/download/OSX-driver-disk.img \
+	  -device ide-drive,bus=ide.3,drive=MacElCapitan \
+	  -drive id=MacElCapitan,if=none,format=qcow2,file=/home/lordmike/kvm-workspace/vm/mac_10/mac_10.qcow2 \
+	  -netdev user,id=user.0 \
+	  -device e1000-82545em,id=net0,mac=52:54:00:c9:18:27,netdev=user.0 \
+	  -device ide-drive,bus=ide.0,drive=MacDVD \
+	  -drive id=MacDVD,if=none,snapshot=on,readonly=on,file=/home/lordmike/kvm-workspace/iso/mac_10_11_6_clover_usb.img
+
+
+-------
+
+	  -device ide-drive,bus=ide.1,drive=MacHDD \
+	  -drive id=MacHDD,if=none,format=qcow2,file=/media/4TB_Store/kvm-qemu-backup/mac/mac_hdd_10_11_6.qcow2-empty \
+
+
+-----------------------------------------------------------------------
+
+ $ sudo qemu-system-x86_64  -enable-kvm -machine pc-q35-2.4 -m 4096 \
+	-cpu Penryn,kvm=off,vendor=GenuineIntel \
+	-smp 4,sockets=1,cores=4,threads=1 \
+	-boot menu=on \
+	-device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" \
+	-smbios type=2 -device ich9-intel-hda -device hda-duplex \
+	-monitor stdio -usb -usbdevice host:046d:c077 \
+	-device usb-host,hostbus=1,hostaddr=4 \
+	-drive file=/usr/share/OVMF/OVMF_CODE.fd,if=pflash,format=raw,unit=0,readonly=on \
+	-drive file=/home/lordmike/kvm-workspace/vm/mac_10/mac_10_VARS.fd,if=pflash,format=raw,unit=1 \
+	-drive file=/home/lordmike/kvm-workspace/vm/mac_10/mac_10.qcow2,format=qcow2,if=none,id=drive-ide0-0-0 \
+	-device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0 \
+	-drive id=MacDVD,if=none,snapshot=on,file=/home/lordmike/kvm-workspace/iso/mac_10_11_6_clover_usb.img  \
+	-device ide-drive,bus=ide.1,drive=MacDVD  \
+	-netdev user,id=user.0 \
+	-device e1000-82545em,id=net0,mac=52:54:00:c9:18:27,netdev=user.0
+
+
+
+
+
+
+
