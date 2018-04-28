@@ -234,6 +234,9 @@ URL_FILE="mac_10_11_6_clover_usb.img"
 
 LOCAL_FILE="${KVM_WORKSPACE_ISO}/${URL_FILE}"
 
+OSX_DRIVER_DISK="${KVM_WORKSPACE_ISO}/OSX-driver-disk.img"
+
+
 #URL_FILE_UBUNTU="ubuntu-mate-16.04.3-desktop-amd64.iso"
 #LOCAL_FILE_UBUNTU="${KVM_WORKSPACE_ISO}/${URL_FILE_UBUNTU}"
 
@@ -330,6 +333,17 @@ echo ""
 echo "TODO: Could partition be done automatically at Linux?"
 echo ""
 
+echo ""
+echo "Mac only shows data in one screen !?!?!?"
+echo " -> Can not use KVM-QEMU virtual screen with HW GPU"
+echo ""
+echo "Install WebDriver-346.03.15f01.pkg  Nvidia driver."
+echo "Set Mac to use the Web Driver"
+echo " -> System Preferneces -> NVIDIA Driver Manager"
+echo ""
+
+
+
 
 
 # TODO: How to get GPU bus address? Ask from user?
@@ -423,6 +437,12 @@ PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
 #PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
 PAR="${PAR} -drive id=MacDVD,if=none,snapshot=on,file=${LOCAL_FILE} "
 PAR="${PAR} -device ide-drive,bus=ide.1,drive=MacDVD "
+
+
+# OSX_DRIVER_DISK
+PAR="${PAR} -device ide-drive,bus=ide.2,drive=MacDriver "
+PAR="${PAR} -drive id=MacDriver,if=none,format=raw,file=${OSX_DRIVER_DISK} "
+
 
 # Ubuntu ISO file
 #PAR="${PAR} -drive file=${LOCAL_FILE_UBUNTU},format=raw,if=none,id=drive-ide1-0-0"
