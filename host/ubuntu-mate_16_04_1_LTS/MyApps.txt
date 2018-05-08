@@ -1,6 +1,6 @@
 
 Result of script: scan_apps.sh
-Script version: 0.0.10 (2017-08-13)
+Script version: 0.0.12 (2018-05-08)
 -----------------------------------------------
 
 OS name: Linux, Kernel version: 4.4.0-71-generic, Arch: x86_64
@@ -18,6 +18,12 @@ Version: 1:2.5+dfsg-5ubuntu10.14
 
 Package 'virt-manager' is installed. OK
 Version: 1:1.3.2-3ubuntu1.16.04.3
+
+Package 'python3' is installed. OK
+Version: 3.5.1-3
+
+Package 'python3-pip' is installed. OK
+Version: 8.1.1-2ubuntu0.4
 
 Package 'git' is installed. OK
 Version: 1:2.7.4-0ubuntu1.1

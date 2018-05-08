@@ -19,8 +19,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.11"
-CURRENT_SCRIPT_DATE="2017-08-13"
+CURRENT_SCRIPT_VER="0.0.12"
+CURRENT_SCRIPT_DATE="2018-05-08"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -332,6 +332,9 @@ echo -e "\nBash version ${BASH_VERSION}" | tee -a ${OUTPUT_FILE}
 dpkg_version required ovmf
 dpkg_version required qemu-kvm
 dpkg_version required virt-manager
+
+dpkg_version required python3
+dpkg_version required python3-pip
 
 dpkg_version optional git
 dpkg_version optional gitg
