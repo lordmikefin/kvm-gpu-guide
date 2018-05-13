@@ -375,8 +375,8 @@ PAR="${PAR} -M q35"
 PAR="${PAR} -m 4096"
 
 # CPU
-#PAR="${PAR} -cpu host,kvm=off"
-PAR="${PAR} -cpu host"
+PAR="${PAR} -cpu host,kvm=off"
+#PAR="${PAR} -cpu host"
 PAR="${PAR} -smp 4,sockets=1,cores=4,threads=1"
 
 # Boot menu
