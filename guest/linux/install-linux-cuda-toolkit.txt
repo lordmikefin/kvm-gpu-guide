@@ -25,10 +25,18 @@ Reboot -- Make sure nvidia driver is used for the card.
  $ sudo apt-get update
  $ sudo apt-get install cuda
 
+ ( set
+   PATH="...:/usr/local/cuda/bin"
+   LD_LIBRARY_PATH="/usr/lib/nvidia-384/"
+ )
+
  $ nvcc --version
  $ /usr/local/cuda/bin/nvcc --version
  $ nvidia-smi
-
+ 
+ $ nano /usr/local/cuda/samples/3_Imaging/cudaDecodeGL/findgllib.mk
+   ( modify UBUNTU_PKG_NAME = "nvidia-375" to "nvidia-384" )
+ 
  $ cd /usr/local/cuda/samples
  $ sudo make
  $ ./bin/x86_64/linux/release/deviceQuery
@@ -48,10 +56,55 @@ Update system PATH in .bashrc
 export PATH=$PATH:/usr/local/cuda/bin
 --
 
+https://askubuntu.com/questions/261760/setting-global-environment-variable-for-everyone
+ $ sudo nano /etc/environment
+--
+
 
 https://askubuntu.com/questions/902636/nvidia-smi-command-not-found-ubuntu-16-04
 In my case, just disabling secure boot in the BIOS solved the problem.
 --
+
+
+
+----------------------------
+ERROR : sudo make
+---------------------
+/usr/bin/ld: cannot find -lnvcuvid
+collect2: error: ld returned 1 exit status
+Makefile:381: recipe for target 'cudaDecodeGL' failed
+make[1]: *** [cudaDecodeGL] Error 1
+make[1]: Leaving directory '/usr/local/cuda-8.0/samples/3_Imaging/cudaDecodeGL'
+Makefile:52: recipe for target '3_Imaging/cudaDecodeGL/Makefile.ph_build' failed
+make: *** [3_Imaging/cudaDecodeGL/Makefile.ph_build] Error 2
+lordmike@lordmike-Standard-PC-Q35-ICH9-2009:/usr/local/cuda/samples$ 
+
+
+
+
+https://askubuntu.com/questions/891003/failure-in-running-cuda-sample-after-cuda-8-0-installation
+
+
+$ find /usr/ -name libnvcuvid.*
+  /usr/lib/nvidia-384/libnvcuvid.so
+
+
+$ echo $LD_LIBRARY_PATH
+  /usr/local/cuda-8.0/lib64:/usr/local/cuda-8.0/lib64
+
+
+
+
+https://github.com/dusty-nv/jetson-inference/issues/180
+
+"I had this same issue and resolve it by modifying UBUNTU_PKG_NAME = "nvidia-375" to "nvidia-390".
+Because my system installed "nvidia-390" driver.
+(I found this fact when looked up /usr/lib/ directory)"
+
+$ nano /usr/local/cuda/samples/3_Imaging/cudaDecodeGL/findgllib.mk
+
+
+
 
 
 
