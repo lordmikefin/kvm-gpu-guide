@@ -1,0 +1,11 @@
+
+https://askubuntu.com/questions/858649/how-can-i-copypaste-from-the-host-to-a-kvm-guest
+----
+
+ $ sudo apt-get install spice-vdagent
+--
+
+
+https://www.spice-space.org/download/binaries/spice-guest-tools/
+
+
