@@ -433,7 +433,16 @@ PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
 PAR="${PAR} -soundhw hda"
 
 # Network
-PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
+#PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
+PAR="${PAR} -netdev user,hostfwd=tcp::10022-:22,id=user.0"
+PAR="${PAR} -device e1000,netdev=user.0"
+# https://unix.stackexchange.com/questions/124681/how-to-ssh-from-host-to-guest-using-qemu
+# ssh vmuser@localhost -p10022
+# $ ssh localhost -p10022
+#PAR="${PAR} -net user,hostfwd=tcp::10022-:22"
+#(qemu) Warning: vlan 0 with no nics
+# NOTE(Mikko): Remember to install sshd on the quest
+#               $ sudo apt-get install openssh-server
 
 # Start the virtual machine with parameters
 #qemu-system-x86_64 ${PAR}

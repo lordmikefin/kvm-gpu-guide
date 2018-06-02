@@ -1,0 +1,45 @@
+
+https://wiki.libvirt.org/page/VirtualNetworking
+
+"The default configuration
+
+When the libvirt daemon is first installed on a server, it comes with an initial virtual network switch configuration. This virtual switch is in NAT mode, and is used by installed guests for communication. (ie to the outside network) "
+
+
+
+Basic command line usage for virtual networks
+
+ $ ifconfig -a
+ 
+ $ virsh net-list
+ $ virsh net-dumpxml --network default
+ 
+
+
+Location of XML files on the host
+
+XML definition files of presistent virtual networks are stored in the 
+  /etc/libvirt/<hypervisor>/networks/
+directory. In addition, if the network is marked as autostart, the symbolic link to its XML file is created under the 
+  autostart/ 
+subdirectory. 
+
+--------------------------------------------
+
+
+https://unix.stackexchange.com/questions/124681/how-to-ssh-from-host-to-guest-using-qemu
+
+
+An example of how to connect from the host using ssh to the VM:
+
+-net user,hostfwd=tcp::10022-:22
+-net nic
+
+This hostforwarding maps the localhost (host) port 10022 to the port 22 on the VM. Once the VM was started like this, you can access it from the localhost as follows:
+
+ssh vmuser@localhost -p10022
+
+
+--------------------------------------------
+
+
