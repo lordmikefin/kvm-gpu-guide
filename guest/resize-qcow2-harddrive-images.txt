@@ -1,0 +1,8 @@
+
+https://www.randomhacks.co.uk/how-to-resize-a-qcow2-harddrive-images/
+
+Shutdown the vm :)
+
+ $ qemu-img resize ubuntu16_04.qcow2 +5GB
+
+Resize the partition
