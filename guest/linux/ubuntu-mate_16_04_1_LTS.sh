@@ -361,6 +361,18 @@ fi
 
 
 
+# Guide for how to run QEMU
+# https://wiki.archlinux.org/index.php/QEMU
+
+
+# Guide for QEMU monitor (console not the virtual screen ;)
+# https://en.wikibooks.org/wiki/QEMU/Monitor
+
+
+# Great info about PCI passthrough 
+# https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF#Setting_up_IOMMU
+
+
 
 
 # TODO: Set parameters for QEMU
@@ -432,10 +444,12 @@ PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
 # Sound card
 PAR="${PAR} -soundhw hda"
 
+
 # Network
+# This is User-mode networking
 #PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
-PAR="${PAR} -netdev user,hostfwd=tcp::10022-:22,id=user.0"
-PAR="${PAR} -device e1000,netdev=user.0"
+#PAR="${PAR} -netdev user,hostfwd=tcp::10022-:22,id=user.0"
+#PAR="${PAR} -device e1000,netdev=user.0"
 # https://unix.stackexchange.com/questions/124681/how-to-ssh-from-host-to-guest-using-qemu
 # ssh vmuser@localhost -p10022
 # $ ssh localhost -p10022
@@ -443,6 +457,29 @@ PAR="${PAR} -device e1000,netdev=user.0"
 #(qemu) Warning: vlan 0 with no nics
 # NOTE(Mikko): Remember to install sshd on the quest
 #               $ sudo apt-get install openssh-server
+
+# (2018-07-19) hmmm ... I have broken the network.
+# From guest DNS works, but traffic is not passed through NAT.
+# I disabled the default virsh network
+#  $ virsh net-destroy default
+# And I just realized that it is not used by default ;)
+
+#PAR="${PAR} -net nic,macaddr=52:54:00:12:24:57"
+#PAR="${PAR} -net vde"
+
+#PAR="${PAR} -netdev tap,fd=26,id=hostnet0"
+#PAR="${PAR} -device rtl8139,netdev=hostnet0,id=net0,mac=52:54:00:47:ed:af,bus=pci.0,addr=0x3"
+#PAR="${PAR} -netdev tap,id=hostnet0,ifname=vnet0"
+#PAR="${PAR} -device e1000,netdev=hostnet0,id=net0,mac=52:54:00:47:ed:af"
+
+
+# Internal networking. Bridged networking.
+# NOTE: virbr0 is created by virsh default network
+# If virsh is installed it should start at boot.
+#  $ virsh net-start default
+PAR="${PAR} -net nic -net bridge,br=virbr0"
+
+
 
 # Start the virtual machine with parameters
 #qemu-system-x86_64 ${PAR}

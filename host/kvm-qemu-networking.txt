@@ -11,9 +11,10 @@ Basic command line usage for virtual networks
 
  $ ifconfig -a
  
- $ virsh net-list
+ $ virsh net-list --all
  $ virsh net-dumpxml --network default
  
+ $ virsh net-edit default
 
 
 Location of XML files on the host
