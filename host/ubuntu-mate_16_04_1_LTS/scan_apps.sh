@@ -356,6 +356,7 @@ app_version optional gitg
 app_version optional parted # Can not print 'gparted' version ??
 app_version optional aptitude
 app_version optional keepassx
+app_version optional samba
 
 
 # TODO: How to get 'retext' version ??
