@@ -19,8 +19,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
-CURRENT_SCRIPT_DATE="2018-04-28"
+CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_DATE="2018-08-04"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -442,10 +442,18 @@ PAR="${PAR} -drive id=MacDriver,if=none,format=raw,file=${OSX_DRIVER_DISK} "
 #PAR="${PAR} -soundhw hda"
 
 # Network
-PAR="${PAR} -netdev user,id=user.0"
+#PAR="${PAR} -netdev user,id=user.0"
 #PAR="${PAR} -device e1000,netdev=user.0"
-PAR="${PAR} -device e1000-82545em,id=net0,mac=52:54:00:c9:18:27,netdev=user.0"
+#PAR="${PAR} -device e1000-82545em,id=net0,mac=52:54:00:c9:18:27,netdev=user.0"
 
+
+# Internal networking. Bridged networking.
+# NOTE: virbr0 is created by virsh default network
+# If virsh is installed it should start at boot.
+#  $ virsh net-start default
+#PAR="${PAR} -net nic -net bridge,br=virbr0"
+PAR="${PAR} -netdev bridge,br=virbr0,id=user.0"
+PAR="${PAR} -device e1000-82545em,id=net0,mac=52:54:00:c9:18:27,netdev=user.0"
 
 
 # Start the virtual machine with parameters

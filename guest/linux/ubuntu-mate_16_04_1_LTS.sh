@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.7"
-CURRENT_SCRIPT_DATE="2018-06-02"
+CURRENT_SCRIPT_VER="0.0.8"
+CURRENT_SCRIPT_DATE="2018-08-04"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -167,7 +167,14 @@ esac
 unset INPUT
 lm_read_to_INPUT "Do you wanna share folder ${KVM_WORKSPACE_SOFTWARE} with virtual machine?"
 case "${INPUT}" in
-	"YES" ) ;;
+	"YES" ) 
+		echo ""
+		echo " NOTE: This is simple samba share (buildin kvm) works only with"
+		echo "       folowing network setting:"
+		echo ""
+		echo " -netdev user,id=user.0 -device e1000,netdev=user.0"
+		echo ""
+		;;
 	"NO" ) 
 		KVM_WORKSPACE_SOFTWARE="" ;;
 	"FAILED" | * )
@@ -477,7 +484,9 @@ PAR="${PAR} -soundhw hda"
 # NOTE: virbr0 is created by virsh default network
 # If virsh is installed it should start at boot.
 #  $ virsh net-start default
-PAR="${PAR} -net nic -net bridge,br=virbr0"
+#PAR="${PAR} -net nic -net bridge,br=virbr0"
+PAR="${PAR} -netdev bridge,br=virbr0,id=user.0"
+PAR="${PAR} -device e1000,netdev=user.0"
 
 
 

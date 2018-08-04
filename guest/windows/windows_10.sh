@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.4"
-CURRENT_SCRIPT_DATE="2018-03-03"
+CURRENT_SCRIPT_VER="0.0.5"
+CURRENT_SCRIPT_DATE="2018-08-04"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -179,7 +179,14 @@ esac
 unset INPUT
 lm_read_to_INPUT "Do you wanna share folder ${KVM_WORKSPACE_SOFTWARE} with virtual machine?"
 case "${INPUT}" in
-	"YES" ) ;;
+	"YES" ) 
+		echo ""
+		echo " NOTE: This is simple samba share (buildin kvm) works only with"
+		echo "       folowing network setting:"
+		echo ""
+		echo " -netdev user,id=user.0 -device e1000,netdev=user.0"
+		echo ""
+		;;
 	"NO" ) 
 		KVM_WORKSPACE_SOFTWARE="" ;;
 	"FAILED" | * )
@@ -439,7 +446,17 @@ PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
 PAR="${PAR} -soundhw hda"
 
 # Network
-PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
+# This is User-mode networking
+#PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
+
+# Internal networking. Bridged networking.
+# NOTE: virbr0 is created by virsh default network
+# If virsh is installed it should start at boot.
+#  $ virsh net-start default
+#PAR="${PAR} -net nic -net bridge,br=virbr0"
+PAR="${PAR} -netdev bridge,br=virbr0,id=user.0"
+PAR="${PAR} -device e1000,netdev=user.0"
+
 
 # Start the virtual machine with parameters
 echo "qemu-system-x86_64 ${PAR}"
