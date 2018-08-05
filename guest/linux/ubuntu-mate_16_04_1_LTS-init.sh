@@ -19,8 +19,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.16"
-CURRENT_SCRIPT_DATE="2018-03-03"
+CURRENT_SCRIPT_VER="0.0.17"
+CURRENT_SCRIPT_DATE="2018-08-05"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -405,8 +405,8 @@ PAR="${PAR} -boot menu=on"
 #PAR="${PAR} -vga qxl"
 #PAR="${PAR} -display sdl"
 
-PAR="${PAR} -display none"
-PAR="${PAR} -vga none"
+#PAR="${PAR} -display none"
+#PAR="${PAR} -vga none"
 #PAR="${PAR} -nographic"
 
 
@@ -428,8 +428,8 @@ PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis
 
 # VGA passthrough. GPU and sound.
 # TODO: Ask user which card should be used.
-NVIDIA_GPU="01:00.0"   # ASUS
-NVIDIA_SOUND="01:00.1"
+#NVIDIA_GPU="01:00.0"   # ASUS
+#NVIDIA_SOUND="01:00.1"
 #NVIDIA_GPU="02:00.0"    # MSI
 #NVIDIA_SOUND="02:00.1"
 if [[ ! -z ${NVIDIA_GPU} ]]; then
