@@ -404,8 +404,11 @@ PAR="${PAR} -boot menu=on"
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
 #PAR="${PAR} -vga qxl"
-PAR="${PAR} -display sdl"
-#PAR="${PAR} -display none"
+#PAR="${PAR} -display sdl"
+PAR="${PAR} -vga none"
+PAR="${PAR} -display none"
+# NOTE: Guest OS (ubuntu) will not write to virtual and physical display card at once ?!
+
 
 # Monitoring screen
 PAR="${PAR} -monitor stdio"
