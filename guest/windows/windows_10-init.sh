@@ -14,13 +14,13 @@
 
 # windows_10-init.sh
 # Initialize windows 10 virtual machine.
-# This script will create a new vm into folder ~/kvm-workspace/windows_10/
+# This script will create a new vm into folder ~/kvm-workspace/vm/windows_10/
 
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.4"
-CURRENT_SCRIPT_DATE="2018-03-03"
+CURRENT_SCRIPT_VER="0.0.5"
+CURRENT_SCRIPT_DATE="2018-08-05"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
