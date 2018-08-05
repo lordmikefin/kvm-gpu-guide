@@ -356,8 +356,10 @@ if [[ $((${SELECTED})) -gt 0 ]]; then
 	NVIDIA_GPU="${PCI_BUS_VGA[${SEL}]}"
 	NVIDIA_SOUND="${PCI_BUS_AUDIO[${SEL}]}"
 	echo ""
-	echo "PCI_BUS_VGA : ${PCI_BUS_VGA[$((${SEL}-1))]}"
-	echo "PCI_BUS_AUDIO : ${PCI_BUS_AUDIO[$((${SEL}-1))]}"
+	#echo "PCI_BUS_VGA : ${PCI_BUS_VGA[$((${SEL}-1))]}"
+	#echo "PCI_BUS_AUDIO : ${PCI_BUS_AUDIO[$((${SEL}-1))]}"
+	echo "PCI_BUS_VGA : ${NVIDIA_GPU}"
+	echo "PCI_BUS_AUDIO : ${NVIDIA_SOUND}"
 fi
 
 
