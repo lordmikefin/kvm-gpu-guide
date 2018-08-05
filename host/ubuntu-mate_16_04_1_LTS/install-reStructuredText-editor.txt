@@ -41,6 +41,16 @@ $ pip3 show markups
 $ pip3 install markups
 # ( installs 'markups' version > 2.x )
 
+> pip install PyQt5
+> pip install Markdown
+> pip show markups
+> pip install docutils
+
+
+> pip install pyenchant
+    ImportError: The 'enchant' C library was not found. Please install it via your OS package manager, or use a pre-built binary wheel from PyPI.
+
+
 $ retext README.md
 
 ----------------------------------------------------------
