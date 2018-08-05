@@ -31,3 +31,6 @@ UUID=d65d502e-90f0-45fb-a965-d2d4ec855e06 /opt        ext4    errors=remount-ro 
 # Loop mount 'kvm-workspace'
 /media/4TB_Store/kvm-workspace /home/lordmike/kvm-workspace     none     defaults,bind     0      0
 
+# Loop mount 'rst' from git. Can edit from guest and commit from host :)
+#  $ sudo mount -o bind /media/4TB_Store/git/kvm-gpu-guide/rst /media/4TB_Store/kvm-workspace/software/rst
+/media/4TB_Store/git/kvm-gpu-guide/rst /media/4TB_Store/kvm-workspace/software/rst     none     defaults,bind     0      0
