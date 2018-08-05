@@ -494,6 +494,13 @@ PAR="${PAR} -device e1000,netdev=user.0"
 
 
 # Start the virtual machine with parameters
+echo ""
+echo "qemu-system-x86_64 ${PAR}"
+echo ""
+echo "https://en.wikibooks.org/wiki/QEMU/Monitor"
+echo " (qemu) help"
+echo " (qemu) info pci"
+echo ""
 #qemu-system-x86_64 ${PAR}
 sudo qemu-system-x86_64 ${PAR}
 
