@@ -19,7 +19,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.5"
+CURRENT_SCRIPT_VER="0.0.6"
 CURRENT_SCRIPT_DATE="2018-08-05"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -187,10 +187,15 @@ lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
 #       Downloaded is DVD one ???
 
 
+# NOTE(2018-08-05): Downloaded DVD iso file works with parameter -cdrom 
+
+# NOTE: I broke the created USB win10 installer ???  Files missing?
+# Created a new one: that refuses to boot ??? WFT
+
 
 #URL_FILE="Win10_1703_English_x64.iso"
-#URL_FILE="Win10_1709_English_x64.iso"
-URL_FILE="Windows10_USB_2018-02-11.iso"
+URL_FILE="Win10_1709_English_x64.iso"
+#URL_FILE="Windows10_USB_2018-02-11.iso"
 #URL_PLAIN="https://software-download.microsoft.com/pr"
 #URL="${URL_PLAIN}/${URL_FILE}"
 
@@ -376,8 +381,8 @@ PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis
 
 # VGA passthrough. GPU and sound.
 # TODO: Ask user which card should be used.
-NVIDIA_GPU="01:00.0"
-NVIDIA_SOUND="01:00.1"
+#NVIDIA_GPU="01:00.0"
+#NVIDIA_SOUND="01:00.1"
 #NVIDIA_GPU="02:00.0"
 #NVIDIA_SOUND="02:00.1"
 if [[ ! -z ${NVIDIA_GPU} ]]; then
@@ -393,16 +398,23 @@ fi
 PAR="${PAR} -drive file=${VM_DISK_WIN10},format=qcow2,if=none,id=drive-ide0-0-0"
 PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
 
+
+# TODO: Make instller image read only
 # Windows 10 ISO file
 #PAR="${PAR} -drive file=${LOCAL_FILE},id=isocd,format=raw,index=2 "
 #PAR="${PAR} -drive file=${ISO_FILE},format=raw,if=none,id=drive-ide1-0-0"
 #PAR="${PAR} -drive file=${ISO_FILE_USB},format=raw,if=none,id=drive-ide1-0-0"
-PAR="${PAR} -drive file=${LOCAL_FILE},format=raw,if=none,id=drive-ide1-0-0"
-PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
+#PAR="${PAR} -drive file=${LOCAL_FILE},format=raw,if=none,id=drive-ide1-0-0"
+#PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
+#PAR="${PAR} -drive file=${LOCAL_FILE},format=raw,if=none,id=drive-ide1-0-0,readonly=on,media=cdrom"
+#PAR="${PAR} -drive file=${LOCAL_FILE},format=raw,if=none,id=drive-ide1-0-0,media=cdrom"
+#PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
+PAR="${PAR} -cdrom ${LOCAL_FILE}"
 
 # Ubuntu ISO file
 #PAR="${PAR} -drive file=${LOCAL_FILE_UBUNTU},format=raw,if=none,id=drive-ide1-0-0"
 #PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
+
 
 # Sound card
 PAR="${PAR} -soundhw hda"
