@@ -381,6 +381,7 @@ PAR="-enable-kvm"
 
 # Mother board
 PAR="${PAR} -M q35"
+#PAR="${PAR} -machine pc-q35-2.4"
 
 # Memory
 PAR="${PAR} -m 4096"
@@ -388,16 +389,26 @@ PAR="${PAR} -m 4096"
 # CPU
 PAR="${PAR} -cpu host,kvm=off"
 #PAR="${PAR} -cpu host"
+#PAR="${PAR} -cpu Penryn,kvm=off,vendor=GenuineIntel"
 PAR="${PAR} -smp 4,sockets=1,cores=4,threads=1"
 
 # Boot menu
 PAR="${PAR} -boot menu=on"
 
+# ( copied from mac setup - what is it? :)
+#PAR="${PAR} -device ich9-intel-hda"
+#PAR="${PAR} -device hda-duplex"
+
+
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
 #PAR="${PAR} -vga qxl"
-PAR="${PAR} -display sdl"
-#PAR="${PAR} -display none"
+#PAR="${PAR} -display sdl"
+
+PAR="${PAR} -display none"
+PAR="${PAR} -vga none"
+#PAR="${PAR} -nographic"
+
 
 # Monitoring screen
 PAR="${PAR} -monitor stdio"
@@ -417,9 +428,9 @@ PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis
 
 # VGA passthrough. GPU and sound.
 # TODO: Ask user which card should be used.
-NVIDIA_GPU="01:00.0"
+NVIDIA_GPU="01:00.0"   # ASUS
 NVIDIA_SOUND="01:00.1"
-#NVIDIA_GPU="02:00.0"
+#NVIDIA_GPU="02:00.0"    # MSI
 #NVIDIA_SOUND="02:00.1"
 if [[ ! -z ${NVIDIA_GPU} ]]; then
 	PAR="${PAR} -device vfio-pci,host=${NVIDIA_GPU},bus=root.1,addr=00.0,multifunction=on,x-vga=on"
@@ -444,6 +455,13 @@ PAR="${PAR} -soundhw hda"
 PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
 
 # Start the virtual machine with parameters
+echo ""
+echo "qemu-system-x86_64 ${PAR}"
+echo ""
+echo "https://en.wikibooks.org/wiki/QEMU/Monitor"
+echo " (qemu) help"
+echo " (qemu) info pci"
+echo ""
 #qemu-system-x86_64 ${PAR}
 sudo qemu-system-x86_64 ${PAR}
 
