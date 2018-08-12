@@ -22,6 +22,8 @@
 
 """
 
+import os
+
 # Install git
 
 # TODO: Check if we already have the installer
@@ -34,8 +36,38 @@
 
 installer_file = "Git-2.18.0-64-bit"
 installer_path = "W:/"
+installer_file_fullname = str(installer_path) + str(installer_file)
 
-print(str(installer_path) + str(installer_file))
+print(str(installer_file_fullname))
+
+print('PATH : ' + str(os.environ.get('PATH')))
+# echo %VIRTUAL_ENV%
+print('VIRTUAL_ENV : ' + str(os.environ.get('VIRTUAL_ENV')))
+
+# https://stackoverflow.com/questions/14894993/running-windows-shell-commands-with-python
+
+'''
+print('Print out from "subprocess"')
+from subprocess import check_output
+result = check_output("dir C:", shell=True)
+print(str(result))
+print('')
+'''
+'''
+print('Print out from os.system("dir C:\\")')
+import os
+os.system('dir C:\\')
+print('')
+'''
+
+# NOTE: I like to use Notepad++ as default editor.
+# TODO: Install Notepad++ first.
+
+# http://www.jrsoftware.org/ishelp/index.php?topic=setupcmdline
+# os.system(str(installer_file_fullname) + ' /?')
+
+# /SAVEINF="filename"
+#os.system(str(installer_file_fullname) + ' /SAVEINF="git.inf"')
 
 
 
