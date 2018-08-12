@@ -44,7 +44,8 @@ echo.
 net use W: \\192.168.122.1\sambashare\windows
 W:
 
-
+:: TODO: Download installer if it does not exist
+:: https://www.python.org/ftp/python/3.7.0/python-3.7.0-amd64.exe
 
 echo.
 echo I'm installing python into D:\apps\python\python37\
