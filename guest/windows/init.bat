@@ -1,7 +1,7 @@
 ::C:\Windows\SysWOW64\cmd.exe
 @echo off
 
-:: Copyright (c) 2017, Mikko Niemelä a.k.a. Lord Mike (lordmike@iki.fi)
+:: Copyright (c) 2018, Mikko Niemelä a.k.a. Lord Mike (lordmike@iki.fi)
 :: All rights reserved.
 :: 
 :: License of this script file:
