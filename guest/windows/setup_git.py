@@ -28,7 +28,7 @@
 # http://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html
 __license__ = "BSD 2-Clause License"
 #__revision__ = " $Id: actor.py 1586 2009-01-30 15:56:25Z cokelaer $ "
-__revision__ = "setup_git.py  v0.0.2 (2018-08-12)"
+__revision__ = "setup_git.py  v0.0.3 (2018-08-12)"
 #__docformat__ = 'reStructuredText'
 
 import os
