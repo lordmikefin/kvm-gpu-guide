@@ -17,7 +17,7 @@
 
 
 SET CURRENT_SCRIPT=setup_python_venv.bat
-SET CURRENT_SCRIPT_VER=0.0.5
+SET CURRENT_SCRIPT_VER=0.0.6
 SET CURRENT_SCRIPT_DATE=2018-08-12
 echo CURRENT_SCRIPT_VER: %CURRENT_SCRIPT_VER% (%CURRENT_SCRIPT_DATE%)
 echo.
@@ -116,6 +116,15 @@ if %errorlevel% neq 0 (
 	pause
 	call exit /b %errorlevel%
 )
+
+
+
+:: http://virtualenvwrapper.readthedocs.io/en/latest/command_ref.html
+echo. 
+echo Current virtual environment:
+echo %VIRTUAL_ENV%
+echo. 
+
 
 echo. 
 echo (venv-lm-scripts) $ pip3 list --format=columns
