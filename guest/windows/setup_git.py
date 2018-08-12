@@ -3,7 +3,7 @@
     setup_git.py
     ~~~~~~~~~~~~
 
-    This script will install install and setup 'git'.
+    This script will install and setup 'git'.
 
     All rights reserved.
 
