@@ -26,7 +26,7 @@
 # http://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html
 __license__ = "BSD 2-Clause License"
 #__revision__ = " $Id: actor.py 1586 2009-01-30 15:56:25Z cokelaer $ "
-__revision__ = "setup_all.py  v0.0.1 (2018-08-12)"
+__revision__ = "setup_all.py  v0.0.2 (2018-08-12)"
 #__docformat__ = 'reStructuredText'
 
 import sys
@@ -67,7 +67,7 @@ print('sys.prefix : ' + str(sys.prefix))
 print('')
 
 # http://virtualenvwrapper.readthedocs.io/en/latest/command_ref.html
-os.system('lsvirtualenv')
+#os.system('lsvirtualenv')
 
 #https://docs.python.org/3/tutorial/venv.html
 #py_home = '/var/www/venv-lm-scripts/env'
@@ -106,4 +106,10 @@ import os
 os.system('dir C:\\')
 print('')
 '''
+
+print('')
+print(' Executing setup_git.py')
+print('')
+#python setup_git.py
+exec(open("./setup_git.py").read())
 
