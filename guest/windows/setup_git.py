@@ -22,3 +22,21 @@
 
 """
 
+# Install git
+
+# TODO: Check if we already have the installer
+# \\192.168.122.1\sambashare\windows\Git-2.18.0-64-bit
+# By now \\192.168.122.1\sambashare\windows\ should be bind to W: drive
+
+# https://stackoverflow.com/questions/7243750/download-file-from-web-in-python-3
+# TODO: download file from web
+# 		Werify downloaded file is what we were downloading.
+
+installer_file = "Git-2.18.0-64-bit"
+installer_path = "W:/"
+
+print(str(installer_path) + str(installer_file))
+
+
+
+
