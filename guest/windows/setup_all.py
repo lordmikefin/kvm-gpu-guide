@@ -29,6 +29,7 @@ __license__ = "BSD 2-Clause License"
 __revision__ = "setup_all.py  v0.0.1 (2018-08-12)"
 #__docformat__ = 'reStructuredText'
 
+import sys
 import os
 
 # https://stackoverflow.com/questions/7791574/how-can-i-print-a-python-files-docstring-when-executing-it
@@ -60,7 +61,36 @@ print('VIRTUAL_ENV : ' + str(os.environ.get('VIRTUAL_ENV')))
 print('')
 
 
+print('Python version: ' + str(sys.version))
+print('')
+print('sys.prefix : ' + str(sys.prefix))
+print('')
+
+# http://virtualenvwrapper.readthedocs.io/en/latest/command_ref.html
+os.system('lsvirtualenv')
+
+#py_home = '/var/www/venv-lm-scripts/env'
+#activate_this = py_home + '/bin/activate_this.py'
+py_home = 'C:/Users/lordmike/Envs/venv-lm-scripts'
+activate_this = py_home + '/Scripts/activate_this.py'
+
+with open(activate_this) as file_:
+    exec(file_.read(), dict(__file__=activate_this))
+
+print('VIRTUAL_ENV : ' + str(os.environ.get('VIRTUAL_ENV')))
+print('')
+print('Python version: ' + str(sys.version))
+print('')
+print('sys.prefix : ' + str(sys.prefix))
+print('')
+
 # https://stackoverflow.com/questions/14894993/running-windows-shell-commands-with-python
+
+os.system('cmd /c "workon venv-lm-scripts && python --version && echo %VIRTUAL_ENV%"')
+os.system('cmd /c "python --version && echo %VIRTUAL_ENV%"')
+#os.system('python --version')
+#os.system('dir')
+#os.system('cd .. && dir')
 
 '''
 print('Print out from "subprocess"')
