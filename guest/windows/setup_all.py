@@ -69,6 +69,7 @@ print('')
 # http://virtualenvwrapper.readthedocs.io/en/latest/command_ref.html
 os.system('lsvirtualenv')
 
+#https://docs.python.org/3/tutorial/venv.html
 #py_home = '/var/www/venv-lm-scripts/env'
 #activate_this = py_home + '/bin/activate_this.py'
 py_home = 'C:/Users/lordmike/Envs/venv-lm-scripts'
