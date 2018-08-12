@@ -68,7 +68,18 @@ print('')
 
 # /SAVEINF="filename"
 #os.system(str(installer_file_fullname) + ' /SAVEINF="git.inf"')
-
+# /LOADINF="filename"
+#os.system(str(installer_file_fullname) + ' /LOADINF="git.inf"')
+#command = str(str(installer_file_fullname) + ' /VERYSILENT /LOADINF="git.inf"')
+command = str(str(installer_file_fullname) + ' /SILENT /LOADINF="git.inf"')
+print('Git will not show the installer view!')
+print(command)
+print('')
+print(' Installing ... wait ... wait ... ')
+print('')
+os.system(command)
+print('')
+print('Git installation done.')
 
 
 
