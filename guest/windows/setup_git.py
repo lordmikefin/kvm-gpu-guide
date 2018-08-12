@@ -28,7 +28,8 @@
 # http://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html
 __license__ = "BSD 2-Clause License"
 #__revision__ = " $Id: actor.py 1586 2009-01-30 15:56:25Z cokelaer $ "
-__revision__ = "setup_git.py  v0.0.3 (2018-08-12)"
+__version__ = "0.0.4"
+__revision__ = "setup_git.py  v" + __version__ + " (2018-08-12)"
 #__docformat__ = 'reStructuredText'
 
 import os
@@ -40,6 +41,7 @@ if __name__ == '__main__':
     #print(__doc__)
     print(__license__)
     print(__revision__)
+    print(__version__)
     #print(__docformat__)
     #import doctest
     #print(str(doctest.testmod()))
