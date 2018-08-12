@@ -26,7 +26,7 @@
 # http://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html
 __license__ = "BSD 2-Clause License"
 #__revision__ = " $Id: actor.py 1586 2009-01-30 15:56:25Z cokelaer $ "
-__version__ = "0.0.4"
+__version__ = "0.0.5"
 __revision__ = "setup_all.py  v" + __version__ + " (2018-08-12)"
 #__docformat__ = 'reStructuredText'
 
@@ -114,4 +114,9 @@ print(' Executing setup_git.py')
 print('')
 #python setup_git.py
 exec(open("./setup_git.py").read())
-
+#res = exec(open("./setup_git.py").read())
+#print('res : ' + str(res))
+print('os.environ.get("RESULT") : ' + str(os.environ.get("RESULT")))
+res = int(os.environ.get("RESULT"))
+if res > 0:
+    print(' Execution of setup_git.py FAILED')
