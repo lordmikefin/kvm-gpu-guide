@@ -109,7 +109,7 @@ print('')
 # /LOADINF="filename"
 #os.system(str(installer_file_fullname) + ' /LOADINF="git.inf"')
 #command = str(str(installer_file_fullname) + ' /VERYSILENT /LOADINF="git.inf"')
-command = str(str(installer_file_fullname) + ' /SILENT /LOADINF="git.inf"')
+command = str(str(installer_file_fullname) + ' /SILENT /LOADINF="git.inf" /LOG="git.log"')
 print('Git will not show the installer view!')
 print(command)
 print('')
