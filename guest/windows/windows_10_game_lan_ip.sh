@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
-CURRENT_SCRIPT_DATE="2018-08-15"
+CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_DATE="2018-08-16"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -456,15 +456,48 @@ PAR="${PAR} -soundhw hda"
 # If virsh is installed it should start at boot.
 #  $ virsh net-start default
 #PAR="${PAR} -net nic -net bridge,br=virbr0"
-PAR="${PAR} -netdev bridge,br=virbr0,id=user.0"
-PAR="${PAR} -device e1000,netdev=user.0"
+#PAR="${PAR} -netdev bridge,br=virbr0,id=user.0"
+#PAR="${PAR} -device e1000,netdev=user.0"
+
+# MacVTap networking
+# https://ahelpme.com/linux/howto-do-qemu-full-virtualization-with-macvtap-networking/
+# https://gist.github.com/mcastelino/43cc733e53d65ef67452ecaf78e936c2
+# Setup:
+#  $ sudo ip link add link enp4s0 name macvtap0 type macvtap mode bridge
+#  $ sudo ip link set macvtap0 up
+#
+# /dev/tap7   <-- This was created for me (2018-08-15) after setting macvtap0
+# 7           <-- This is printed for me by "cat /sys/class/net/macvtap0/ifindex"
+#PAR="${PAR} -netdev tap,id=hostnet0,fd=$(cat /sys/class/net/macvtap0/ifindex)"
+#PAR="${PAR} -netdev tap,fd=3,id=hostnet0,vhost=on,vhostfd=4 3<>/dev/tap$(cat /sys/class/net/macvtap0/ifindex) 4<>/dev/vhost-net"
+#PAR="${PAR} -netdev tap,id=hostnet0,fd=7 "
+PAR="${PAR} -device e1000,netdev=hostnet0,id=net0,mac=$(cat /sys/class/net/macvtap0/address)"
+PAR="${PAR} -netdev tap,id=hostnet0,fd=3 3<>/dev/tap$(cat /sys/class/net/macvtap0/ifindex) "
+#PAR="${PAR} -net nic,model=virtio,addr=1a:46:0b:ca:bc:7b -net tap,fd=3 3<>/dev/tap$(cat /sys/class/net/macvtap0/ifindex) "
+
+# NOTE: running 3<>/dev/tapX with sudo will cause error:
+#   Could not open '3<>/dev/tap7': No such file or directory
+# but it works if I first run "sudo su" = Running command as root
 
 
 # Start the virtual machine with parameters
 echo "qemu-system-x86_64 ${PAR}"
 echo ""
 #qemu-system-x86_64 ${PAR}
-sudo qemu-system-x86_64 ${PAR}
+#sudo qemu-system-x86_64 ${PAR}
+
+echo ""
+echo "$ sudo 3<>/dev/tap7
+bash: /dev/tap7: Permission denied
+"
+echo "WTF !?!?"
+echo ""
+echo "qemu must be run as root ! ???"
+echo " $ sudo su"
+echo " $ qemu-system-x86_64 ..."
+echo ""
+
+
 
 
 
