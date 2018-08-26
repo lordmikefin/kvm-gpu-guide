@@ -26,7 +26,7 @@
 # https://thomas-cokelaer.info/tutorials/sphinx/docstring_python.html
 # http://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html
 __license__ = "BSD 2-Clause License"
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 __revision__ = "setup_npp.py  v" + __version__ + " (2018-08-26)"
 
 import os
