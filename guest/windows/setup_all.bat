@@ -17,7 +17,7 @@
 
 
 SET CURRENT_SCRIPT=setup_all.bat
-SET CURRENT_SCRIPT_VER=0.0.2
+SET CURRENT_SCRIPT_VER=0.0.3
 SET CURRENT_SCRIPT_DATE=2018-08-26
 echo CURRENT_SCRIPT_VER: %CURRENT_SCRIPT_VER% (%CURRENT_SCRIPT_DATE%)
 echo.
@@ -78,6 +78,13 @@ if %errorlevel% neq 0 (
 	pause
 	exit /b %errorlevel%
 )
+
+
+echo. 
+echo (venv-lm-scripts) $ pip3 list
+echo.
+call pip3 list
+echo.
 
 
 echo.
