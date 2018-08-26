@@ -26,12 +26,100 @@
 # https://thomas-cokelaer.info/tutorials/sphinx/docstring_python.html
 # http://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html
 __license__ = "BSD 2-Clause License"
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 __revision__ = "setup_npp.py  v" + __version__ + " (2018-08-26)"
 
 import os
 
 # https://stackoverflow.com/questions/7791574/how-can-i-print-a-python-files-docstring-when-executing-it
+
+
+NPP_PATH = 'D:\\apps\\Notepad++'
+
+
+def is_installed_npp():
+    # TODO: This will open help windows. Is there better way to test ?
+    command = str(NPP_PATH) + '\\notepad++ --help'
+    res = int(os.system(command))
+    if res > 0:
+        print('Notepad++ NOT installed.')
+        return False
+
+    print('Notepad++ already installed.')
+    return True
+
+
+def install_npp():
+	# Install notepad++
+
+	# TODO: Check if we already have the installer
+	# \\192.168.122.1\sambashare\windows\npp.7.5.8.Installer.x64
+	# By now \\192.168.122.1\sambashare\windows\ should be bind to W: drive
+
+	# https://stackoverflow.com/questions/7243750/download-file-from-web-in-python-3
+	# TODO: download file from web
+	#         Werify downloaded file is what we were downloading.
+
+	installer_file = "npp.7.5.8.Installer.x64"
+	installer_path = "W:/"
+	installer_file_fullname = str(installer_path) + str(installer_file)
+
+	print(str(installer_file_fullname))
+
+	#print('PATH : ' + str(os.environ.get('PATH')))
+	# echo %VIRTUAL_ENV%
+	print('VIRTUAL_ENV : ' + str(os.environ.get('VIRTUAL_ENV')))
+	print('')
+
+
+	# https://stackoverflow.com/questions/14894993/running-windows-shell-commands-with-python
+
+	'''
+	print('Print out from "subprocess"')
+	from subprocess import check_output
+	result = check_output("dir C:", shell=True)
+	print(str(result))
+	print('')
+	'''
+	'''
+	print('Print out from os.system("dir C:\\")')
+	import os
+	os.system('dir C:\\')
+	print('')
+	'''
+
+	# NOTE: This script assumes that folder D:\apps\ exists
+	# TODO: Verity that folder D:\apps\ exists
+
+	# https://notepad-plus-plus.org/download
+	# TODO: download file from web
+	#         Werify downloaded file is what we were downloading.
+
+
+	# https://stackoverflow.com/questions/42792305/trying-to-set-up-a-deployment-package-for-silent-uninstall-of-notepad-and-inst#
+	# https://www.itninja.com/software/open-source-1/notepad-2/5-1399
+
+
+	command = str(str(installer_file_fullname) + ' /S /D=' + str(NPP_PATH) + ' ')
+	print('Start notepad++ installer.')
+	print(command)
+	print('')
+	print(' Installing ... wait ... wait ... ')
+	print('')
+	res = int(os.system(command))
+	print('')
+	if res > 0:
+		print('notepad++ installation FAILED.')
+	else:
+		print('notepad++ installation done.')
+
+	#exit(res)
+	print('os.environ.get("RESULT") : ' + str(os.environ.get("RESULT")))
+	#return res
+	print('res : ' + str(res))
+	os.environ['RESULT'] = str(res)
+	print('os.environ.get("RESULT") : ' + str(os.environ.get("RESULT")))
+
 
 if __name__ == '__main__':
     print(__license__)
@@ -48,75 +136,5 @@ if __name__ == '__main__':
     '''
     args = parser.parse_args()
 
-
-
-# Install notepad++
-
-# TODO: Check if we already have the installer
-# \\192.168.122.1\sambashare\windows\Git-2.18.0-64-bit
-# By now \\192.168.122.1\sambashare\windows\ should be bind to W: drive
-
-# https://stackoverflow.com/questions/7243750/download-file-from-web-in-python-3
-# TODO: download file from web
-#         Werify downloaded file is what we were downloading.
-
-installer_file = "npp.7.5.8.Installer.x64"
-installer_path = "W:/"
-installer_file_fullname = str(installer_path) + str(installer_file)
-
-print(str(installer_file_fullname))
-
-#print('PATH : ' + str(os.environ.get('PATH')))
-# echo %VIRTUAL_ENV%
-print('VIRTUAL_ENV : ' + str(os.environ.get('VIRTUAL_ENV')))
-print('')
-
-
-# https://stackoverflow.com/questions/14894993/running-windows-shell-commands-with-python
-
-'''
-print('Print out from "subprocess"')
-from subprocess import check_output
-result = check_output("dir C:", shell=True)
-print(str(result))
-print('')
-'''
-'''
-print('Print out from os.system("dir C:\\")')
-import os
-os.system('dir C:\\')
-print('')
-'''
-
-# NOTE: This script assumes that folder D:\apps\ exists
-# TODO: Verity that folder D:\apps\ exists
-
-# https://notepad-plus-plus.org/download
-# TODO: download file from web
-#         Werify downloaded file is what we were downloading.
-
-
-# https://stackoverflow.com/questions/42792305/trying-to-set-up-a-deployment-package-for-silent-uninstall-of-notepad-and-inst#
-# https://www.itninja.com/software/open-source-1/notepad-2/5-1399
-
-
-command = str(str(installer_file_fullname) + ' /S /D=D:\\apps\\Notepad++ ')
-print('Start notepad++ installer.')
-print(command)
-print('')
-print(' Installing ... wait ... wait ... ')
-print('')
-res = int(os.system(command))
-print('')
-if res > 0:
-    print('notepad++ installation FAILED.')
-else:
-    print('notepad++ installation done.')
-
-#exit(res)
-print('os.environ.get("RESULT") : ' + str(os.environ.get("RESULT")))
-#return res
-print('res : ' + str(res))
-os.environ['RESULT'] = str(res)
-print('os.environ.get("RESULT") : ' + str(os.environ.get("RESULT")))
-
+    if not is_installed_npp():
+        install_npp()

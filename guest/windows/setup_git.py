@@ -28,13 +28,103 @@
 # http://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html
 __license__ = "BSD 2-Clause License"
 #__revision__ = " $Id: actor.py 1586 2009-01-30 15:56:25Z cokelaer $ "
-__version__ = "0.0.6"
+__version__ = "0.0.7"
 __revision__ = "setup_git.py  v" + __version__ + " (2018-08-26)"
 #__docformat__ = 'reStructuredText'
 
 import os
 
 # https://stackoverflow.com/questions/7791574/how-can-i-print-a-python-files-docstring-when-executing-it
+
+
+
+
+def is_installed_git():
+    command = 'git --version'
+    res = int(os.system(command))
+    if res > 0:
+        print('Git NOT installed.')
+        return False
+
+    print('Git already installed.')
+    return True
+
+
+def install_git():
+    # Install git
+
+    # TODO: Check if we already have the installer
+    # \\192.168.122.1\sambashare\windows\Git-2.18.0-64-bit
+    # By now \\192.168.122.1\sambashare\windows\ should be bind to W: drive
+
+    # https://stackoverflow.com/questions/7243750/download-file-from-web-in-python-3
+    # TODO: download file from web
+    #         Werify downloaded file is what we were downloading.
+
+    installer_file = "Git-2.18.0-64-bit"
+    installer_path = "W:/"
+    installer_file_fullname = str(installer_path) + str(installer_file)
+
+    print(str(installer_file_fullname))
+
+    #print('PATH : ' + str(os.environ.get('PATH')))
+    # echo %VIRTUAL_ENV%
+    print('VIRTUAL_ENV : ' + str(os.environ.get('VIRTUAL_ENV')))
+    print('')
+
+
+    # https://stackoverflow.com/questions/14894993/running-windows-shell-commands-with-python
+
+    '''
+    print('Print out from "subprocess"')
+    from subprocess import check_output
+    result = check_output("dir C:", shell=True)
+    print(str(result))
+    print('')
+    '''
+    '''
+    print('Print out from os.system("dir C:\\")')
+    import os
+    os.system('dir C:\\')
+    print('')
+    '''
+
+    # NOTE: This script assumes that folder D:\apps\ exists
+    # TODO: Verity that folder D:\apps\ exists
+
+    # NOTE: I like to use Notepad++ as default editor.
+    # TODO: Install Notepad++ first.
+
+    # http://www.jrsoftware.org/ishelp/index.php?topic=setupcmdline
+    # os.system(str(installer_file_fullname) + ' /?')
+
+
+
+    # /SAVEINF="filename"
+    #os.system(str(installer_file_fullname) + ' /SAVEINF="git.inf"')
+    # /LOADINF="filename"
+    #os.system(str(installer_file_fullname) + ' /LOADINF="git.inf"')
+    #command = str(str(installer_file_fullname) + ' /VERYSILENT /LOADINF="git.inf"')
+    command = str(str(installer_file_fullname) + ' /SILENT /LOADINF="git.inf" /LOG="git.log"')
+    print('Git will not show the installer view!')
+    print(command)
+    print('')
+    print(' Installing ... wait ... wait ... ')
+    print('')
+    res = int(os.system(command))
+    print('')
+    if res > 0:
+        print('Git installation FAILED.')
+    else:
+        print('Git installation done.')
+
+    #exit(res)
+    print('os.environ.get("RESULT") : ' + str(os.environ.get("RESULT")))
+    #return res
+    print('res : ' + str(res))
+    os.environ['RESULT'] = str(res)
+    print('os.environ.get("RESULT") : ' + str(os.environ.get("RESULT")))
+
 
 if __name__ == '__main__':
     #print('main')
@@ -56,89 +146,9 @@ if __name__ == '__main__':
     '''
     args = parser.parse_args()
     #print(args.myFilenameVariable)
-
-
-
-# Install git
-
-# TODO: Check if we already have the installer
-# \\192.168.122.1\sambashare\windows\Git-2.18.0-64-bit
-# By now \\192.168.122.1\sambashare\windows\ should be bind to W: drive
-
-# https://stackoverflow.com/questions/7243750/download-file-from-web-in-python-3
-# TODO: download file from web
-#         Werify downloaded file is what we were downloading.
-
-installer_file = "Git-2.18.0-64-bit"
-installer_path = "W:/"
-installer_file_fullname = str(installer_path) + str(installer_file)
-
-print(str(installer_file_fullname))
-
-#print('PATH : ' + str(os.environ.get('PATH')))
-# echo %VIRTUAL_ENV%
-print('VIRTUAL_ENV : ' + str(os.environ.get('VIRTUAL_ENV')))
-print('')
-
-
-# https://stackoverflow.com/questions/14894993/running-windows-shell-commands-with-python
-
-'''
-print('Print out from "subprocess"')
-from subprocess import check_output
-result = check_output("dir C:", shell=True)
-print(str(result))
-print('')
-'''
-'''
-print('Print out from os.system("dir C:\\")')
-import os
-os.system('dir C:\\')
-print('')
-'''
-
-# NOTE: This script assumes that folder D:\apps\ exists
-# TODO: Verity that folder D:\apps\ exists
-
-# NOTE: I like to use Notepad++ as default editor.
-# TODO: Install Notepad++ first.
-
-# http://www.jrsoftware.org/ishelp/index.php?topic=setupcmdline
-# os.system(str(installer_file_fullname) + ' /?')
-
-
-command = 'git --version'
-res = int(os.system(command))
-if res > 0:
-    print('Git NOT installed.')
-else:
-    print('Git already installed.')
-	# return
-	# TODO: interrupt the script
-
-
-# /SAVEINF="filename"
-#os.system(str(installer_file_fullname) + ' /SAVEINF="git.inf"')
-# /LOADINF="filename"
-#os.system(str(installer_file_fullname) + ' /LOADINF="git.inf"')
-#command = str(str(installer_file_fullname) + ' /VERYSILENT /LOADINF="git.inf"')
-command = str(str(installer_file_fullname) + ' /SILENT /LOADINF="git.inf" /LOG="git.log"')
-print('Git will not show the installer view!')
-print(command)
-print('')
-print(' Installing ... wait ... wait ... ')
-print('')
-res = int(os.system(command))
-print('')
-if res > 0:
-    print('Git installation FAILED.')
-else:
-    print('Git installation done.')
-
-#exit(res)
-print('os.environ.get("RESULT") : ' + str(os.environ.get("RESULT")))
-#return res
-print('res : ' + str(res))
-os.environ['RESULT'] = str(res)
-print('os.environ.get("RESULT") : ' + str(os.environ.get("RESULT")))
-
+    
+    if not is_installed_git():
+        install_git()
+        # return True
+    
+    # return False
