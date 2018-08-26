@@ -28,11 +28,12 @@
 # http://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html
 __license__ = "BSD 2-Clause License"
 #__revision__ = " $Id: actor.py 1586 2009-01-30 15:56:25Z cokelaer $ "
-__version__ = "0.0.7"
+__version__ = "0.0.8"
 __revision__ = "setup_git.py  v" + __version__ + " (2018-08-26)"
 #__docformat__ = 'reStructuredText'
 
 import os
+import sys
 
 # https://stackoverflow.com/questions/7791574/how-can-i-print-a-python-files-docstring-when-executing-it
 
@@ -115,16 +116,19 @@ def install_git():
     print('')
     if res > 0:
         print('Git installation FAILED.')
+        sys.exit(1)
     else:
         print('Git installation done.')
 
+    '''
     #exit(res)
     print('os.environ.get("RESULT") : ' + str(os.environ.get("RESULT")))
     #return res
     print('res : ' + str(res))
     os.environ['RESULT'] = str(res)
     print('os.environ.get("RESULT") : ' + str(os.environ.get("RESULT")))
-
+    '''
+    
 
 if __name__ == '__main__':
     #print('main')
@@ -152,3 +156,5 @@ if __name__ == '__main__':
         # return True
     
     # return False
+
+    # https://stackoverflow.com/questions/3815860/python-how-to-exit-main-function
