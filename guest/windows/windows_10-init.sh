@@ -19,8 +19,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.6"
-CURRENT_SCRIPT_DATE="2018-08-05"
+CURRENT_SCRIPT_VER="0.0.7"
+CURRENT_SCRIPT_DATE="2018-08-26"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -368,8 +368,8 @@ PAR="${PAR} -monitor stdio"
 
 # USB passthrough. Keyboard and mouse.
 # TODO: parameterize. Or auto find.
-PAR="${PAR} -usb -usbdevice host:046d:c077"
-PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4"
+PAR="${PAR} -usb -usbdevice host:046d:c077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+PAR="${PAR} -device usb-host,hostbus=1,hostaddr=7" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
 #PAR="${PAR} -usbdevice tablet"
 
 # OVMF
