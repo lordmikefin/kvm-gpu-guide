@@ -74,7 +74,10 @@ echo.
 call pip3 install -U -r requirements.txt
 echo.
 echo.
-if %errorlevel% neq 0 exit /b %errorlevel%
+if %errorlevel% neq 0 (
+	pause
+	exit /b %errorlevel%
+)
 
 
 echo.
@@ -82,6 +85,10 @@ echo Run script setup_all.py
 echo.
 call python setup_all.py
 echo.
+if %errorlevel% neq 0 (
+	pause
+	exit /b %errorlevel%
+)
 
 
 echo.
@@ -91,7 +98,10 @@ echo.
 ::deactivate
 ::call %USERPROFILE%\Envs\venv-lm-scripts\Scripts\deactivate.bat
 call deactivate
-if %errorlevel% neq 0 exit /b %errorlevel%
+if %errorlevel% neq 0 (
+	pause
+	exit /b %errorlevel%
+)
 echo.
 
 

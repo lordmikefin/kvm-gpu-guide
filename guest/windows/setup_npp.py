@@ -100,7 +100,7 @@ print('')
 # https://www.itninja.com/software/open-source-1/notepad-2/5-1399
 
 
-command = str(str(installer_file_fullname) + ' /S /D=D:\apps\Notepad++ ')
+command = str(str(installer_file_fullname) + ' /S /D=D:\\apps\\Notepad++ ')
 print('Start notepad++ installer.')
 print(command)
 print('')
