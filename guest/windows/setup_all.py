@@ -110,6 +110,17 @@ print('')
 '''
 
 print('')
+print(' Executing setup_npp.py  "Notepad++"')
+print('')
+#python setup_npp.py
+exec(open("./setup_npp.py").read())
+print('os.environ.get("RESULT") : ' + str(os.environ.get("RESULT")))
+res = int(os.environ.get("RESULT"))
+if res > 0:
+    print(' Execution of setup_npp.py FAILED')
+
+
+print('')
 print(' Executing setup_git.py')
 print('')
 #python setup_git.py
