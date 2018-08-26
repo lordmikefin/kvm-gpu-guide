@@ -28,8 +28,8 @@
 # http://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html
 __license__ = "BSD 2-Clause License"
 #__revision__ = " $Id: actor.py 1586 2009-01-30 15:56:25Z cokelaer $ "
-__version__ = "0.0.5"
-__revision__ = "setup_git.py  v" + __version__ + " (2018-08-12)"
+__version__ = "0.0.6"
+__revision__ = "setup_git.py  v" + __version__ + " (2018-08-26)"
 #__docformat__ = 'reStructuredText'
 
 import os
@@ -105,6 +105,17 @@ print('')
 
 # http://www.jrsoftware.org/ishelp/index.php?topic=setupcmdline
 # os.system(str(installer_file_fullname) + ' /?')
+
+
+command = 'git --version'
+res = int(os.system(command))
+if res > 0:
+    print('Git NOT installed.')
+else:
+    print('Git already installed.')
+	# return
+	# TODO: interrupt the script
+
 
 # /SAVEINF="filename"
 #os.system(str(installer_file_fullname) + ' /SAVEINF="git.inf"')
