@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
-CURRENT_SCRIPT_DATE="2018-08-16"
+CURRENT_SCRIPT_VER="0.0.3"
+CURRENT_SCRIPT_DATE="2018-08-19"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -485,6 +485,10 @@ echo "qemu-system-x86_64 ${PAR}"
 echo ""
 #qemu-system-x86_64 ${PAR}
 #sudo qemu-system-x86_64 ${PAR}
+
+echo ""
+echo " $ sudo ip link add link enp4s0 name macvtap0 type macvtap mode bridge"
+echo " $ sudo ip link set macvtap0 up"
 
 echo ""
 echo "$ sudo 3<>/dev/tap7
