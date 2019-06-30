@@ -1,0 +1,3 @@
+[submodule "submodule/LMToysBash"]
+	path = submodule/LMToysBash
+	url = https://github.com/lordmikefin/LMToysBash
