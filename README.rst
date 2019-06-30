@@ -19,3 +19,11 @@ Clone this project:
  $ git submodule init
  $ git submodule update
 
+Add ssh url for project and submodules
+
+.. code-block:: bash
+
+ $ git remote add origin_ssh git@github.com:lordmikefin/kvm-gpu-guide.git
+ 
+ $ cd ./submodule/LMToysBash/
+ $ git remote add origin_ssh git@github.com:lordmikefin/LMToysBash.git
