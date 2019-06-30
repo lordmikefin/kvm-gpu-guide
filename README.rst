@@ -7,15 +7,15 @@ Guide for VGA (GPU) Passthrough with KVM (QEMU)
 
 NOTE: I planned to write guide for how to use display card from within KVM virtual machine. But this project changed ;)
 
-This project contains information and script for creating my KVM environment.
+This project now contains information and scripts for creating my KVM environment.
 
+Clone this project:
 
-$ git clone https://github.com/lordmikefin/kvm-gpu-guide.git
+.. code-block:: bash
 
+ $ git clone https://github.com/lordmikefin/kvm-gpu-guide.git
 
-$ cd kvm-gpu-guide/
-$ git submodule init
-$ git submodule update
-
-
+ $ cd kvm-gpu-guide/
+ $ git submodule init
+ $ git submodule update
 
