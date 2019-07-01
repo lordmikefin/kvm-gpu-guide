@@ -52,3 +52,7 @@ Usefull git commands:
  $ git commit -a --dry-run
  $ git commit -a -m "COMMENT HERE"
  $ git log -p
+ $ git push
+ 
+ $ git pull
+ $ git submodule foreach "(git checkout master; git pull)"
