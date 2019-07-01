@@ -43,4 +43,5 @@ Usefull git commands:
 
  $ git remote -v
  
- $ git checkout -b master --track origin/master
+ $ git checkout master
+ $ # git checkout -b master --track origin/master
