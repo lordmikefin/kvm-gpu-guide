@@ -48,3 +48,7 @@ Usefull git commands:
  
  $ git checkout master
  $ # git checkout -b master --track origin/master
+ 
+ $ git commit -a --dry-run
+ $ git commit -a -m "COMMENT HERE"
+ $ git log -p
