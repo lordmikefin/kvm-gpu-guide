@@ -36,3 +36,9 @@ Or set ssh url for project and submodules ;)
  
  $ cd ./submodule/LMToysBash/
  $ git remote set-url origin git@github.com:lordmikefin/LMToysBash.git
+
+Usefull git commands:
+
+.. code-block:: bash
+
+ $ git remote -v
