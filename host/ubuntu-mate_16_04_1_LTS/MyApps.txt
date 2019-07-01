@@ -81,3 +81,6 @@ Current library versions:
 
 'keepassx' Application exists. OK
 keepassx 2.0.2
+
+'samba' Application exists. OK
+Version 4.3.11-Ubuntu
