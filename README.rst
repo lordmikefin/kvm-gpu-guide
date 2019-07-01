@@ -42,3 +42,5 @@ Usefull git commands:
 .. code-block:: bash
 
  $ git remote -v
+ 
+ $ git checkout -b master --track origin/master
