@@ -27,3 +27,12 @@ Add ssh url for project and submodules
  
  $ cd ./submodule/LMToysBash/
  $ git remote add origin_ssh git@github.com:lordmikefin/LMToysBash.git
+
+Or set ssh url for project and submodules ;)
+
+.. code-block:: bash
+
+ $ git remote set-url origin git@github.com:lordmikefin/kvm-gpu-guide.git
+ 
+ $ cd ./submodule/LMToysBash/
+ $ git remote set-url origin git@github.com:lordmikefin/LMToysBash.git
