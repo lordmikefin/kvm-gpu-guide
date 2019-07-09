@@ -190,6 +190,7 @@ function dpkg_version() {
 
 
 
+# TODO: Should use 'lm_get_app_version' here.
 
 function print_app_version_core() {
 	unset APP_CALLER APP_PARAM
