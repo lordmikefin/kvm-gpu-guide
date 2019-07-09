@@ -53,7 +53,9 @@ unset INPUT
 #IMPORT_FUNCTIONS="$(realpath "${STORE_DIRNAME}/../../script/lm_functions.sh")"
 CURRENT_SCRIPT_REALPATH="$(realpath ${BASH_SOURCE[0]})"
 CURRENT_SCRIPT_DIR="$(dirname ${CURRENT_SCRIPT_REALPATH})"
-IMPORT_FUNCTIONS="$(realpath "${CURRENT_SCRIPT_DIR}/../../script/lm_functions.sh")"
+LM_TOYS_DIR=$(realpath "${CURRENT_SCRIPT_DIR}/../../submodule/LMToysBash")
+IMPORT_FUNCTIONS=$(realpath "${LM_TOYS_DIR}/lm_functions.sh")
+#IMPORT_FUNCTIONS="$(realpath "${CURRENT_SCRIPT_DIR}/../../script/lm_functions.sh")"
 if [[ ! -f "${IMPORT_FUNCTIONS}" ]]; then
 	>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Source script '${IMPORT_FUNCTIONS}' missing!"
 	exit 1
@@ -64,7 +66,7 @@ source ${IMPORT_FUNCTIONS}
 if [ ${LM_FUNCTIONS_LOADED} == false ]; then
 	>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Something went wrong with loading funcions."
 	exit 1
-elif [ ${LM_FUNCTIONS_VER} != "0.0.12" ]; then
+elif [ ${LM_FUNCTIONS_VER} != "1.0.0" ]; then
 	lm_functions_incorrect_version
 	if [ "${INPUT}" == "FAILED" ]; then
 		lm_failure
@@ -395,7 +397,7 @@ PAR="${PAR} -monitor stdio"
 # USB passthrough. Keyboard and mouse.
 # TODO: parameterize. Or auto find.
 PAR="${PAR} -usb -usbdevice host:046d:c077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
-PAR="${PAR} -device usb-host,hostbus=1,hostaddr=7" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
+PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
 #PAR="${PAR} -usbdevice tablet"
 
 # OVMF
