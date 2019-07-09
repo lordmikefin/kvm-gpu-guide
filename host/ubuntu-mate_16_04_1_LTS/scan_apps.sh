@@ -19,29 +19,60 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.12"
-CURRENT_SCRIPT_DATE="2018-05-08"
+CURRENT_SCRIPT_VER="0.0.13"
+CURRENT_SCRIPT_DATE="2019-07-09"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
 
-# NOTE to myself: Read more about Bash exit codes.
-#   ( http://tldp.org/LDP/abs/html/exitcodes.html )
 
-unset OS_NAME OS_VER OS_ARCH CURRENT_SHELL
-OS_NAME="$(uname)"
-OS_VER="$(uname -r)"
-OS_ARCH="$(uname -m)"
-if [[ ${OS_NAME} != "Linux" ]] ; then
-	echo -e "\n System is not Linux. This script is tested only with Linux.  Aborting." >&2
-	exit 1 # 127
+
+
+## NOTE: OS and shell type is checked by 'lm_functions.sh'
+#
+#unset OS_NAME OS_VER OS_ARCH CURRENT_SHELL
+#OS_NAME="$(uname)"
+#OS_VER="$(uname -r)"
+#OS_ARCH="$(uname -m)"
+#if [[ ${OS_NAME} != "Linux" ]] ; then
+#	echo -e "\n System is not Linux. This script is tested only with Linux.  Aborting." >&2
+#	exit 1 # 127
+#fi
+#
+#CURRENT_SHELL="$(basename $SHELL)"
+#if [[ ${CURRENT_SHELL} != "bash" ]] ; then
+#	echo -e "\n This script is tested only with Bash.  Aborting." >&2
+#	exit 1 # 127
+#fi
+
+CURRENT_SCRIPT_REALPATH=$(realpath ${BASH_SOURCE[0]})
+CURRENT_SCRIPT_DIR=$(dirname ${CURRENT_SCRIPT_REALPATH})
+LM_TOYS_DIR=$(realpath "${CURRENT_SCRIPT_DIR}/../../submodule/LMToysBash")
+#IMPORT_FUNCTIONS="$(realpath "${CURRENT_SCRIPT_DIR}/../../script/lm_functions.sh")"
+IMPORT_FUNCTIONS=$(realpath "${LM_TOYS_DIR}/lm_functions.sh")
+if [[ ! -f "${IMPORT_FUNCTIONS}" ]]; then
+	>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Source script '${IMPORT_FUNCTIONS}' missing!"
+	exit 1
 fi
 
-CURRENT_SHELL="$(basename $SHELL)"
-if [[ ${CURRENT_SHELL} != "bash" ]] ; then
-	echo -e "\n This script is tested only with Bash.  Aborting." >&2
-	exit 1 # 127
+source ${IMPORT_FUNCTIONS}
+
+if [ ${LM_FUNCTIONS_LOADED} == false ]; then
+	>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Something went wrong while loading functions."
+	exit 1
+elif [ ${LM_FUNCTIONS_VER} != "1.0.0" ]; then
+	lm_functions_incorrect_version
+	if [ "${INPUT}" == "FAILED" ]; then
+		lm_failure
+	fi
 fi
+
+
+
+
+
+
+
 
 
 
