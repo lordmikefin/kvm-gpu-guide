@@ -18,7 +18,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.7"
+CURRENT_SCRIPT_VER="0.0.8"
 CURRENT_SCRIPT_DATE="2019-07-10"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -393,18 +393,31 @@ PAR="${PAR} -boot menu=on"
 PAR="${PAR} -vga qxl" # NOTE: Install 'qxl' driver from 'virtio' iso disk.
 #PAR="${PAR} -vga std"
 #PAR="${PAR} -vga virtio"
-PAR="${PAR} -display sdl"
+#PAR="${PAR} -display sdl"
 #PAR="${PAR} -display none"
 
+# Display 'spice'
+SPICE_PORT=5924
+if [[ -n ${SPICE_PORT} ]]; then
+	# https://wiki.gentoo.org/wiki/QEMU/Windows_guest
+	# https://www.spice-space.org/download.html
+	# Install 'spice-guest-tools-latest.exe'
+	# -> This will add bidirectonal clipboard among other stuff ;)
+	PAR="${PAR} -spice port=${SPICE_PORT},disable-ticketing"
+	# NOTE: Install 'VirtIO Servial Driver' driver from 'virtio' iso disk.
+	PAR="${PAR} -device virtio-serial"
+	PAR="${PAR} -chardev spicevmc,id=vdagent,name=vdagent"
+	PAR="${PAR} -device virtserialport,chardev=vdagent,name=com.redhat.spice.0"
+fi
 
 # Monitoring screen
 PAR="${PAR} -monitor stdio"
 
 # USB passthrough. Keyboard and mouse.
 # TODO: parameterize. Or auto find.
-PAR="${PAR} -usb -usbdevice host:046d:c077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
-PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
-#PAR="${PAR} -usbdevice tablet"
+#PAR="${PAR} -usb -usbdevice host:046d:c077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+#PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
+PAR="${PAR} -usbdevice tablet"
 
 # OVMF
 PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
@@ -473,10 +486,18 @@ PAR="${PAR} -device e1000,netdev=user.0"
 
 # Start the virtual machine with parameters
 echo "qemu-system-x86_64 ${PAR}"
+
+if [[ -n ${SPICE_PORT} ]]; then
+	echo ""
+	echo "Connect to 'spice' remote server."
+	echo " $ spicy --title Windows 127.0.0.1 -p ${SPICE_PORT}"
+	echo "You could also use 'remote-viewer'"
+	echo " $ remote-viewer --title Windows spice://127.0.0.1:${SPICE_PORT}"
+fi
+
 echo ""
 #qemu-system-x86_64 ${PAR}
 sudo qemu-system-x86_64 ${PAR}
-
 
 
 echo ""
