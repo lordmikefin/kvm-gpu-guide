@@ -165,6 +165,10 @@ VM_DISK_WIN10="${KVM_WORKSPACE_VM_WIN10}/windows_10.qcow2"
 KVM_WORKSPACE_SOFTWARE="${KVM_WORKSPACE}/software"
 VM_DISK_DATA="${KVM_WORKSPACE_VM_WIN10}/windows_10_data_d_drive.qcow2"
 
+# Get 'virtio' iso file.
+KVM_WORKSPACE_ISO="${KVM_WORKSPACE}/iso"
+VIRTIO_FILE="${KVM_WORKSPACE_ISO}/virtio-win-0.1.126.iso"
+
 
 unset INPUT
 lm_read_to_INPUT "Do you wanna use folder ${KVM_WORKSPACE_VM_WIN10} for virtual machine?"
@@ -386,7 +390,9 @@ PAR="${PAR} -boot menu=on"
 
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
-#PAR="${PAR} -vga qxl"
+PAR="${PAR} -vga qxl" # NOTE: Install 'qxl' driver from 'virtio' iso disk.
+#PAR="${PAR} -vga std"
+#PAR="${PAR} -vga virtio"
 PAR="${PAR} -display sdl"
 #PAR="${PAR} -display none"
 
@@ -441,6 +447,9 @@ PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
 #PAR="${PAR} -drive file=${ISO_FILE_USB},format=raw,if=none,id=drive-ide1-0-0"
 #PAR="${PAR} -drive file=${LOCAL_FILE},format=raw,if=none,id=drive-ide1-0-0"
 #PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
+
+# 'virtio' driver disk
+PAR="${PAR} -cdrom ${VIRTIO_FILE}"
 
 # Ubuntu ISO file
 #PAR="${PAR} -drive file=${LOCAL_FILE_UBUNTU},format=raw,if=none,id=drive-ide1-0-0"
