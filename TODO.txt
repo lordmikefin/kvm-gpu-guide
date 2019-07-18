@@ -1,0 +1,44 @@
+
+
+-------------------------------------------------------------------------------
+(2019-07-18)
+
+Currently using bash command (in script):
+ $ CURRENT_SCRIPT_REALPATH="$(realpath ${BASH_SOURCE[0]})"
+
+https://github.com/dgibbs64/SteamCMD-Commands-List/blob/master/steamcmd_commands.sh
+Here Daniel Gibbs is using command:
+ $ rootdir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+
+This will "--canonicalize" the link path.
+
+
+./guest/windows/windows_10.sh
+# TODO: Test how "--canonicalize" work if handling broken link.
+-------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------
+(2019-07-18)
+
+TODO: Can I use "Travis CI" to validate my scripts ???
+
+https://github.com/dgibbs64/SteamCMD-Commands-List
+https://travis-ci.org/dgibbs64/SteamCMD-Commands-List
+-------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------
+(2019-07-18)
+
+TODO: How to add "licence MIT" icon/link into README.rst file ???
+
+https://github.com/lordmikefin/kvm-gpu-guide/blob/master/README.rst
+https://github.com/lordmikefin/kvm-gpu-guide/blob/master/LICENSE.rst
+
+https://github.com/lordmikefin/LMAutoSetBotUbM/blob/master/README.rst
+https://github.com/lordmikefin/LMAutoSetBotUbM/blob/master/LICENSE
+
+https://github.com/dgibbs64/SteamCMD-Commands-List/blob/master/README.md
+-------------------------------------------------------------------------------
+
