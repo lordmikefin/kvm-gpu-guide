@@ -29,8 +29,15 @@ echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 #   ( https://stackoverflow.com/questions/17577093/how-do-i-get-the-absolute-directory-of-a-file-in-bash )
 
 unset CURRENT_SCRIPT CURRENT_SCRIPT_REALPATH CURRENT_SCRIPT_DIR WORK_DIR
+
 #CURRENT_SCRIPT_REALPATH="$(realpath ${0})"
-CURRENT_SCRIPT_REALPATH="$(realpath ${BASH_SOURCE[0]})"
+#CURRENT_SCRIPT_REALPATH="$(realpath ${BASH_SOURCE[0]})"
+# https://github.com/dgibbs64/SteamCMD-Commands-List
+# https://github.com/dgibbs64/SteamCMD-Commands-List/blob/master/steamcmd_commands.sh
+CURRENT_SCRIPT_REALPATH="$(readlink -f "${BASH_SOURCE[0]}")"
+# NOTE: Should I always use "--canonicalize" ??
+# TODO: Test how "--canonicalize" work if handling broken link.
+
 CURRENT_SCRIPT="$(basename ${CURRENT_SCRIPT_REALPATH})"
 CURRENT_SCRIPT_DIR="$(dirname ${CURRENT_SCRIPT_REALPATH})"
 WORK_DIR="${PWD}"
