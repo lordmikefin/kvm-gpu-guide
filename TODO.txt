@@ -42,3 +42,18 @@ https://github.com/lordmikefin/LMAutoSetBotUbM/blob/master/LICENSE
 https://github.com/dgibbs64/SteamCMD-Commands-List/blob/master/README.md
 -------------------------------------------------------------------------------
 
+
+-------------------------------------------------------------------------------
+(2019-07-18)
+
+TODO: Python can be used as Bash command line tool
+TODO: HTTP request and parse !
+
+Here is great sample
+https://github.com/jarun/googler
+
+This project makes HTTP requests and parses the answer !!!
+-------------------------------------------------------------------------------
+
+
+
