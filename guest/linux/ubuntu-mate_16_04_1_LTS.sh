@@ -439,18 +439,18 @@ PAR="${PAR} -boot menu=on"
 
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
-#PAR="${PAR} -vga qxl"
+PAR="${PAR} -vga qxl"
 #PAR="${PAR} -display sdl"
-PAR="${PAR} -vga none"
-PAR="${PAR} -display none"
+#PAR="${PAR} -vga none"
+#PAR="${PAR} -display none"
 # NOTE: Guest OS (ubuntu) will not write to virtual and physical display card at once ?!
 
 # Display 'spice'
-#SPICE_PORT=5924
+SPICE_PORT=5924
 if [[ -n ${SPICE_PORT} ]]; then
-	# https://wiki.gentoo.org/wiki/QEMU/Windows_guest
+	# https://wiki.gentoo.org/wiki/QEMU/Linux_guest
 	# https://www.spice-space.org/download.html
-	# Install 'spice-guest-tools-latest.exe'
+	# $ sudo apt-get install spice-vdagent
 	# -> This will add bidirectonal clipboard among other stuff ;)
 	PAR="${PAR} -spice port=${SPICE_PORT},disable-ticketing"
 	# NOTE: Install 'VirtIO Servial Driver' driver from 'virtio' iso disk.
@@ -502,7 +502,7 @@ fi
 # TODO: parameterize. Or auto find.
 PAR="${PAR} -usb -usbdevice host:046d:c077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
 PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4"
-#PAR="${PAR} -usbdevice tablet"
+PAR="${PAR} -usbdevice tablet"
 
 # OVMF
 PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
