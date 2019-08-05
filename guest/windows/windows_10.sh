@@ -423,8 +423,8 @@ PAR="${PAR} -monitor stdio"
 
 # USB redirection
 USB_REDIR=true
-#USB_REDIR_TYPE="USB3"
-USB_REDIR_TYPE="USB2"
+USB_REDIR_TYPE="USB3"
+#USB_REDIR_TYPE="USB2"
 if [[ -n ${USB_REDIR} ]]; then
 	# https://www.spice-space.org/usbredir.html
 	# https://www.spice-space.org/download/windows/usbdk/
