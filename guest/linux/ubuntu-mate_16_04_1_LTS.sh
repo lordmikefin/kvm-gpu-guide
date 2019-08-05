@@ -453,7 +453,7 @@ if [[ -n ${SPICE_PORT} ]]; then
 	# $ sudo apt-get install spice-vdagent
 	# -> This will add bidirectonal clipboard among other stuff ;)
 	PAR="${PAR} -spice port=${SPICE_PORT},disable-ticketing"
-	# NOTE: Install 'VirtIO Servial Driver' driver from 'virtio' iso disk.
+	# 
 	PAR="${PAR} -device virtio-serial"
 	PAR="${PAR} -chardev spicevmc,id=vdagent,name=vdagent"
 	PAR="${PAR} -device virtserialport,chardev=vdagent,name=com.redhat.spice.0"
@@ -464,13 +464,13 @@ PAR="${PAR} -monitor stdio"
 
 
 # USB redirection
-#USB_REDIR=true
-#USB_REDIR_TYPE="USB3"
+USB_REDIR=true
+USB_REDIR_TYPE="USB3"
 #USB_REDIR_TYPE="USB2"
 if [[ -n ${USB_REDIR} ]]; then
 	# https://www.spice-space.org/usbredir.html
-	# https://www.spice-space.org/download/windows/usbdk/
-	# Install 'UsbDk_1.0.21_x64.msi'
+	# NOTE: ... hmmm ... this works wihout installing anything.
+	#       Maybe things were alredy installed or was installed with 'spice-vdagent'
 	case "${USB_REDIR_TYPE}" in
 		"USB3" )
 			# NOTE: USB3 support
