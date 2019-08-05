@@ -423,21 +423,35 @@ PAR="${PAR} -monitor stdio"
 
 # USB redirection
 USB_REDIR=true
+#USB_REDIR_TYPE="USB3"
+USB_REDIR_TYPE="USB2"
 if [[ -n ${USB_REDIR} ]]; then
 	# https://www.spice-space.org/usbredir.html
 	# https://www.spice-space.org/download/windows/usbdk/
 	# Install 'UsbDk_1.0.21_x64.msi'
-	PAR="${PAR} -device nec-usb-xhci,id=usb" # NOTE: USB3 support
-	#PAR="${PAR} -device ich9-usb-ehci1,id=usb" # NOTE: USB2 support
-	#PAR="${PAR} -device ich9-usb-uhci1,masterbus=usb.0,firstport=0,multifunction=on" # NOTE: USB2 support
-	#PAR="${PAR} -device ich9-usb-uhci2,masterbus=usb.0,firstport=2"
-	#PAR="${PAR} -device ich9-usb-uhci3,masterbus=usb.0,firstport=4"
+	case "${USB_REDIR_TYPE}" in
+		"USB3" )
+			# NOTE: USB3 support
+			PAR="${PAR} -device nec-usb-xhci,id=usb"
+			;;
+		"USB2" )
+			# NOTE: USB2 support
+			PAR="${PAR} -device ich9-usb-ehci1,id=usb"
+			PAR="${PAR} -device ich9-usb-uhci1,masterbus=usb.0,firstport=0,multifunction=on"
+			PAR="${PAR} -device ich9-usb-uhci2,masterbus=usb.0,firstport=2"
+			PAR="${PAR} -device ich9-usb-uhci3,masterbus=usb.0,firstport=4"
+			;;
+		"FAILED" | * )
+			lm_failure ;;
+	esac
+	
 	PAR="${PAR} -chardev spicevmc,name=usbredir,id=usbredirchardev1"
 	PAR="${PAR} -device usb-redir,chardev=usbredirchardev1,id=usbredirdev1"
 	PAR="${PAR} -chardev spicevmc,name=usbredir,id=usbredirchardev2"
 	PAR="${PAR} -device usb-redir,chardev=usbredirchardev2,id=usbredirdev2"
 	PAR="${PAR} -chardev spicevmc,name=usbredir,id=usbredirchardev3"
 	PAR="${PAR} -device usb-redir,chardev=usbredirchardev3,id=usbredirdev3"
+	
 	# Filtering ?
 	#PAR="${PAR} -device usb-redir,filter='0x03:-1:-1:-1:0|-1:-1:-1:-1:1',chardev=usbredirchardev1,id=usbredirdev1"
 fi
