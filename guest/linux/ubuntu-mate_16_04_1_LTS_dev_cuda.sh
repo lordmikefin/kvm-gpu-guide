@@ -73,7 +73,7 @@ source ${IMPORT_FUNCTIONS}
 if [ ${LM_FUNCTIONS_LOADED} == false ]; then
 	>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Something went wrong with loading funcions."
 	exit 1
-elif [ ${LM_FUNCTIONS_VER} != "1.0.0" ]; then
+elif [ ${LM_FUNCTIONS_VER} != "1.2.1" ]; then
 	lm_functions_incorrect_version
 	if [ "${INPUT}" == "FAILED" ]; then
 		lm_failure
