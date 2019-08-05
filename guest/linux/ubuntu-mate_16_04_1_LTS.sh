@@ -25,6 +25,53 @@ echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # NOTE to myself: How to get absolute path of file. 
 #   ( https://stackoverflow.com/questions/17577093/how-do-i-get-the-absolute-directory-of-a-file-in-bash )
 
@@ -164,14 +211,83 @@ lm_check_KVM_WORKSPACE
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # OVMF binary file. Do _NOT_ over write.
 OVMF_CODE="/usr/share/OVMF/OVMF_CODE.fd"
 KVM_WORKSPACE_VM_UBUNTU="${KVM_WORKSPACE}/vm/ubuntu16_04"
 OVMF_VARS_UBUNTU="${KVM_WORKSPACE_VM_UBUNTU}/ubuntu16_04_VARS.fd"
 VM_DISK_UBUNTU="${KVM_WORKSPACE_VM_UBUNTU}/ubuntu16_04.qcow2"
 KVM_WORKSPACE_SOFTWARE="${KVM_WORKSPACE}/software"
-
-
 
 
 
@@ -215,6 +331,12 @@ if [[ ! -f "${OVMF_VARS_UBUNTU}" ]]; then
 	lm_failure_message "${BASH_SOURCE[0]}" "${LINENO}" "File ${OVMF_VARS_UBUNTU} does not exists."
 	exit 1
 fi
+
+
+
+
+
+
 
 # Create Ubuntu vm virtual disk.
 if [[ ! -f "${VM_DISK_UBUNTU}" ]]; then
@@ -423,8 +545,11 @@ fi
 # -enable-kvm -> enable hardware virtualization
 PAR="-enable-kvm"
 
+
+
 # Mother board
 PAR="${PAR} -M q35"
+
 
 # Memory
 PAR="${PAR} -m 4096"
@@ -436,6 +561,15 @@ PAR="${PAR} -smp 4,sockets=1,cores=4,threads=1"
 
 # Boot menu
 PAR="${PAR} -boot menu=on"
+
+
+
+
+
+
+
+
+
 
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
@@ -560,6 +694,7 @@ PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
 
 
 
+
 # Sound card
 PAR="${PAR} -soundhw hda"
 
@@ -621,6 +756,9 @@ fi
 echo ""
 #qemu-system-x86_64 ${PAR}
 sudo qemu-system-x86_64 ${PAR}
+
+
+
 
 
 echo ""

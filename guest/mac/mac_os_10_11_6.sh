@@ -17,10 +17,9 @@
 # This script will run the vm into folder ~/kvm-workspace/vm/mac/
 
 
-
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
-CURRENT_SCRIPT_DATE="2018-08-04"
+CURRENT_SCRIPT_VER="0.0.3"
+CURRENT_SCRIPT_DATE="2019-08-05"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -77,8 +76,15 @@ echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 #   ( https://stackoverflow.com/questions/17577093/how-do-i-get-the-absolute-directory-of-a-file-in-bash )
 
 unset CURRENT_SCRIPT CURRENT_SCRIPT_REALPATH CURRENT_SCRIPT_DIR WORK_DIR
+
 #CURRENT_SCRIPT_REALPATH="$(realpath ${0})"
-CURRENT_SCRIPT_REALPATH="$(realpath ${BASH_SOURCE[0]})"
+#CURRENT_SCRIPT_REALPATH="$(realpath ${BASH_SOURCE[0]})"
+# https://github.com/dgibbs64/SteamCMD-Commands-List
+# https://github.com/dgibbs64/SteamCMD-Commands-List/blob/master/steamcmd_commands.sh
+CURRENT_SCRIPT_REALPATH="$(readlink -f "${BASH_SOURCE[0]}")"
+# NOTE: Should I always use "--canonicalize" ??
+# TODO: Test how "--canonicalize" work if handling broken link.
+
 CURRENT_SCRIPT="$(basename ${CURRENT_SCRIPT_REALPATH})"
 CURRENT_SCRIPT_DIR="$(dirname ${CURRENT_SCRIPT_REALPATH})"
 WORK_DIR="${PWD}"
@@ -114,7 +120,7 @@ source ${IMPORT_FUNCTIONS}
 if [ ${LM_FUNCTIONS_LOADED} == false ]; then
 	>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Something went wrong with loading funcions."
 	exit 1
-elif [ ${LM_FUNCTIONS_VER} != "1.0.0" ]; then
+elif [ ${LM_FUNCTIONS_VER} != "1.2.1" ]; then
 	lm_functions_incorrect_version
 	if [ "${INPUT}" == "FAILED" ]; then
 		lm_failure
@@ -293,14 +299,32 @@ case "${INPUT}" in
 	"YES" )
 		INPUT="YES" ;;
 	"NO" )
-		exit 1
-		;;
+		exit 1 ;;
 	"FAILED" | * )
 		lm_failure ;;
 esac
 
 # Create Ubuntu vm folder.
 lm_create_folder_recursive "${KVM_WORKSPACE_VM_MAC10}"  || lm_failure
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # OVMF file for vm. UEFI boot.
 if [[ -f "${OVMF_VARS}" ]]; then
@@ -326,6 +350,15 @@ fi
 
 
 
+
+
+
+
+
+
+
+
+
 echo ""
 echo "Starting the vm."
 echo ""
@@ -345,6 +378,165 @@ echo ""
 #NVIDIA_SOUND="01:00.1"
 #NVIDIA_GPU="02:00.0" # Nvidia GeForce GT 710 # Micro-Star International Co., Ltd. [MSI] Device
 #NVIDIA_SOUND="02:00.1"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -381,19 +573,72 @@ PAR="${PAR} -device hda-duplex"
 
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
-#PAR="${PAR} -vga qxl"
-#PAR="${PAR} -display sdl"
+PAR="${PAR} -vga qxl"
+PAR="${PAR} -display sdl"
 #PAR="${PAR} -display none"
-PAR="${PAR} -vga none"
+#PAR="${PAR} -vga none"
+
+
+
+
+# Display 'spice'
+SPICE_PORT=5924
+if [[ -n ${SPICE_PORT} ]]; then
+	# https://wiki.gentoo.org/wiki/QEMU/Linux_guest
+	# https://www.spice-space.org/download.html
+	# $ sudo apt-get install spice-vdagent
+	# -> This will add bidirectonal clipboard among other stuff ;)
+	PAR="${PAR} -spice port=${SPICE_PORT},disable-ticketing"
+	# 
+	PAR="${PAR} -device virtio-serial"
+	PAR="${PAR} -chardev spicevmc,id=vdagent,name=vdagent"
+	PAR="${PAR} -device virtserialport,chardev=vdagent,name=com.redhat.spice.0"
+fi
 
 # Monitoring screen
 PAR="${PAR} -monitor stdio"
 
+
+# USB redirection
+USB_REDIR=true
+USB_REDIR_TYPE="USB3"
+#USB_REDIR_TYPE="USB2"
+if [[ -n ${USB_REDIR} ]]; then
+	# https://www.spice-space.org/usbredir.html
+	# NOTE: ... hmmm ... this works wihout installing anything.
+	#       Maybe things were alredy installed or was installed with 'spice-vdagent'
+	case "${USB_REDIR_TYPE}" in
+		"USB3" )
+			# NOTE: USB3 support
+			PAR="${PAR} -device nec-usb-xhci,id=usb"
+			;;
+		"USB2" )
+			# NOTE: USB2 support
+			PAR="${PAR} -device ich9-usb-ehci1,id=usb"
+			PAR="${PAR} -device ich9-usb-uhci1,masterbus=usb.0,firstport=0,multifunction=on"
+			PAR="${PAR} -device ich9-usb-uhci2,masterbus=usb.0,firstport=2"
+			PAR="${PAR} -device ich9-usb-uhci3,masterbus=usb.0,firstport=4"
+			;;
+		"FAILED" | * )
+			lm_failure ;;
+	esac
+	
+	PAR="${PAR} -chardev spicevmc,name=usbredir,id=usbredirchardev1"
+	PAR="${PAR} -device usb-redir,chardev=usbredirchardev1,id=usbredirdev1"
+	PAR="${PAR} -chardev spicevmc,name=usbredir,id=usbredirchardev2"
+	PAR="${PAR} -device usb-redir,chardev=usbredirchardev2,id=usbredirdev2"
+	PAR="${PAR} -chardev spicevmc,name=usbredir,id=usbredirchardev3"
+	PAR="${PAR} -device usb-redir,chardev=usbredirchardev3,id=usbredirdev3"
+	
+	# Filtering ?
+	#PAR="${PAR} -device usb-redir,filter='0x03:-1:-1:-1:0|-1:-1:-1:-1:1',chardev=usbredirchardev1,id=usbredirdev1"
+fi
+
 # USB passthrough. Keyboard and mouse.
 # TODO: parameterize. Or auto find.
-PAR="${PAR} -usb -usbdevice host:046d:c077"
-PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4"
-#PAR="${PAR} -usbdevice tablet"
+PAR="${PAR} -usb -usbdevice host:046d:c077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
+PAR="${PAR} -usbdevice tablet"
 
 # OVMF
 PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
@@ -415,6 +660,16 @@ fi
 if [[ ! -z ${NVIDIA_SOUND} ]]; then
 	PAR="${PAR} -device vfio-pci,host=${NVIDIA_SOUND},bus=root.1,addr=00.1"
 fi
+
+# TODO: samba share
+
+
+
+
+
+
+
+
 
 # Virtual disk
 #PAR="${PAR} -drive file=${VM_DISK_MAC10},format=qcow2 "
@@ -449,6 +704,29 @@ PAR="${PAR} -drive id=MacDriver,if=none,format=raw,file=${OSX_DRIVER_DISK} "
 #PAR="${PAR} -device e1000-82545em,id=net0,mac=52:54:00:c9:18:27,netdev=user.0"
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Internal networking. Bridged networking.
 # NOTE: virbr0 is created by virsh default network
 # If virsh is installed it should start at boot.
@@ -459,7 +737,22 @@ PAR="${PAR} -device e1000-82545em,id=net0,mac=52:54:00:c9:18:27,netdev=user.0"
 
 
 # Start the virtual machine with parameters
+echo ""
 echo "qemu-system-x86_64 ${PAR}"
+echo ""
+echo "https://en.wikibooks.org/wiki/QEMU/Monitor"
+echo " (qemu) help"
+echo " (qemu) info pci"
+echo ""
+
+if [[ -n ${SPICE_PORT} ]]; then
+	echo ""
+	echo "Connect to 'spice' remote server."
+	echo " $ spicy --title Windows 127.0.0.1 -p ${SPICE_PORT}"
+	echo "You could also use 'remote-viewer'"
+	echo " $ remote-viewer --title Windows spice://127.0.0.1:${SPICE_PORT}"
+fi
+
 echo ""
 #qemu-system-x86_64 ${PAR}
 sudo qemu-system-x86_64 ${PAR} 
