@@ -183,8 +183,7 @@ case "${INPUT}" in
 	"YES" )
 		INPUT="YES" ;;
 	"NO" )
-		exit 1
-		;;
+		exit 1 ;;
 	"FAILED" | * )
 		lm_failure ;;
 esac
@@ -266,6 +265,33 @@ echo ""
 echo ""
 echo "Select card to use with the vm."
 echo ""
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -377,6 +403,21 @@ fi
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # TODO: Set parameters for QEMU
 
 # -enable-kvm -> enable hardware virtualization
@@ -390,6 +431,7 @@ PAR="${PAR} -m 4096"
 
 # CPU
 PAR="${PAR} -cpu host,kvm=off"
+#PAR="${PAR} -cpu host"
 PAR="${PAR} -smp 4,sockets=1,cores=4,threads=1"
 
 # Boot menu
@@ -488,6 +530,11 @@ if [[ ! -z ${KVM_WORKSPACE_SOFTWARE} ]]; then
 	PAR="${PAR} -smb ${KVM_WORKSPACE_SOFTWARE}"
 fi
 
+# TODO: Use 9p instead of cifs-samba share
+# -device virtio-9p-pci,id=fs0,fsdev=fsdev-fs0,mount_tag=opt-kvm,bus=pcie.0,addr=0x9 
+# $ sudo mount opt-kvm /opt/kvm -t 9p -o trans=virtio
+
+
 # Virtual disk
 #PAR="${PAR} -drive file=${VM_DISK_WIN10},format=qcow2 "
 PAR="${PAR} -drive file=${VM_DISK_WIN10},format=qcow2,if=none,id=drive-ide0-0-0"
@@ -514,9 +561,34 @@ PAR="${PAR} -cdrom ${VIRTIO_FILE}"
 # Sound card
 PAR="${PAR} -soundhw hda"
 
+
 # Network
 # This is User-mode networking
 #PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
+#PAR="${PAR} -netdev user,hostfwd=tcp::10022-:22,id=user.0"
+#PAR="${PAR} -device e1000,netdev=user.0"
+# https://unix.stackexchange.com/questions/124681/how-to-ssh-from-host-to-guest-using-qemu
+# ssh vmuser@localhost -p10022
+# $ ssh localhost -p10022
+#PAR="${PAR} -net user,hostfwd=tcp::10022-:22"
+#(qemu) Warning: vlan 0 with no nics
+# NOTE(Mikko): Remember to install sshd on the quest
+#               $ sudo apt-get install openssh-server
+
+# (2018-07-19) hmmm ... I have broken the network.
+# From guest DNS works, but traffic is not passed through NAT.
+# I disabled the default virsh network
+#  $ virsh net-destroy default
+# And I just realized that it is not used by default ;)
+
+#PAR="${PAR} -net nic,macaddr=52:54:00:12:24:57"
+#PAR="${PAR} -net vde"
+
+#PAR="${PAR} -netdev tap,fd=26,id=hostnet0"
+#PAR="${PAR} -device rtl8139,netdev=hostnet0,id=net0,mac=52:54:00:47:ed:af,bus=pci.0,addr=0x3"
+#PAR="${PAR} -netdev tap,id=hostnet0,ifname=vnet0"
+#PAR="${PAR} -device e1000,netdev=hostnet0,id=net0,mac=52:54:00:47:ed:af"
+
 
 # Internal networking. Bridged networking.
 # NOTE: virbr0 is created by virsh default network
@@ -528,7 +600,13 @@ PAR="${PAR} -device e1000,netdev=user.0"
 
 
 # Start the virtual machine with parameters
+echo ""
 echo "qemu-system-x86_64 ${PAR}"
+echo ""
+echo "https://en.wikibooks.org/wiki/QEMU/Monitor"
+echo " (qemu) help"
+echo " (qemu) info pci"
+echo ""
 
 if [[ -n ${SPICE_PORT} ]]; then
 	echo ""
