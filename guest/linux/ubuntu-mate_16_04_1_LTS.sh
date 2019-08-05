@@ -439,11 +439,13 @@ PAR="${PAR} -boot menu=on"
 
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
-PAR="${PAR} -vga qxl"
+#PAR="${PAR} -vga qxl"
 #PAR="${PAR} -display sdl"
-#PAR="${PAR} -vga none"
+PAR="${PAR} -vga none"
 #PAR="${PAR} -display none"
 # NOTE: Guest OS (ubuntu) will not write to virtual and physical display card at once ?!
+# TODO: Dual gpu system?!
+#  https://devtalk.nvidia.com/default/topic/1030445/cuda-setup-and-installation/dual-gpu-system-in-ubuntu-16-04/
 
 # Display 'spice'
 SPICE_PORT=5924
