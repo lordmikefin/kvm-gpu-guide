@@ -573,21 +573,21 @@ PAR="${PAR} -device hda-duplex"
 
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
-PAR="${PAR} -vga qxl"
-PAR="${PAR} -display sdl"
+#PAR="${PAR} -vga qxl"
+#PAR="${PAR} -display sdl"
 #PAR="${PAR} -display none"
-#PAR="${PAR} -vga none"
+PAR="${PAR} -vga none"
 
 
 
 
 # Display 'spice'
-SPICE_PORT=5924
+#SPICE_PORT=5924
 if [[ -n ${SPICE_PORT} ]]; then
 	# https://wiki.gentoo.org/wiki/QEMU/Linux_guest
 	# https://www.spice-space.org/download.html
-	# $ sudo apt-get install spice-vdagent
-	# -> This will add bidirectonal clipboard among other stuff ;)
+	# TODO: How to do spice with mac ?
+	# 
 	PAR="${PAR} -spice port=${SPICE_PORT},disable-ticketing"
 	# 
 	PAR="${PAR} -device virtio-serial"
@@ -600,13 +600,13 @@ PAR="${PAR} -monitor stdio"
 
 
 # USB redirection
-USB_REDIR=true
-USB_REDIR_TYPE="USB3"
+#USB_REDIR=true
+#USB_REDIR_TYPE="USB3"
 #USB_REDIR_TYPE="USB2"
 if [[ -n ${USB_REDIR} ]]; then
 	# https://www.spice-space.org/usbredir.html
-	# NOTE: ... hmmm ... this works wihout installing anything.
-	#       Maybe things were alredy installed or was installed with 'spice-vdagent'
+	# TODO: How to do spice with mac ?
+	# 
 	case "${USB_REDIR_TYPE}" in
 		"USB3" )
 			# NOTE: USB3 support
