@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.9"
-CURRENT_SCRIPT_DATE="2019-08-05"
+CURRENT_SCRIPT_VER="0.0.10"
+CURRENT_SCRIPT_DATE="2019-09-02"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -575,14 +575,25 @@ PAR="${PAR} -boot menu=on"
 # TODO: Ask user if virtual display is needed.
 #PAR="${PAR} -vga qxl"
 #PAR="${PAR} -display sdl"
-PAR="${PAR} -vga none"
+#PAR="${PAR} -vga none"
 #PAR="${PAR} -display none"
 # NOTE: Guest OS (ubuntu) will not write to virtual and physical display card at once ?!
 # TODO: Dual gpu system?!
 #  https://devtalk.nvidia.com/default/topic/1030445/cuda-setup-and-installation/dual-gpu-system-in-ubuntu-16-04/
 
+echo ""
+if [[ "${SELECTED}" == "0" ]]; then
+	echo "No desplay device selected. Initialize virtual one."
+	PAR="${PAR} -vga qxl"
+else
+	echo "NOTE: Can not use physical and virtal display at same time :("
+	PAR="${PAR} -vga none"
+fi
+
+
 # Display 'spice'
-SPICE_PORT=5924
+#SPICE_PORT=5924 # This port is used by Windows VM
+SPICE_PORT=5925
 if [[ -n ${SPICE_PORT} ]]; then
 	# https://wiki.gentoo.org/wiki/QEMU/Linux_guest
 	# https://www.spice-space.org/download.html
