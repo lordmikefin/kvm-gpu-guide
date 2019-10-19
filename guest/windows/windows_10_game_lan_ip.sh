@@ -401,6 +401,10 @@ PAR="${PAR} -usb -usbdevice host:046d:c077"
 PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4"
 #PAR="${PAR} -usbdevice tablet"
 
+# 046d:ca04 Logitech, Inc. Formula Vibration Feedback Wheel
+PAR="${PAR} -usb -usbdevice host:046d:ca04"
+
+
 # OVMF
 PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
 PAR="${PAR} -drive file=${OVMF_VARS_WIN10},if=pflash,format=raw,unit=1"
