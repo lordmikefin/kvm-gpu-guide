@@ -271,7 +271,7 @@ OVMF_CODE="/usr/share/OVMF/OVMF_CODE.fd"
 OVMF_VARS="/usr/share/OVMF/OVMF_VARS.fd"
 KVM_WORKSPACE_VM_WIN10="${KVM_WORKSPACE}/vm/windows_10_clean"
 OVMF_VARS_WIN10="${KVM_WORKSPACE_VM_WIN10}/windows_10_clean_VARS.fd"
-VM_DISK_WIN10="${KVM_WORKSPACE_VM_WIN10}/windows_clean_10.qcow2"
+VM_DISK_WIN10="${KVM_WORKSPACE_VM_WIN10}/windows_10_clean.qcow2"
 
 
 unset INPUT
