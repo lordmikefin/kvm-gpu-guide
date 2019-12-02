@@ -375,7 +375,7 @@ PAR="${PAR} -monitor stdio"
 # USB passthrough. Keyboard and mouse.
 # TODO: parameterize. Or auto find.
 PAR="${PAR} -usb -usbdevice host:046d:c077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
-PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
+PAR="${PAR} -device usb-host,hostbus=1,hostaddr=5" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
 #PAR="${PAR} -usbdevice tablet"
 
 # OVMF
@@ -425,8 +425,14 @@ PAR="${PAR} -cdrom ${LOCAL_FILE}"
 # Sound card
 PAR="${PAR} -soundhw hda"
 
+# NOTE: We must disable the net !
+# "Confirmed: Windows 10 Setup Now Prevents Local Account Creation" (October 1, 2019, 3:31pm EDT)
+# https://www.howtogeek.com/442609/confirmed-windows-10-setup-now-prevents-local-account-creation/
+
 # Network
-PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
+#PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
+#PAR="${PAR} -nic none"
+PAR="${PAR} -net none"
 
 # Start the virtual machine with parameters
 echo "qemu-system-x86_64 ${PAR}"
