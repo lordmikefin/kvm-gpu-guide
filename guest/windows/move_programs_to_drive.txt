@@ -15,6 +15,7 @@ https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/blob/mas
 
 NOTE: This can be done after installation. But it will "reinstall" windows !
 ! Moving ProgramData after installation did not work ! (2019-12-09)
+! Windows search does not work previously existing user !? -> Has something else also broken?
 
 
 1. Install Windows 10
