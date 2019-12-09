@@ -1,0 +1,30 @@
+
+:: (2019-12-09)
+:: Is there way to move "Program Files" into other drive?
+
+:: https://www.systoolsgroup.com/how-to/move-program-files-folder-to-another-drive/
+
+:: https://www.ubackup.com/backup-restore/move-program-files-to-another-drive-windows-10.html
+
+:: Step 1. Move “C: \Program Files” fodler to “D: \Program Files”
+:: >xcopy /E /H "C:\Program Files" "D:\Program Files\"
+
+:: >del /F /S /Q "C:\Program Files"
+:: >rmdir /S /Q "C:\Program Files"
+
+:: Step 2. Type cmd in the search box, click it and run as administrator
+
+:: Step 3. Create a symbolic link with mklink. If you do not know how to use it, you can directly type mklink in the command prompt window. You can get some information concerned to create a symbolic link. Then, follow syntax below to create a symbolic link and press Enter finally.
+
+:: mklink /D link Target
+
+:: soft link
+:: mklink /D “Program Files” “D: Program Files”
+:: hard link
+:: mklink /J “Program Files” “D: Program Files”
+
+:: >C:
+:: >cd \
+
+:: >mklink /J "Program Files" "D:\Program Files\"
+
