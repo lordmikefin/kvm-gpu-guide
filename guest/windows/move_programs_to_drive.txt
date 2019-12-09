@@ -2,6 +2,18 @@
 :: (2019-12-09)
 :: Is there way to move "Program Files" into other drive?
 
+
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+
+(2019-12-09)
+Just moving folder after install does not work.
+I can not remove/move the "Program Files" folder :(
+
+
+
 :: https://www.systoolsgroup.com/how-to/move-program-files-folder-to-another-drive/
 
 :: https://www.ubackup.com/backup-restore/move-program-files-to-another-drive-windows-10.html
