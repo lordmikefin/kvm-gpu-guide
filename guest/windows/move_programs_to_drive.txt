@@ -48,11 +48,16 @@ NOTE: This can be done after installation. But it will "reinstall" windows !
  $ net stop wmpnetworksvc
 (2019-12-09) NOTE: this did not help -> disconnect the net
 
+(2019-12-09) NOTE: When runnin 'sysperp' after install:
+ * must have the net connection during 'sysprep' call !?
+ * disconnect the net after 'shutdown'
+
   The service is most probably not running but if it is, it will now be stopped. When this service is running, Sysprep fails.
 
   Now the Sysprep command itself. Type the following:
 
- $ %windir%\system32\sysprep\sysprep.exe /oobe /reboot /unattend:d:\relocate.xml
+ $ :: %windir%\system32\sysprep\sysprep.exe /oobe /reboot /unattend:d:\relocate.xml
+ $ %windir%\system32\sysprep\sysprep.exe /oobe /shutdown /unattend:d:\relocate.xml
 
 
 ----------
