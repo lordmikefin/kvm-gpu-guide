@@ -3,6 +3,56 @@
 :: Is there way to move "Program Files" into other drive?
 
 
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+(2019-12-09)
+https://www.tenforums.com/tutorials/1964-move-users-folder-location-windows-10-a.html
+
+
+NOTE: This can be done after installation. But it will "reinstall" windows !
+
+
+1. Install Windows 10
+
+  When installation reaches the Region Selection screen after reboot press CTRL + SHIFT + F3:
+
+2. Create an unattended answer file
+
+[d:\relocate.xml]
+----------
+<?xml version="1.0" encoding="utf-8"?>
+<unattend xmlns="urn:schemas-microsoft-com:unattend">
+<settings pass="oobeSystem">
+<component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<FolderLocations>
+<ProfilesDirectory>D:\Users</ProfilesDirectory>
+</FolderLocations>
+</component>
+</settings>
+</unattend>
+----------
+
+3. Run Sysprep
+
+  Almost there! Open elevated Command Prompt (tutorial). To ensure that WMP Network Sharing Service is stopped, give the following command:
+
+ $ net stop wmpnetworksvc
+(2019-12-09) NOTE: this did not help -> disconnect the net
+
+  The service is most probably not running but if it is, it will now be stopped. When this service is running, Sysprep fails.
+
+  Now the Sysprep command itself. Type the following:
+
+ $ %windir%\system32\sysprep\sysprep.exe /oobe /reboot /unattend:d:\relocate.xml
+
+
+----------
+C:\Windows\System32\Sysprep\Panther\setupact.log
+--
+Error [sysprep.exe] UnattendFindAnswerFile: Explicitly provided unattend file [D:\relocate.xml] does not exist.
+----------
+
 
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------

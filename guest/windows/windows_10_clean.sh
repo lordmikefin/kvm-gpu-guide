@@ -601,6 +601,9 @@ PAR="${PAR} -soundhw hda"
 PAR="${PAR} -netdev bridge,br=virbr0,id=user.0"
 PAR="${PAR} -device e1000,netdev=user.0"
 
+# TODO: parametarize the net
+#PAR="${PAR} -net none"
+
 
 # Start the virtual machine with parameters
 echo ""
