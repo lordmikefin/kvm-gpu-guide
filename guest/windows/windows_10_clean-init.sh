@@ -21,8 +21,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
-CURRENT_SCRIPT_DATE="2019-12-02"
+CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_DATE="2019-12-09"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -272,6 +272,7 @@ OVMF_VARS="/usr/share/OVMF/OVMF_VARS.fd"
 KVM_WORKSPACE_VM_WIN10="${KVM_WORKSPACE}/vm/windows_10_clean"
 OVMF_VARS_WIN10="${KVM_WORKSPACE_VM_WIN10}/windows_10_clean_VARS.fd"
 VM_DISK_WIN10="${KVM_WORKSPACE_VM_WIN10}/windows_10_clean.qcow2"
+VM_DISK_DATA="${KVM_WORKSPACE_VM_WIN10}/windows_10_clean_data_d_drive.qcow2"
 
 
 unset INPUT
@@ -309,6 +310,17 @@ if [[ ! -f "${VM_DISK_WIN10}" ]]; then
 	qemu-img create -f qcow2 "${VM_DISK_WIN10}" 50G  || lm_failure
 else
 	echo -e "\n File ${VM_DISK_WIN10} alrealy exists.\n"
+fi
+
+
+# Create data disk d-drive.
+if [[ ! -f "${VM_DISK_DATA}" ]]; then
+	echo ""
+	echo "Createing file ${VM_DISK_DATA}"
+	echo ""
+	qemu-img create -f qcow2 "${VM_DISK_DATA}" 200G  || lm_failure
+else
+	echo -e "\n File ${VM_DISK_DATA} alrealy exists.\n"
 fi
 
 
@@ -404,6 +416,10 @@ fi
 PAR="${PAR} -drive file=${VM_DISK_WIN10},format=qcow2,if=none,id=drive-ide0-0-0"
 PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
 
+# Virtual data disk d-drive
+PAR="${PAR} -drive file=${VM_DISK_DATA},format=qcow2,if=none,id=drive-ide1-0-0"
+PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
+
 
 # TODO: Make instller image read only
 # Windows 10 ISO file
@@ -432,6 +448,8 @@ PAR="${PAR} -soundhw hda"
 # Network
 #PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
 #PAR="${PAR} -nic none"
+
+# TODO: parametarize the net
 PAR="${PAR} -net none"
 
 # Start the virtual machine with parameters

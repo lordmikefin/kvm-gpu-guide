@@ -9,6 +9,9 @@
 (2019-12-09)
 https://www.tenforums.com/tutorials/1964-move-users-folder-location-windows-10-a.html
 
+Script for 'sysprep'
+https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/blob/master/bosh-psmodules/modules/BOSH.Sysprep/BOSH.Sysprep.psm1
+
 
 NOTE: This can be done after installation. But it will "reinstall" windows !
 ! Moving ProgramData after installation did not work ! (2019-12-09)
@@ -17,6 +20,9 @@ NOTE: This can be done after installation. But it will "reinstall" windows !
 1. Install Windows 10
 
   When installation reaches the Region Selection screen after reboot press CTRL + SHIFT + F3:
+
+  Windows reboots now entering a so called Audit Mode using the built-in administrator account. When Windows Desktop will be shown you'll notice the System Preparation Tool dialog in the middle of your screen. Close it for now by pressing the Cancel button:
+
 
 2. Create an unattended answer file
 
