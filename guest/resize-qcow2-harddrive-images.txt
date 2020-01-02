@@ -1,4 +1,8 @@
 
+TODO: set vm to use TRIM
+https://chrisirwin.ca/posts/discard-with-kvm/
+--
+
 https://www.randomhacks.co.uk/how-to-resize-a-qcow2-harddrive-images/
 
 Shutdown the vm :)
@@ -6,3 +10,47 @@ Shutdown the vm :)
  $ qemu-img resize ubuntu16_04.qcow2 +5GB
 
 Resize the partition
+--
+
+https://pve.proxmox.com/wiki/Shrink_Qcow2_Disk_Files
+
+Recommended Solution
+
+The recommended version is to pass TRIM commands (known from SSDs) from the VM to the backing storage. This has the advantage that it works automatically, does not need to write the whole free parts of all disks to zero and must only be setup once. 
+
+Manual Solution
+
+	Defragment your Windows guest's drives either by using the built in defragment program or a 3rd party one such as Defraggler or UltraDefrag.
+
+    Zero out the free space either using SDelete (recommended) or Eraser (using British HMG IS5 (Baseline) (1 pass)).
+
+Zero Using SDelete
+
+    Download SDelete and save it somewhere on your system (eg. C:\windows\system32\).
+    Run SDelete and zero free space:
+
+ > sdelete -z
+ > sdelete64 -z
+
+    If there is more than one partition, then for eg., drive E:\, use:
+
+ > sdelete -z e:
+ > sdelete64 -z e:
+
+
+Shrink the Disk File
+
+    MPORTANT: Create a backup of your existing VM disk file:
+
+ $ cp image.qcow2 image.qcow2_backup
+
+    Option #1: Shrink your disk without compression (better performance, larger disk size):
+
+ $ qemu-img convert -O qcow2 image.qcow2_backup image.qcow2
+
+    Option #2: Shrink your disk with compression (smaller disk size, takes longer to shrink, performance impact on slower systems):
+
+ $ qemu-img convert -O qcow2 -c image.qcow2_backup image.qcow2
+--
+
+
