@@ -643,6 +643,10 @@ echo ""
 # UEFI boot sample
 # https://www.server-world.info/en/note?os=CentOS_7&p=kvm&f=11
 
+# UEFI: Setting up an OVMF-based guest VM
+# https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF
+
+
 URL_FILE="Win10_1909_English_x64.iso"
 LOCAL_FILE="${KVM_WORKSPACE_ISO}/${URL_FILE}"
 
