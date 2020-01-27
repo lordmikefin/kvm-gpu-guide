@@ -680,7 +680,7 @@ TEST_COMMAND="${TEST_COMMAND} --disk ${LOCAL_FILE},device=cdrom,bus=ide"
 echo ""
 echo "Test creating vm. Here is the commnad:"
 echo ""
-echo "${TEST_COMMAND}"
+echo " $ ${TEST_COMMAND}"
 
 
 echo ""
