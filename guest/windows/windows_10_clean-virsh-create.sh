@@ -20,7 +20,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
+CURRENT_SCRIPT_VER="0.0.2"
 CURRENT_SCRIPT_DATE="2020-01-27"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -168,7 +168,7 @@ lm_check_KVM_WORKSPACE
 # $ cp -v /usr/share/OVMF/OVMF_VARS.fd /opt/kvm/vm_storage/windows_10_VARS.fd
 # OVMF binary file. Do _NOT_ over write.
 OVMF_CODE="/usr/share/OVMF/OVMF_CODE.fd"
-KVM_WORKSPACE_VM_WIN10="${KVM_WORKSPACE}/vm/windows_10_clean"
+KVM_WORKSPACE_VM_WIN10="${KVM_WORKSPACE}/vm/windows_10_clean_virsh"
 OVMF_VARS_WIN10="${KVM_WORKSPACE_VM_WIN10}/windows_10_clean_VARS.fd"
 VM_DISK_WIN10="${KVM_WORKSPACE_VM_WIN10}/windows_10_clean.qcow2"
 KVM_WORKSPACE_SOFTWARE="${KVM_WORKSPACE}/software"
@@ -212,18 +212,28 @@ esac
 
 
 
-# OVMF file for vm. UEFI boot.
-if [[ ! -f "${OVMF_VARS_WIN10}" ]]; then
-	lm_failure_message "${BASH_SOURCE[0]}" "${LINENO}" "File ${OVMF_VARS_WIN10} does not exists."
-	exit 1
-fi
+## OVMF file for vm. UEFI boot.
+#if [[ ! -f "${OVMF_VARS_WIN10}" ]]; then
+#	lm_failure_message "${BASH_SOURCE[0]}" "${LINENO}" "File ${OVMF_VARS_WIN10} does not exists."
+#	exit 1
+#fi
 
-# Check Windows vm virtual disk.
+## Check Windows vm virtual disk.
+#if [[ ! -f "${VM_DISK_WIN10}" ]]; then
+#	lm_failure_message "${BASH_SOURCE[0]}" "${LINENO}" "File ${VM_DISK_WIN10} does not exists."
+#	exit 1
+#fi
+
+
+# Create Windows vm virtual disk.
 if [[ ! -f "${VM_DISK_WIN10}" ]]; then
-	lm_failure_message "${BASH_SOURCE[0]}" "${LINENO}" "File ${VM_DISK_WIN10} does not exists."
-	exit 1
+	echo ""
+	echo "Createing file ${VM_DISK_WIN10}"
+	echo ""
+	qemu-img create -f qcow2 "${VM_DISK_WIN10}" 50G  || lm_failure
+else
+	echo -e "\n File ${VM_DISK_WIN10} alrealy exists.\n"
 fi
-
 
 
 # Create data disk d-drive.
