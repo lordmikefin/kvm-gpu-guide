@@ -1,0 +1,31 @@
+
+https://karlcode.owtelse.com/blog/2017/01/09/disabling-usb-ports-on-linux/
+--
+
+When connecting USB devices into guest it might not work.
+This is because host is using the device.
+
+You can prevent host from binding the USB device (in my case my phone)
+
+First list usb devices.
+ $ lsusb -t
+--------------
+/:  Bus 01.Port 1: Dev 1, Class=root_hub, Driver=xhci_hcd/16p, 480M
+    |__ Port 9: Dev 2, If 0, Class=Hub, Driver=hub/4p, 480M
+        |__ Port 3: Dev 33, If 0, Class=Vendor Specific Class, Driver=usbfs, 480M
+--------------
+
+From the list create the bus/port addess:
+ -> [bus]-[port].[port]
+    ( in my case  ->  1-9.3)
+
+Get information about the device. Just make sure it is the device.
+ $ cat /sys/bus/usb/devices/1-9.3/product
+
+Send a command to the USB driver to unbind a port:
+ $ echo '1-1.6' | sudo tee /sys/bus/usb/drivers/usb/unbind
+
+
+Bind a port again:
+ $ echo '1-1.6' | sudo tee /sys/bus/usb/drivers/usb/bind
+
