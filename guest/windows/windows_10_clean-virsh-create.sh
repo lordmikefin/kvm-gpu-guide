@@ -643,6 +643,11 @@ echo ""
 # UEFI boot sample
 # https://www.server-world.info/en/note?os=CentOS_7&p=kvm&f=11
 
+URL_FILE="Win10_1909_English_x64.iso"
+LOCAL_FILE="${KVM_WORKSPACE_ISO}/${URL_FILE}"
+
+
+
 echo ""
 echo "List of currently installed vms"
 echo ""
@@ -653,7 +658,8 @@ TEST_COMMAND="virt-install"
 TEST_COMMAND="${TEST_COMMAND} --name Win10CleanTest"
 TEST_COMMAND="${TEST_COMMAND} --description \"Windows 10 Clean test\""
 TEST_COMMAND="${TEST_COMMAND} --os-type=windows"
-TEST_COMMAND="${TEST_COMMAND} --os-variant=win10"
+#TEST_COMMAND="${TEST_COMMAND} --os-variant=win10"
+TEST_COMMAND="${TEST_COMMAND} --os-variant=win8.1"
 TEST_COMMAND="${TEST_COMMAND} --ram=4096"
 TEST_COMMAND="${TEST_COMMAND} --vcpus=4"
 #TEST_COMMAND="${TEST_COMMAND} --graphics none"
@@ -662,8 +668,11 @@ TEST_COMMAND="${TEST_COMMAND} --graphics spice,listen=0.0.0.0"
 # --graphics spice,listen=0.0.0.0,password=password,keymap=ja
 TEST_COMMAND="${TEST_COMMAND} --disk path=${VM_DISK_WIN10},format=qcow2,bus=virtio"
 TEST_COMMAND="${TEST_COMMAND} --disk path=${VM_DISK_DATA},format=qcow2,bus=virtio"
-TEST_COMMAND="${TEST_COMMAND} --network bridge:br0,model=e1000"
+#TEST_COMMAND="${TEST_COMMAND} --network bridge:br0,model=e1000"
+TEST_COMMAND="${TEST_COMMAND} --network bridge=virbr0,model=e1000"
 TEST_COMMAND="${TEST_COMMAND} --boot uefi"
+#TEST_COMMAND="${TEST_COMMAND} --cdrom ${LOCAL_FILE}"
+TEST_COMMAND="${TEST_COMMAND} --disk ${LOCAL_FILE},device=cdrom,bus=ide"
 
 #TEST_COMMAND="${TEST_COMMAND} --"
 
