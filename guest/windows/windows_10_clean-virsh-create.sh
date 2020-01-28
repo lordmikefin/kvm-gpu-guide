@@ -687,6 +687,7 @@ TEST_COMMAND="${TEST_COMMAND} --disk path=${VM_DISK_DATA},format=qcow2,bus=ide"
 #TEST_COMMAND="${TEST_COMMAND} --network bridge:br0,model=e1000"
 # NOTE: Can not have network during windows install. Home version can create local user only when net is not available.
 #TEST_COMMAND="${TEST_COMMAND} --network bridge=virbr0,model=e1000"
+TEST_COMMAND="${TEST_COMMAND} --network none"
 TEST_COMMAND="${TEST_COMMAND} --boot uefi"
 #TEST_COMMAND="${TEST_COMMAND} --cdrom ${LOCAL_FILE}"
 TEST_COMMAND="${TEST_COMMAND} --disk ${LOCAL_FILE},device=cdrom,bus=ide"
