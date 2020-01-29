@@ -20,8 +20,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
-CURRENT_SCRIPT_DATE="2020-01-27"
+CURRENT_SCRIPT_VER="0.0.3"
+CURRENT_SCRIPT_DATE="2020-01-29"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -693,6 +693,37 @@ TEST_COMMAND="${TEST_COMMAND} --boot uefi"
 TEST_COMMAND="${TEST_COMMAND} --disk ${LOCAL_FILE},device=cdrom,bus=ide"
 
 #TEST_COMMAND="${TEST_COMMAND} --"
+
+
+# TODO: auto connect USB device with udev rules
+# https://www.koendiels.be/attaching-a-usb-device-to-kvm-that-reconnects-frequently
+
+
+## Bus 001 Device 005: ID 0e8d:2008 MediaTek Inc. (BV6000 Transfer files)
+# $ sudo nano /etc/libvirt/qemu/hostdev-0e8d:2008.xml
+#<hostdev mode='subsystem' type='usb'>
+#  <source>
+#    <vendor id='0x0e8d'/>
+#    <product id='0x2008'/>
+#  </source>
+#</hostdev>
+
+## Bus 001 Device 009: ID 0e8d:200b MediaTek Inc. (BV6000 Transfer photos)
+# $ sudo nano /etc/libvirt/qemu/hostdev-0e8d:200b.xml
+#<hostdev mode='subsystem' type='usb'>
+#  <source>
+#    <vendor id='0x0e8d'/>
+#    <product id='0x200b'/>
+#  </source>
+#</hostdev>
+
+
+# $ sudo nano /etc/udev/rules.d/10-local.rules
+#ACTION=="add", ATTRS{idVendor}=="0e8d", ATTRS{idProduct}=="2008", RUN+="/usr/bin/virsh attach-device Win10CleanTest /etc/libvirt/qemu/hostdev-0e8d:2008.xml"
+#ACTION=="remove", ATTRS{idVendor}=="0e8d", ATTRS{idProduct}=="2008", RUN+="/usr/bin/virsh detach-device Win10CleanTest /etc/libvirt/qemu/hostdev-0e8d:2008.xml"
+#ACTION=="add", ATTRS{idVendor}=="0e8d", ATTRS{idProduct}=="200b", RUN+="/usr/bin/virsh attach-device Win10CleanTest /etc/libvirt/qemu/hostdev-0e8d:200b.xml"
+#ACTION=="remove", ATTRS{idVendor}=="0e8d", ATTRS{idProduct}=="200b", RUN+="/usr/bin/virsh detach-device Win10CleanTest /etc/libvirt/qemu/hostdev-0e8d:200b.xml"
+
 
 
 echo ""
