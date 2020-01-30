@@ -725,6 +725,9 @@ TEST_COMMAND="${TEST_COMMAND} --disk ${VIRTIO_FILE},device=cdrom,bus=ide"
 #ACTION=="add", ATTRS{idVendor}=="0e8d", ATTRS{idProduct}=="200b", RUN+="/usr/bin/virsh attach-device Win10CleanTest /etc/libvirt/qemu/hostdev-0e8d:200b.xml"
 #ACTION=="remove", ATTRS{idVendor}=="0e8d", ATTRS{idProduct}=="200b", RUN+="/usr/bin/virsh detach-device Win10CleanTest /etc/libvirt/qemu/hostdev-0e8d:200b.xml"
 
+# udev is connecting the usb device into vm, but driver fails :(
+# TODO: is usb device still bind in host?
+#   https://karlcode.owtelse.com/blog/2017/01/09/disabling-usb-ports-on-linux/
 
 
 echo ""
