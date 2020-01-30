@@ -1,0 +1,5 @@
+ACTION=="add", ATTRS{idVendor}=="0e8d", ATTRS{idProduct}=="2008", RUN+="/usr/bin/virsh attach-device Win10CleanTest /etc/libvirt/qemu/hostdev-0e8d:2008.xml"
+ACTION=="remove", ATTRS{idVendor}=="0e8d", ATTRS{idProduct}=="2008", RUN+="/usr/bin/virsh detach-device Win10CleanTest /etc/libvirt/qemu/hostdev-0e8d:2008.xml"
+ACTION=="add", ATTRS{idVendor}=="0e8d", ATTRS{idProduct}=="200b", RUN+="/usr/bin/virsh attach-device Win10CleanTest /etc/libvirt/qemu/hostdev-0e8d:200b.xml"
+ACTION=="remove", ATTRS{idVendor}=="0e8d", ATTRS{idProduct}=="200b", RUN+="/usr/bin/virsh detach-device Win10CleanTest /etc/libvirt/qemu/hostdev-0e8d:200b.xml"
+
