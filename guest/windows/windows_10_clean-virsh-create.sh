@@ -728,6 +728,15 @@ TEST_COMMAND="${TEST_COMMAND} --disk ${VIRTIO_FILE},device=cdrom,bus=ide"
 # udev is connecting the usb device into vm, but driver fails :(
 # TODO: is usb device still bind in host?
 #   https://karlcode.owtelse.com/blog/2017/01/09/disabling-usb-ports-on-linux/
+# NOTE: yes and no. Error happens when device state is changed without unbind.
+# Device state: "Transfer files" / "Transfer photos"
+#  -> I had manually unbind the usb dev and then change the state.
+
+# Windows is installing default 'MTP USB Device' driver. Is that enough?
+#  - Do I need pass/connect some other device too?
+#  - Do I must force install 'correct' driver?
+# NOTE: 'MTP USB Device' is generic device name.
+#  - Why the real dev name is not passed (PV6000)?
 
 
 echo ""
