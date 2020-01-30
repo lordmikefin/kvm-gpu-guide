@@ -738,6 +738,8 @@ TEST_COMMAND="${TEST_COMMAND} --disk ${VIRTIO_FILE},device=cdrom,bus=ide"
 # NOTE: 'MTP USB Device' is generic device name.
 #  - Why the real dev name is not passed (PV6000)?
 
+# ... hmmm ... when using 'Virtual Machine Manager' the usb device is auto reconnected
+# -> this does not happen with 'spicy'   :(
 
 echo ""
 echo "Test creating vm. Here is the commnad:"
