@@ -691,6 +691,7 @@ TEST_COMMAND="${TEST_COMMAND} --network none"
 TEST_COMMAND="${TEST_COMMAND} --boot uefi"
 #TEST_COMMAND="${TEST_COMMAND} --cdrom ${LOCAL_FILE}"
 TEST_COMMAND="${TEST_COMMAND} --disk ${LOCAL_FILE},device=cdrom,bus=ide"
+TEST_COMMAND="${TEST_COMMAND} --disk ${VIRTIO_FILE},device=cdrom,bus=ide"
 
 #TEST_COMMAND="${TEST_COMMAND} --"
 
