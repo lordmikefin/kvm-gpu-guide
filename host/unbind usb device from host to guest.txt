@@ -1,4 +1,15 @@
 
+Disable automount
+https://askubuntu.com/questions/89244/how-to-disable-automount-in-nautiluss-preferences
+
+Check current state:
+ $ gsettings get org.gnome.desktop.media-handling automount
+
+Change the state
+ $ gsettings set org.gnome.desktop.media-handling automount false
+--------------------------
+
+
 https://karlcode.owtelse.com/blog/2017/01/09/disabling-usb-ports-on-linux/
 --
 
