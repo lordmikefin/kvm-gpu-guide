@@ -399,6 +399,12 @@ if [[ $((${SELECTED})) -gt 0 ]]; then
 	#echo "PCI_BUS_AUDIO : ${PCI_BUS_AUDIO[$((${SEL}-1))]}"
 	echo "PCI_BUS_VGA : ${NVIDIA_GPU}"
 	echo "PCI_BUS_AUDIO : ${NVIDIA_SOUND}"
+else
+	# TODO: do I need to set also something else?
+	# NOTE: enable 'spice' only when NONE device is selected.
+	# 'spice' is not compatible when real device is connected.
+	# Display 'spice'
+	SPICE_PORT=5924
 fi
 
 
@@ -448,7 +454,7 @@ PAR="${PAR} -vga none"
 #  https://devtalk.nvidia.com/default/topic/1030445/cuda-setup-and-installation/dual-gpu-system-in-ubuntu-16-04/
 
 # Display 'spice'
-SPICE_PORT=5924
+#SPICE_PORT=5924
 if [[ -n ${SPICE_PORT} ]]; then
 	# https://wiki.gentoo.org/wiki/QEMU/Linux_guest
 	# https://www.spice-space.org/download.html
