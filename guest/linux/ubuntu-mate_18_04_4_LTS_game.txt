@@ -1,0 +1,22 @@
+Setup notes.
+
+
+Host has samba installed:
+  \\192.168.122.1\sambashare
+Using path
+  /home/lordmike/kvm-workspace/software
+
+
+
+(2020-03-30)
+Create vm from the host
+ $ ./ubuntu-mate_18_04_4_LTS_game-init.sh
+
+
+Start vm
+ $ ./ubuntu-mate_18_04_4_LTS_game.sh
+
+
+Connect samba share for the quest
+
+
