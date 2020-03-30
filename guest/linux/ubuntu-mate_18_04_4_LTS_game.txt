@@ -51,6 +51,12 @@ For now just set resolution from "monitor preferences"
 
 
 
+Update all latest soft
+ $ sudo apt-get update
+ $ sudo apt-get upgrade
+
+
+
 
 
 
