@@ -18,5 +18,22 @@ Start vm
 
 
 Connect samba share for the quest
+ $ sudo apt-get install cifs-utils
+ $ sudo mkdir /mnt/software-share/
+ $ sudo mount -t cifs //192.168.122.1/sambashare/ /mnt/software-share/ -o file_mode=0777,dir_mode=0777
+
+
+
+I like to use 'aptitude' package manager
+ $ sudo apt-get install aptitude
+
+
+
+Install 'spice' drivers. Used when 'none' display device is selected.
+ $ sudo apt-get install spice-vdagent
+
+( https://www.spice-space.org/download.html )
+
+
 
 
