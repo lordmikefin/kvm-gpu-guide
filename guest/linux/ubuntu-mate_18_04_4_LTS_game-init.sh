@@ -404,8 +404,8 @@ PAR="${PAR} -boot menu=on"
 
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
-#PAR="${PAR} -vga qxl"
-#PAR="${PAR} -display sdl"
+PAR="${PAR} -vga qxl"
+PAR="${PAR} -display sdl"
 
 #PAR="${PAR} -display none"
 #PAR="${PAR} -vga none"
