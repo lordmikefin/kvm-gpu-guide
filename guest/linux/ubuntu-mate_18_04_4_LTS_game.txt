@@ -31,8 +31,25 @@ I like to use 'aptitude' package manager
 
 Install 'spice' drivers. Used when 'none' display device is selected.
  $ sudo apt-get install spice-vdagent
+ $ sudo apt-get install xserver-xorg-video-qxl-hwe-18.04
 
 ( https://www.spice-space.org/download.html )
+
+... hmmm ... these were already installed :)
+
+
+Auto resize the guest virtual display
+ $ xrandr --output Virtual-0 --mode auto
+--
+xrandr: cannot find mode auto
+--
+
+TODO: how to do this  :(
+( https://bbs.archlinux.org/viewtopic.php?id=193408 )
+
+For now just set resolution from "monitor preferences"
+
+
 
 
 
