@@ -78,6 +78,17 @@ Install Nvidia driver
 Install test game :)
  $ sudo apt-get install supertuxkart
 
+Install wine for running windows apps
+ $ sudo apt-get install wine64
+
+Get windows games from the NAS  (using Caja)
+  smb://172.16.16.254/
+
+Run Windows game
+ $ cd /mnt/software-share/linux/win_games/Black\ n\ White/
+ $ wine runblack.exe
+
+
 
 
 
