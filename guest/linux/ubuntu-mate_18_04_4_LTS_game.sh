@@ -585,6 +585,8 @@ echo ""
 if [[ "${SELECTED}" == "0" ]]; then
 	echo "No desplay device selected. Initialize virtual one."
 	PAR="${PAR} -vga qxl"
+	# NOTE: start 'spice' only if 'qxl' virtual card is used
+	SPICE_PORT=5925
 else
 	echo "NOTE: Can not use physical and virtal display at same time :("
 	PAR="${PAR} -vga none"
@@ -593,7 +595,7 @@ fi
 
 # Display 'spice'
 #SPICE_PORT=5924 # This port is used by Windows VM
-SPICE_PORT=5925
+#SPICE_PORT=5925
 if [[ -n ${SPICE_PORT} ]]; then
 	# https://wiki.gentoo.org/wiki/QEMU/Linux_guest
 	# https://www.spice-space.org/download.html
