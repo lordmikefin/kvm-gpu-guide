@@ -20,7 +20,9 @@ Start vm
 Connect samba share for the quest
  $ sudo apt-get install cifs-utils
  $ sudo mkdir /mnt/software-share/
- $ sudo mount -t cifs //192.168.122.1/sambashare/ /mnt/software-share/ -o file_mode=0777,dir_mode=0777
+ $ # sudo mount -t cifs //192.168.122.1/sambashare/ /mnt/software-share/ -o file_mode=0777,dir_mode=0777
+Previous command did not give write access :)
+ $ sudo mount -t cifs //192.168.122.1/sambashare/ /mnt/software-share/ -o username=lordmike,file_mode=0777,dir_mode=0777
 
 
 
@@ -54,6 +56,16 @@ For now just set resolution from "monitor preferences"
 Update all latest soft
  $ sudo apt-get update
  $ sudo apt-get upgrade
+
+
+
+
+(2020-03-31)
+
+Previous command did not give write access :)
+ $ sudo mount -t cifs //192.168.122.1/sambashare/ /mnt/software-share/ -o username=lordmike,file_mode=0777,dir_mode=0777
+
+
 
 
 
