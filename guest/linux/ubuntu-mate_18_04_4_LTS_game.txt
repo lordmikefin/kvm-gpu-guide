@@ -75,7 +75,8 @@ Previous command did not give write access :)
 Install Nvidia driver
  $ sudo apt-get install nvidia-driver-435
 
-
+Install test game :)
+ $ sudo apt-get install supertuxkart
 
 
 
