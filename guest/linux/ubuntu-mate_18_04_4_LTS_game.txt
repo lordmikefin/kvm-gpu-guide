@@ -90,6 +90,16 @@ Run Windows game
  $ wine runblack.exe
 
 
+It seems that mouse will halt in Black n White intro  :(
+
+Try using 'virtualbox' with 3D virtual card
+ $ sudo apt-get install virtualbox
+
+
+
+
+
+
 
 
 
