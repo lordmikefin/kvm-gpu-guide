@@ -62,10 +62,18 @@ Update all latest soft
 
 (2020-03-31)
 
+Start vm
+ $ ./ubuntu-mate_18_04_4_LTS_game.sh
+Use device
+  #1 	Subsystem: ASUSTeK Computer Inc. Device [1043:85d2]
+
+
 Previous command did not give write access :)
  $ sudo mount -t cifs //192.168.122.1/sambashare/ /mnt/software-share/ -o username=lordmike,file_mode=0777,dir_mode=0777
 
 
+Install Nvidia driver
+ $ sudo apt-get install nvidia-driver-435
 
 
 
