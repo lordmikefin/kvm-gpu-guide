@@ -86,6 +86,7 @@ Get windows games from the NAS  (using Caja)
 
 Run Windows game
  $ cd /mnt/software-share/linux/win_games/Black\ n\ White/
+ $ wine Setup.exe
  $ wine runblack.exe
 
 
