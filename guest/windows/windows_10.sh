@@ -427,7 +427,7 @@ PAR="-enable-kvm"
 PAR="${PAR} -M q35"
 
 # Memory
-PAR="${PAR} -m 4096"
+PAR="${PAR} -m 8192"
 
 # CPU
 PAR="${PAR} -cpu host,kvm=off"
