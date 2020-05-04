@@ -447,7 +447,7 @@ PAR="${PAR} -boot menu=on"
 # TODO: Ask user if virtual display is needed.
 #PAR="${PAR} -vga qxl"
 #PAR="${PAR} -display sdl"
-PAR="${PAR} -vga none"
+#PAR="${PAR} -vga none"
 #PAR="${PAR} -display none"
 # NOTE: Guest OS (ubuntu) will not write to virtual and physical display card at once ?!
 # TODO: Dual gpu system?!
@@ -456,6 +456,8 @@ PAR="${PAR} -vga none"
 # Display 'spice'
 #SPICE_PORT=5924
 if [[ -n ${SPICE_PORT} ]]; then
+	PAR="${PAR} -vga qxl"
+	PAR="${PAR} -display sdl"
 	# https://wiki.gentoo.org/wiki/QEMU/Linux_guest
 	# https://www.spice-space.org/download.html
 	# $ sudo apt-get install spice-vdagent
@@ -465,6 +467,8 @@ if [[ -n ${SPICE_PORT} ]]; then
 	PAR="${PAR} -device virtio-serial"
 	PAR="${PAR} -chardev spicevmc,id=vdagent,name=vdagent"
 	PAR="${PAR} -device virtserialport,chardev=vdagent,name=com.redhat.spice.0"
+else
+	PAR="${PAR} -vga none"
 fi
 
 # Monitoring screen
