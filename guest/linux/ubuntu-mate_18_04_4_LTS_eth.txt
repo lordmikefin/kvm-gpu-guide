@@ -1,3 +1,25 @@
 Setup notes.
 
+---------------------------------------------------
+(2020-05-10)
+Create vm from the host
+ $ ./ubuntu-mate_18_04_4_LTS_eth-init.sh
+
+
+
+
+
+
+--
+TODO: install 'ethereum'
+--
+Installing Geth
+https://insights.ubuntu.com/2017/09/20/mining-ethereum-on-ubuntu-with-a-gtx-1070
+
+https://github.com/ethereum/go-ethereum
+https://github.com/ethereum/go-ethereum/wiki/Building-Ethereum
+https://geth.ethereum.org/docs/install-and-build/installing-geth
+
+Install on Ubuntu via PPAs
+https://geth.ethereum.org/docs/install-and-build/installing-geth#install-on-ubuntu-via-ppas
 
