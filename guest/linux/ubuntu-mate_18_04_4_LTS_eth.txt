@@ -1,12 +1,33 @@
 Setup notes.
 
+Host has samba installed:
+  \\192.168.122.1\sambashare
+Using path
+  /home/lordmike/kvm-workspace/software
+
+
 ---------------------------------------------------
 (2020-05-10)
 Create vm from the host
  $ ./ubuntu-mate_18_04_4_LTS_eth-init.sh
 
+Start vm
+ $ ./ubuntu-mate_18_04_4_LTS_eth.sh
 
 
+I like to use 'aptitude' package manager
+ $ sudo apt-get install aptitude
+
+
+Connect samba share for the quest
+ $ sudo apt-get install cifs-utils
+ $ sudo mkdir /mnt/software-share/
+ $ sudo mount -t cifs //192.168.122.1/sambashare/ /mnt/software-share/ -o username=lordmike,file_mode=0777,dir_mode=0777
+
+
+Update all latest soft
+ $ sudo apt-get update
+ $ sudo apt-get upgrade
 
 
 
