@@ -50,4 +50,65 @@ Copy exicting account into folder
 
 
 
+https://geth.ethereum.org/docs/interface/mining
+
+ $ geth console
+coinbase: 0x6821f60e5d580f8ccbdcc22cc08c27450aafc971
+datadir: /home/lordmike/.ethereum
+
+ > eth.accounts
+["0x6821f60e5d580f8ccbdcc22cc08c27450aafc971"]
+
+ > eth.getBalance(eth.coinbase).toNumber();
+0
+
+
+Start miner with 4 threads.
+NOTE: this will genereate the DAG.
+TODO: can DAG be preloaded?
+ > miner.start(4)
+ > miner.start(3)
+ > miner.start(2)
+Network syncing, will start miner afterwards
+ -> NOTE: will take long time
+
+NOTE: Miner will calculate tons of stuff in /home/lordmike/.ethash and /home/lordmike/.ethereum/geth/chaindata/
+TODO: Can I clean up some of these folders ?
+
+
+NOTE: look for these messages in the log
+https://ethereum.stackexchange.com/questions/16040/why-did-it-returned-null-after-call-miner-start
+--
+INFO [07-25|18:46:25] Successfully sealed new block            number=72 hash=d0316e…36554e
+INFO [07-25|18:46:25] 🔗 block reached canonical chain          number=67 hash=a89be4…5a73be
+INFO [07-25|18:46:25] 🔨 mined potential block                  number=72 hash=d0316e…36554e
+INFO [07-25|18:46:25] Commit new mining work                   number=73 txs=0 uncles=0 elapsed=158.932µs
+--
+
+
+lordmike@lordmike-eth-PC-Q35-ICH9-2009:~$ du -h /home/lordmike/.ethash
+2,1G	/home/lordmike/.ethash
+
+
+lordmike@lordmike-eth-PC-Q35-ICH9-2009:~$ du -h /home/lordmike/.ethereum/
+8,0K	/home/lordmike/.ethereum/keystore
+133M	/home/lordmike/.ethereum/geth/ethash
+1,9M	/home/lordmike/.ethereum/geth/nodes
+62G	/home/lordmike/.ethereum/geth/chaindata/ancient
+83G	/home/lordmike/.ethereum/geth/chaindata
+83G	/home/lordmike/.ethereum/geth
+83G	/home/lordmike/.ethereum/
+
+
+
+ > miner.hashrate
+ > miner.getHashrate()
+131755
+
+ > miner.stop()
+
+
+
+
+
 
