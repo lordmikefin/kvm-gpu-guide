@@ -108,7 +108,16 @@ lordmike@lordmike-eth-PC-Q35-ICH9-2009:~$ du -h /home/lordmike/.ethereum/
  > miner.stop()
 
 
+Log into file
+ $ geth --mine --minerthreads=2  >> geth-mine.log
 
 
+
+NOTE: do not just remove "ancient" folder :)
+Got error: "Fatal: Error starting protocol stack: ancient chain segments already extracted, please set --datadir.ancient to the correct path"
+
+Removed /home/lordmike/.ethash and /home/lordmike/.ethereum/geth
+
+TODO: how to shrink the vm disk
 
 
