@@ -129,6 +129,7 @@ Size before running the script:
 -rw-r--r-- 1 lordmike lordmike  99G touko 16 10:59 ubuntu18_04-eth.qcow2
 
 And after:
-
+ $ ls -lh /home/lordmike/kvm-workspace/vm/ubuntu-mate_18_04-eth/ubuntu18_04-eth.qcow2
+-rw-r--r-- 1 root root 18G touko 18 09:43 /home/lordmike/kvm-workspace/vm/ubuntu-mate_18_04-eth/ubuntu18_04-eth.qcow2
 
 

@@ -23,8 +23,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
-CURRENT_SCRIPT_DATE="2020-05-17"
+CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_DATE="2020-05-18"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -174,7 +174,7 @@ lm_check_KVM_WORKSPACE
 # Ubuntu eth vm disk
 KVM_WORKSPACE_VM_UBUNTU="${KVM_WORKSPACE}/vm/ubuntu-mate_18_04-eth"
 VM_DISK_UBUNTU="${KVM_WORKSPACE_VM_UBUNTU}/ubuntu18_04-eth.qcow2"
-
+MOUNT_VM_DISK_UBUNTU="/mnt/vm_disk"
 
 
 unset INPUT
@@ -190,6 +190,17 @@ esac
 
 
 
+unset INPUT
+lm_read_to_INPUT "Do you wanna compact disk ${VM_DISK_UBUNTU} ?"
+case "${INPUT}" in
+	"YES" ) 
+		INPUT="YES" ;;
+	"NO" ) 
+		exit 1 ;;
+	"FAILED" | * )
+		lm_failure_message; exit 1 ;;
+esac
+
 
 
 
@@ -198,11 +209,55 @@ esac
 
 
 
-# TODO: 1st   verify                VM_DISK_UBUNTU
-# TODO: 2nd   mount                 VM_DISK_UBUNTU
-# TODO: 3rd   zero out free space   VM_DISK_UBUNTU
-# TODO: 4th   unmount               VM_DISK_UBUNTU
-# TODO: 5th   compact               VM_DISK_UBUNTU
+# TODO: create error checking for each step
+
+
+# 1st   verify                VM_DISK_UBUNTU
+if [[ ! -f "${VM_DISK_UBUNTU}" ]]; then
+	lm_failure_message "${BASH_SOURCE[0]}" "${LINENO}" "File ${VM_DISK_UBUNTU} does not exists."
+	exit 1
+fi
+
+
+BSIZE="1M"
+# TODO: get real free space automaticly <- now manually 
+#COUNT_AVAIL=80692580
+COUNT_AVAIL=80692
+
+
+# 2nd   mount                 VM_DISK_UBUNTU
+sudo modprobe nbd
+DISK_TYPE="qcow2"
+DISK_NODE="/dev/nbd1"
+#PARTITION="${DISK_NODE}p1"
+PARTITION="${DISK_NODE}p2"
+echo "Mount disk ${VM_DISK_UBUNTU} into ${MOUNT_VM_DISK_UBUNTU}"
+
+sudo qemu-nbd -f ${DISK_TYPE} -c ${DISK_NODE} ${VM_DISK_UBUNTU}
+sudo mkdir -p ${MOUNT_VM_DISK_UBUNTU}
+#sudo mount -t exfat -o force,rw ${PARTITION} ${MOUNT_VM_DISK_UBUNTU}
+#sudo mount -o force,rw ${PARTITION} ${MOUNT_VM_DISK_UBUNTU}
+sudo mount ${PARTITION} ${MOUNT_VM_DISK_UBUNTU}
+
+
+# 3rd   zero out free space   VM_DISK_UBUNTU
+echo "zero out all free space in ${MOUNT_VM_DISK_UBUNTU}"
+#sudo dd if=/dev/zero of=${MOUNT_VM_DISK_UBUNTU}/tmp/zerofile.raw status=progress
+sudo dd if=/dev/zero of=${MOUNT_VM_DISK_UBUNTU}/tmp/zerofile.raw status=progress bs=${BSIZE} count=${COUNT_AVAIL}
+sudo rm -v ${MOUNT_VM_DISK_UBUNTU}/tmp/zerofile.raw
+
+# 4th   unmount               VM_DISK_UBUNTU
+echo "Unmount disk ${VM_DISK_UBUNTU} from ${MOUNT_VM_DISK_UBUNTU}"
+sudo umount ${MOUNT_VM_DISK_UBUNTU}
+sudo qemu-nbd -d ${DISK_NODE}
+
+# 5th   compact               VM_DISK_UBUNTU
+echo "Compact the disk  ${VM_DISK_UBUNTU}"
+sudo mv -v ${VM_DISK_UBUNTU} ${VM_DISK_UBUNTU}_backup
+sudo qemu-img convert -O qcow2 ${VM_DISK_UBUNTU}_backup ${VM_DISK_UBUNTU}
+echo "The disk compacted  ${VM_DISK_UBUNTU}"
+ls -lh ${VM_DISK_UBUNTU}
+echo "Remove the backup file: ${VM_DISK_UBUNTU}_backup"
 
 
 
