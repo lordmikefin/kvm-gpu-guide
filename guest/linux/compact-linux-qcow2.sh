@@ -23,7 +23,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_VER="0.0.3"
 CURRENT_SCRIPT_DATE="2020-05-18"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -253,8 +253,8 @@ sudo qemu-nbd -d ${DISK_NODE}
 
 # 5th   compact               VM_DISK_UBUNTU
 echo "Compact the disk  ${VM_DISK_UBUNTU}"
-sudo mv -v ${VM_DISK_UBUNTU} ${VM_DISK_UBUNTU}_backup
-sudo qemu-img convert -O qcow2 ${VM_DISK_UBUNTU}_backup ${VM_DISK_UBUNTU}
+mv -v ${VM_DISK_UBUNTU} ${VM_DISK_UBUNTU}_backup
+qemu-img convert -O qcow2 ${VM_DISK_UBUNTU}_backup ${VM_DISK_UBUNTU}
 echo "The disk compacted  ${VM_DISK_UBUNTU}"
 ls -lh ${VM_DISK_UBUNTU}
 echo "Remove the backup file: ${VM_DISK_UBUNTU}_backup"
