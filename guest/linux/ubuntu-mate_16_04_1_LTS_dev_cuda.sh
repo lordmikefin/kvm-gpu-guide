@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
-CURRENT_SCRIPT_DATE="2019-08-05"
+CURRENT_SCRIPT_VER="0.0.3"
+CURRENT_SCRIPT_DATE="2020-08-15"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -404,7 +404,7 @@ else
 	# NOTE: enable 'spice' only when NONE device is selected.
 	# 'spice' is not compatible when real device is connected.
 	# Display 'spice'
-	SPICE_PORT=5924
+	SPICE_PORT=5951
 fi
 
 
@@ -623,7 +623,7 @@ echo ""
 if [[ -n ${SPICE_PORT} ]]; then
 	echo ""
 	echo "Connect to 'spice' remote server."
-	echo " $ spicy --title Windows 127.0.0.1 -p ${SPICE_PORT}"
+	echo " $ spicy --title Ubuntu 127.0.0.1 -p ${SPICE_PORT}"
 	echo "You could also use 'remote-viewer'"
 	echo " $ remote-viewer --title Windows spice://127.0.0.1:${SPICE_PORT}"
 fi

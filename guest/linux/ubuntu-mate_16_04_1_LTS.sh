@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.10"
-CURRENT_SCRIPT_DATE="2019-09-02"
+CURRENT_SCRIPT_VER="0.0.11"
+CURRENT_SCRIPT_DATE="2020-08-15"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -593,7 +593,7 @@ fi
 
 # Display 'spice'
 #SPICE_PORT=5924 # This port is used by Windows VM
-SPICE_PORT=5925
+SPICE_PORT=5950
 if [[ -n ${SPICE_PORT} ]]; then
 	# https://wiki.gentoo.org/wiki/QEMU/Linux_guest
 	# https://www.spice-space.org/download.html

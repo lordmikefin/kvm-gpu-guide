@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
-CURRENT_SCRIPT_DATE="2020-03-30"
+CURRENT_SCRIPT_VER="0.0.3"
+CURRENT_SCRIPT_DATE="2020-08-15"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -586,7 +586,7 @@ if [[ "${SELECTED}" == "0" ]]; then
 	echo "No desplay device selected. Initialize virtual one."
 	PAR="${PAR} -vga qxl"
 	# NOTE: start 'spice' only if 'qxl' virtual card is used
-	SPICE_PORT=5925
+	SPICE_PORT=5953
 else
 	echo "NOTE: Can not use physical and virtal display at same time :("
 	PAR="${PAR} -vga none"
