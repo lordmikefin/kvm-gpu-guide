@@ -21,8 +21,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
-CURRENT_SCRIPT_DATE="2020-07-17"
+CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_DATE="2020-08-15"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -449,7 +449,7 @@ PAR="${PAR} -vga qxl" # NOTE: Install 'qxl' driver from 'virtio' iso disk.
 #PAR="${PAR} -display none"
 
 # Display 'spice'
-SPICE_PORT=5925
+SPICE_PORT=5926
 if [[ -n ${SPICE_PORT} ]]; then
 	# https://wiki.gentoo.org/wiki/QEMU/Windows_guest
 	# https://www.spice-space.org/download.html
