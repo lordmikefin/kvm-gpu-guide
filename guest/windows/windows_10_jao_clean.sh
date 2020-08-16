@@ -21,8 +21,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
-CURRENT_SCRIPT_DATE="2020-08-15"
+CURRENT_SCRIPT_VER="0.0.3"
+CURRENT_SCRIPT_DATE="2020-08-16"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -419,8 +419,6 @@ fi
 
 
 
-
-
 # TODO: Set parameters for QEMU
 
 # -enable-kvm -> enable hardware virtualization
@@ -440,16 +438,32 @@ PAR="${PAR} -smp 4,sockets=1,cores=4,threads=1"
 # Boot menu
 PAR="${PAR} -boot menu=on"
 
+
+# TODO: parametirize - ask from user
+# testing - LIDEDE USB to HDMI Adapter
+#LIDEDE_USB_HDMI=true
+if [[ -n ${LIDEDE_USB_HDMI} ]]; then
+	PAR="${PAR} -vga none"
+	PAR="${PAR} -display none"
+	# testing - LIDEDE USB to HDMI Adapter
+	PAR="${PAR} -usb -usbdevice host:534d:6021" # ID 534d:6021 
+	PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
+else
+	SPICE_PORT=5926
+	PAR="${PAR} -vga qxl"
+	PAR="${PAR} -usbdevice tablet"
+fi
+
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
-PAR="${PAR} -vga qxl" # NOTE: Install 'qxl' driver from 'virtio' iso disk.
+#PAR="${PAR} -vga qxl" # NOTE: Install 'qxl' driver from 'virtio' iso disk.
 #PAR="${PAR} -vga std"
 #PAR="${PAR} -vga virtio"
 #PAR="${PAR} -display sdl"
 #PAR="${PAR} -display none"
 
 # Display 'spice'
-SPICE_PORT=5926
+#SPICE_PORT=5926
 if [[ -n ${SPICE_PORT} ]]; then
 	# https://wiki.gentoo.org/wiki/QEMU/Windows_guest
 	# https://www.spice-space.org/download.html
@@ -507,7 +521,9 @@ PAR="${PAR} -usb -usbdevice host:046d:c077" # Bus 001 Device 006: ID 046d:c077 L
 #PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
 #PAR="${PAR} -usb -usbdevice host:0e8d:2008" # Bus 001 Device 005: ID 0e8d:2008 MediaTek Inc. (BV6000 Transfer files)
 #PAR="${PAR} -usb -usbdevice host:0e8d:200b" # Bus 001 Device 009: ID 0e8d:200b MediaTek Inc. (BV6000 Transfer photos)
-PAR="${PAR} -usbdevice tablet"
+#PAR="${PAR} -usbdevice tablet"
+
+
 
 # OVMF
 PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
