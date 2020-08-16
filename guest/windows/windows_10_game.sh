@@ -385,12 +385,14 @@ PAR="${PAR} -smp 4,sockets=1,cores=4,threads=1"
 # Boot menu
 PAR="${PAR} -boot menu=on"
 
+# fix the clock - Windows and linux handle clock differently
+PAR="${PAR} -rtc base=localtime"
+
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
 #PAR="${PAR} -vga qxl"
 PAR="${PAR} -display sdl"
 #PAR="${PAR} -display none"
-
 
 # Monitoring screen
 PAR="${PAR} -monitor stdio"

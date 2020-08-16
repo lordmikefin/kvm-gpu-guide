@@ -438,6 +438,9 @@ PAR="${PAR} -smp 4,sockets=1,cores=4,threads=1"
 # Boot menu
 PAR="${PAR} -boot menu=on"
 
+# fix the clock - Windows and linux handle clock differently
+PAR="${PAR} -rtc base=localtime"
+
 
 # TODO: parametirize - ask from user
 # testing - LIDEDE USB to HDMI Adapter
