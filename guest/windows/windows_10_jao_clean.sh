@@ -563,8 +563,11 @@ fi
 #  -> Now it is alone in group7 and other devices moved into group 8
 #  -> And controller address changed from 03:00.0 to 04:00.0
 #
+
+# TODO: ask user - do you wanna to connect the USB controller :)
+# TOOD: verify controller exists
 #USB_CONTROLLER="03:00.0"
-#USB_CONTROLLER="04:00.0"
+USB_CONTROLLER="04:00.0"
 if [[ ! -z ${USB_CONTROLLER} ]]; then
 	PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.1,addr=00.0,multifunction=on"
 fi
