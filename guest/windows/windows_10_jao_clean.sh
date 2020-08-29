@@ -558,9 +558,13 @@ fi
 #
 #qemu-system-x86_64: -device vfio-pci,host=03:00.0,bus=root.1,addr=00.0,multifunction=on: vfio: error opening /dev/vfio/7: No such file or directory
 #qemu-system-x86_64: -device vfio-pci,host=03:00.0,bus=root.1,addr=00.0,multifunction=on: vfio: failed to get group 7
-#qemu-system-x86_64: -device vfio-pci,host=03:00.0,bus=root.1,addr=00.0,multifunction=on: Device initialization failed
+#
+# NOTE: Controller was not alone in group 7. I moded the card into diff PCIe slot
+#  -> Now it is alone in group7 and other devices moved into group 8
+#  -> And controller address changed from 03:00.0 to 04:00.0
 #
 #USB_CONTROLLER="03:00.0"
+#USB_CONTROLLER="04:00.0"
 if [[ ! -z ${USB_CONTROLLER} ]]; then
 	PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.1,addr=00.0,multifunction=on"
 fi
