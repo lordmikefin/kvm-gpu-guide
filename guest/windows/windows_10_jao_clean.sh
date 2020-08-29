@@ -549,6 +549,20 @@ if [[ ! -z ${NVIDIA_SOUND} ]]; then
 	PAR="${PAR} -device vfio-pci,host=${NVIDIA_SOUND},bus=root.1,addr=00.1"
 fi
 
+
+# USB controller passthrough
+# 03:00.0 USB controller: Renesas Technology Corp. uPD720201 USB 3.0 Host Controller (rev 03)
+#
+#qemu-system-x86_64: -device vfio-pci,host=03:00.0,bus=root.1,addr=00.0,multifunction=on: vfio: error opening /dev/vfio/7: No such file or directory
+#qemu-system-x86_64: -device vfio-pci,host=03:00.0,bus=root.1,addr=00.0,multifunction=on: vfio: failed to get group 7
+#qemu-system-x86_64: -device vfio-pci,host=03:00.0,bus=root.1,addr=00.0,multifunction=on: Device initialization failed
+#
+#USB_CONTROLLER="03:00.0"
+if [[ ! -z ${USB_CONTROLLER} ]]; then
+	PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.1,addr=00.0,multifunction=on"
+fi
+
+
 # Samba share. As default samba server address is  \\10.0.2.4\qemu\
 if [[ ! -z ${KVM_WORKSPACE_SOFTWARE} ]]; then
 	PAR="${PAR} -smb ${KVM_WORKSPACE_SOFTWARE}"
