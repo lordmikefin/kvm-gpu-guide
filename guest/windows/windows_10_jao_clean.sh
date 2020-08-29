@@ -21,8 +21,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.3"
-CURRENT_SCRIPT_DATE="2020-08-16"
+CURRENT_SCRIPT_VER="0.0.4"
+CURRENT_SCRIPT_DATE="2020-08-29"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -660,9 +660,25 @@ if [[ -n ${SPICE_PORT} ]]; then
 	echo " $ remote-viewer --title Windows spice://127.0.0.1:${SPICE_PORT}"
 fi
 
+
+if [[ ! -z ${USB_CONTROLLER} ]]; then
+	echo ""
+	echo "Bind usb controller to vfio"
+	sudo ../../script/vfio-bind.sh 0000:${USB_CONTROLLER}
+fi
+
+
 echo ""
 #qemu-system-x86_64 ${PAR}
 sudo qemu-system-x86_64 ${PAR}
+
+
+if [[ ! -z ${USB_CONTROLLER} ]]; then
+	echo ""
+	echo "Bind usb controller back to xhci_hcd"
+	sudo ../../script/vfio-unbind.sh ${USB_CONTROLLER}
+	sudo ../../script/xhci_hcd-bind.sh ${USB_CONTROLLER}
+fi
 
 
 echo ""
