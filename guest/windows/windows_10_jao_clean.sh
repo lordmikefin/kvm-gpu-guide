@@ -550,6 +550,9 @@ if [[ ! -z ${NVIDIA_SOUND} ]]; then
 fi
 
 
+# QEMU #4: How to add a USB controller to a QEMU/KVM virtual machine
+# https://www.youtube.com/watch?v=IYOmuPzrdXk
+
 # USB controller passthrough
 # 03:00.0 USB controller: Renesas Technology Corp. uPD720201 USB 3.0 Host Controller (rev 03)
 #
