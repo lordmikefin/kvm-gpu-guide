@@ -445,10 +445,17 @@ PAR="${PAR} -rtc base=localtime"
 # TODO: parametirize - ask from user
 # testing - LIDEDE USB to HDMI Adapter
 #LIDEDE_USB_HDMI=true
+#VIRTUAL_DISPLAY=true
 if [[ -n ${LIDEDE_USB_HDMI} ]]; then
 	PAR="${PAR} -vga none"
 	PAR="${PAR} -display none"
 	# testing - LIDEDE USB to HDMI Adapter
+	PAR="${PAR} -usb -usbdevice host:534d:6021" # ID 534d:6021 
+	PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
+elif [[ -n ${VIRTUAL_DISPLAY} ]]; then
+	PAR="${PAR} -vga std"
+	#PAR="${PAR} -vga qxl"
+	PAR="${PAR} -display sdl"
 	PAR="${PAR} -usb -usbdevice host:534d:6021" # ID 534d:6021 
 	PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
 else
