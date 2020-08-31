@@ -66,6 +66,16 @@ NOTE: OS X does not have drivers for NVIDIA GTX 1050!
 
 -----
 
+USB Card
+--------
+
+Supageek PCI-E to USB 3.0  Expansion Card
+( https://www.amazon.de/gp/product/B07FK28BXX/ref=ppx_yo_dt_b_asin_title_o00_s01?ie=UTF8&psc=1 )
+
+NOTE: When connecting Android into virtual machine it will reconnect on permission. But it newer reconnects. For this reason I passthrough this card into VM.
+
+-----
+
 .. ..
 
     <!--- my own nots :)
