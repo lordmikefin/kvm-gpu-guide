@@ -573,16 +573,16 @@ PAR="${PAR} -device hda-duplex"
 
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
-#PAR="${PAR} -vga qxl"
+PAR="${PAR} -vga qxl"
 #PAR="${PAR} -display sdl"
 #PAR="${PAR} -display none"
-PAR="${PAR} -vga none"
+#PAR="${PAR} -vga none"
 
 
 
 
 # Display 'spice'
-#SPICE_PORT=5924
+SPICE_PORT=5924
 if [[ -n ${SPICE_PORT} ]]; then
 	# https://wiki.gentoo.org/wiki/QEMU/Linux_guest
 	# https://www.spice-space.org/download.html
@@ -637,7 +637,8 @@ fi
 # USB passthrough. Keyboard and mouse.
 # TODO: parameterize. Or auto find.
 PAR="${PAR} -usb -usbdevice host:046d:c077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
-PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
+#PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
+PAR="${PAR} -device usb-host,hostbus=1,hostaddr=3" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
 PAR="${PAR} -usbdevice tablet"
 
 # OVMF
@@ -651,8 +652,8 @@ PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis
 # TODO: Ask user which card should be used.
 #NVIDIA_GPU="01:00.0"
 #NVIDIA_SOUND="01:00.1"
-NVIDIA_GPU="02:00.0"
-NVIDIA_SOUND="02:00.1"
+#NVIDIA_GPU="02:00.0"
+#NVIDIA_SOUND="02:00.1"
 if [[ ! -z ${NVIDIA_GPU} ]]; then
 	PAR="${PAR} -device vfio-pci,host=${NVIDIA_GPU},bus=root.1,addr=00.0,multifunction=on,x-vga=on"
 fi
