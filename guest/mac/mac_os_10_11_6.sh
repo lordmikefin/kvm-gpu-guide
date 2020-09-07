@@ -582,7 +582,7 @@ PAR="${PAR} -vga qxl"
 
 
 # Display 'spice'
-SPICE_PORT=5924
+SPICE_PORT=5975
 if [[ -n ${SPICE_PORT} ]]; then
 	# https://wiki.gentoo.org/wiki/QEMU/Linux_guest
 	# https://www.spice-space.org/download.html
