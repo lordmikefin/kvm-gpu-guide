@@ -216,6 +216,12 @@ BACKUP_IFS="${IFS}"
 IFS='
 '
 
+# TODO: scan for AMD/ATI Radeon cards
+# 02:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Device 67df (rev ef) (prog-if 00 [VGA controller])
+# NOTE(2020-01-02): for now I manually added line into /etc/modprobe.d/vfio.conf
+# options vfio-pci ids=10de:1c81,10de:0fb9,10de:128b,10de:0e0f,1002:67df,1002:aaf0
+
+
 # Look for Nvidia and Intel GPUs. Write info into 'MyDevices.txt' file.
 #for i in ${NVIDIA_VGA} ; do
 for i in ${VGA} ; do
