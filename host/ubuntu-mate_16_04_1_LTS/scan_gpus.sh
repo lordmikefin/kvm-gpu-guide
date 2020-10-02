@@ -220,6 +220,11 @@ IFS='
 # 02:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Device 67df (rev ef) (prog-if 00 [VGA controller])
 # NOTE(2020-01-02): for now I manually added line into /etc/modprobe.d/vfio.conf
 # options vfio-pci ids=10de:1c81,10de:0fb9,10de:128b,10de:0e0f,1002:67df,1002:aaf0
+# ... hmmm ... AMD Radeon card is not bound into vfio ???   :(
+# I had to manually bind before starting the VM
+# sudo ../../script/vfio-bind.sh 0000:02:00.0
+# sudo ../../script/vfio-bind.sh 0000:02:00.1
+
 
 
 # Look for Nvidia and Intel GPUs. Write info into 'MyDevices.txt' file.
