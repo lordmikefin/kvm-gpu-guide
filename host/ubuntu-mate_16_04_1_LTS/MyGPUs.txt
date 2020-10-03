@@ -1,6 +1,6 @@
 
 Result of script: scan_gpus.sh
-Script version: 0.0.4 (2018-01-14)
+Script version: 0.0.5 (2020-10-03)
 -----------------------------------------------
 
 Card is Intel
