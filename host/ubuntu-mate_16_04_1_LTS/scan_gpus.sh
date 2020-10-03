@@ -19,8 +19,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.6"
-CURRENT_SCRIPT_DATE="2020-10-03"
+CURRENT_SCRIPT_VER="0.0.7"
+CURRENT_SCRIPT_DATE="2020-10-04"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -335,7 +335,28 @@ ${PCI_BUS_AUDIO}
 	fi
 	if [ ${IS_AMD} == 1 ] ; then
 		echo "Card is Advanced Micro Devices"  | tee -a ${OUTPUT_FILE}
+		IFS='.' # Set array separator as period.
+		for x in ${PCI_BUS_VGA} ; do
+			#echo ${x}
+			if [[ ${x} == *":"* ]] ; then
+				#echo ${x}
+				# Nvidia audio device is usually in XX.00.1 address
+				PCI_BUS_AUDIO=${x}.1
+				IFS=' ' # Set non array separator.
+				#echo ${PCI_BUS_AUDIO}
+				for z in $(lspci -nn -s ${PCI_BUS_AUDIO}) ; do
+					#echo ${z}
+					if [[ ${z} == "["*":"*"]" ]] ; then
+						#echo "device type [ManufactureID:DeviceTypeID]: ${z}"
+						DEVICE_TYPE_AUDIO=${z}
+					fi
+				done
+			fi
+		done
+
+		IFS='' # Set non array separator.
 		echo $(lspci -nnk -s ${PCI_BUS_VGA})  | tee -a ${OUTPUT_FILE}
+		echo $(lspci -nnk -s ${PCI_BUS_AUDIO})  | tee -a ${OUTPUT_FILE}
 	fi
 	
 	echo ""  | tee -a ${OUTPUT_FILE}
