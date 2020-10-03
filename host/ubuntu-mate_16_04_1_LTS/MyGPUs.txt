@@ -22,12 +22,14 @@ Card is NVIDIA
 	Kernel modules: snd_hda_intel
 
 
+
+
 Card is NVIDIA
-02:00.0 VGA compatible controller [0300]: NVIDIA Corporation Device [10de:128b] (rev a1)
+03:00.0 VGA compatible controller [0300]: NVIDIA Corporation Device [10de:128b] (rev a1)
 	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:8c93]
 	Kernel driver in use: vfio-pci
 	Kernel modules: nvidiafb, nouveau
-02:00.1 Audio device [0403]: NVIDIA Corporation GK208 HDMI/DP Audio Controller [10de:0e0f] (rev a1)
+03:00.1 Audio device [0403]: NVIDIA Corporation GK208 HDMI/DP Audio Controller [10de:0e0f] (rev a1)
 	Subsystem: Micro-Star International Co., Ltd. [MSI] GK208 HDMI/DP Audio Controller [1462:8c93]
 	Kernel driver in use: vfio-pci
 	Kernel modules: snd_hda_intel
