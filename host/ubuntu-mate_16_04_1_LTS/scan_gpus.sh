@@ -19,7 +19,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.7"
+CURRENT_SCRIPT_VER="0.0.8"
 CURRENT_SCRIPT_DATE="2020-10-04"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -357,6 +357,15 @@ ${PCI_BUS_AUDIO}
 		IFS='' # Set non array separator.
 		echo $(lspci -nnk -s ${PCI_BUS_VGA})  | tee -a ${OUTPUT_FILE}
 		echo $(lspci -nnk -s ${PCI_BUS_AUDIO})  | tee -a ${OUTPUT_FILE}
+
+		NVIDIA_DEVICES=${NVIDIA_DEVICES}${DEVICE_TYPE}${DEVICE_TYPE_AUDIO}
+		
+		# Collect all AMD device adresses into file. It will be use by vm scripts.
+		let COUNT_SELECTIONS=COUNT_SELECTIONS+1
+		NVIDIA_DEVICES_SELECTIONS="${NVIDIA_DEVICES_SELECTIONS} #${COUNT_SELECTIONS} $(lspci -nnk -s ${PCI_BUS_VGA} | grep -i subsystem) 
+${PCI_BUS_VGA}
+${PCI_BUS_AUDIO}
+"
 	fi
 	
 	echo ""  | tee -a ${OUTPUT_FILE}
@@ -437,7 +446,7 @@ if [ ${IS_NVIDIA} == 1 ] ; then
 	VFIO_OPTIONS=""
 	# Set array separators.
 	IFS='[]'
-	echo "list of device types: ${NVIDIA_DEVICES}"
+	#echo "list of device types: ${NVIDIA_DEVICES}"
 	for i in ${NVIDIA_DEVICES} ; do
 		#echo ${i}
 		if [ ! -z ${i} ] ; then # Not empty
