@@ -76,6 +76,17 @@ NOTE: When connecting Android into virtual machine it will reconnect on permissi
 
 -----
 
+3rd GPU
+-------
+
+Sapphire Radeon RX 570 8GB GDDR5
+( https://www.sapphiretech.com/en/consumer/pulse-rx-570-8g-g5 )
+
+* AMD Radeon™ RX 570
+  ( https://www.amd.com/en/products/graphics/radeon-rx-570 )
+
+-----
+
 .. ..
 
     <!--- my own nots :)
