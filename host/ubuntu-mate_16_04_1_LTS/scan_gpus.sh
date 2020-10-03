@@ -19,7 +19,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.5"
+CURRENT_SCRIPT_VER="0.0.6"
 CURRENT_SCRIPT_DATE="2020-10-03"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -206,7 +206,6 @@ echo "-----------------------------------------------"  | tee -a ${OUTPUT_FILE}
 VGA=$(lspci -nn | grep -i vga)
 
 COUNT=0
-HAS_NVIDIA=0
 NVIDIA_DEVICES=""
 NVIDIA_DEVICES_SELECTIONS=""
 COUNT_SELECTIONS=0
@@ -249,6 +248,7 @@ for i in ${VGA} ; do
 	DEVICE_TYPE_AUDIO=""
 	IS_NVIDIA=0
 	IS_INTEL=0
+	IS_AMD=0
 	IFS=' '
 	for x in ${i} ; do
 		#echo ${x}
@@ -263,11 +263,14 @@ for i in ${VGA} ; do
 		if [ ${x} == "NVIDIA" ] ; then
 			#echo "is nvidia: ${x}"
 			IS_NVIDIA=1
-			HAS_NVIDIA=1
 		fi
 		if [ ${x} == "Intel" ] ; then
-			#echo "is nvidia: ${x}"
+			#echo "is Intel: ${x}"
 			IS_INTEL=1
+		fi
+		if [ ${x} == "[AMD/ATI]" ] ; then
+			#echo "is Advanced Micro Devices: ${x}"
+			IS_AMD=1
 		fi
 	done
 	
@@ -328,6 +331,10 @@ ${PCI_BUS_AUDIO}
 		#echo "pci bus: ${PCI_BUS_VGA}"
 		#echo "device type [ManufactureID:DeviceTypeID]: ${DEVICE_TYPE}"
 		#lspci -nnk -s ${PCI_BUS_VGA}
+		echo $(lspci -nnk -s ${PCI_BUS_VGA})  | tee -a ${OUTPUT_FILE}
+	fi
+	if [ ${IS_AMD} == 1 ] ; then
+		echo "Card is Advanced Micro Devices"  | tee -a ${OUTPUT_FILE}
 		echo $(lspci -nnk -s ${PCI_BUS_VGA})  | tee -a ${OUTPUT_FILE}
 	fi
 	
