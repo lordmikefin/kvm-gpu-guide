@@ -225,6 +225,15 @@ IFS='
 # sudo ../../script/vfio-bind.sh 0000:02:00.0
 # sudo ../../script/vfio-bind.sh 0000:02:00.1
 
+# Check vfio driver is loaded during bootup
+#  $ dmesg | grep -i vfio
+
+# https://bufferoverflow.io/gpu-passthrough/
+# https://forum.level1techs.com/t/ubuntu-18-04-vfio-pcie-passthrough/127011
+
+# DO NOT forget to update initramfs after 'modprobe' changes !
+#  $ sudo update-initramfs -u
+
 
 
 # Look for Nvidia and Intel GPUs. Write info into 'MyDevices.txt' file.
@@ -371,6 +380,11 @@ echo "# -----------------------------------------------"  | tee -a ${OUTPUT_VFIO
 echo "# "  | tee -a ${OUTPUT_VFIO_CONF_FILE}
 echo "# Set this file into folder:"  | tee -a ${OUTPUT_VFIO_CONF_FILE}
 echo "# /etc/modprobe.d/"  | tee -a ${OUTPUT_VFIO_CONF_FILE}
+
+
+echo ""  | tee -a ${OUTPUT_VFIO_CONF_FILE}
+echo "# DO NOT forget to update initramfs after 'modprobe' changes !"  | tee -a ${OUTPUT_VFIO_CONF_FILE}
+echo "#  $ sudo update-initramfs -u"  | tee -a ${OUTPUT_VFIO_CONF_FILE}
 
 
 # You need to set the host to ignore MSRS, or your OS X will bootloop.
