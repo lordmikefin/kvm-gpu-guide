@@ -1,0 +1,18 @@
+Setup notes.
+
+Host has samba installed:
+  \\192.168.122.1\sambashare
+Using path
+  /home/lordmike/kvm-workspace/software
+
+
+---------------------------------------------------
+(2020-10-03)
+Create vm from the host
+ $ ./ubuntu-mate_18_04_4_LTS_amd-init.sh
+
+Start vm
+ $ ./ubuntu-mate_18_04_4_LTS_amd.sh
+
+
+
