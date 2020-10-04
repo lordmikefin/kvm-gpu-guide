@@ -154,6 +154,17 @@ UEFI Signer(s)        : Microsoft Corporation UEFI CA 2011
 
 
 
+https://www.reddit.com/r/VFIO/comments/apjhwm/passthrough_works_but_gpu_is_unstable_and_crashes/
+-------------------------
+" setting the PCIe speed generation to Gen2 seems to have also improved the situation greatly. Possible CPU or motherboard issue, I'm afraid."
+
+ -> I forced my PCIe speeds to Gen2 (bios)
+
+NOTE: sort of helpped :(  Now windows says error (52) in amd driver.
+And will halt on driver reinstall.
+But now the host does not freez ... so sort of helpped
+-------------------------
+
 
 
 
