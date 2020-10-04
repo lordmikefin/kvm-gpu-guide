@@ -1,6 +1,6 @@
 
 Result of script: scan_gpus.sh
-Script version: 0.0.9 (2020-10-04)
+Script version: 0.0.10 (2020-10-04)
 -----------------------------------------------
 
 Card is Intel
@@ -11,34 +11,12 @@ Card is Intel
 	Kernel modules: i915_bpo
 
 
-Card is NVIDIA
-01:00.0 VGA compatible controller [0300]: NVIDIA Corporation Device [10de:1c81] (rev a1)
-	Subsystem: ASUSTeK Computer Inc. Device [1043:85d2]
-	Kernel driver in use: vfio-pci
-	Kernel modules: nvidiafb, nouveau
-01:00.1 Audio device [0403]: NVIDIA Corporation Device [10de:0fb9] (rev a1)
-	Subsystem: ASUSTeK Computer Inc. Device [1043:85d2]
-	Kernel driver in use: vfio-pci
-	Kernel modules: snd_hda_intel
-
-
 Card is Advanced Micro Devices
-02:00.0 VGA compatible controller [0300]: Advanced Micro Devices, Inc. [AMD/ATI] Device [1002:67df] (rev ef)
+01:00.0 VGA compatible controller [0300]: Advanced Micro Devices, Inc. [AMD/ATI] Device [1002:67df] (rev ef)
 	Subsystem: Device [1da2:e353]
 	Kernel driver in use: vfio-pci
-02:00.1 Audio device [0403]: Advanced Micro Devices, Inc. [AMD/ATI] Device [1002:aaf0]
+01:00.1 Audio device [0403]: Advanced Micro Devices, Inc. [AMD/ATI] Device [1002:aaf0]
 	Subsystem: Device [1da2:aaf0]
-	Kernel driver in use: vfio-pci
-	Kernel modules: snd_hda_intel
-
-
-Card is NVIDIA
-03:00.0 VGA compatible controller [0300]: NVIDIA Corporation Device [10de:128b] (rev a1)
-	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:8c93]
-	Kernel driver in use: vfio-pci
-	Kernel modules: nvidiafb, nouveau
-03:00.1 Audio device [0403]: NVIDIA Corporation GK208 HDMI/DP Audio Controller [10de:0e0f] (rev a1)
-	Subsystem: Micro-Star International Co., Ltd. [MSI] GK208 HDMI/DP Audio Controller [1462:8c93]
 	Kernel driver in use: vfio-pci
 	Kernel modules: snd_hda_intel
 

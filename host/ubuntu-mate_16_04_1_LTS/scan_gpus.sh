@@ -19,7 +19,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.9"
+CURRENT_SCRIPT_VER="0.0.10"
 CURRENT_SCRIPT_DATE="2020-10-04"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -438,8 +438,9 @@ echo "options kvm ignore_msrs=1"  | tee -a ${OUTPUT_VFIO_CONF_FILE}
 
 
 
+# TODO: Improve this. Is all needed for amd and nvidia?
 # Write Nvidia GPU device ids into 'vfio.conf' file.
-if [ ${IS_NVIDIA} == 1 ] ; then
+if [ ${IS_NVIDIA} == 1 ] | [ ${IS_AMD} == 1 ] ; then
 	echo ""  | tee -a ${OUTPUT_VFIO_CONF_FILE}
 	echo "blacklist nouveau"  | tee -a ${OUTPUT_VFIO_CONF_FILE}
 	#VFIO_OPTIONS="options vfio-pci ids="
