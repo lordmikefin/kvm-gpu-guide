@@ -41,6 +41,60 @@ Nothing about ACS. Does your board require ACS? If so try physically re arrangin
 
 TODO: maybe IOMMU group is the reason for the lock up?
  -> remove other PCIe cards
+--
+
+... hmmm ... is video bios needed for RX 570 ???
+
+https://www.youtube.com/watch?v=DnhgBFEkrLE
+https://youtu.be/DnhgBFEkrLE?t=230
+
+https://www.techpowerup.com/vgabios/?architecture=AMD&manufacturer=Sapphire&model=RX+570&interface=&memType=&memSize=&since=
+https://www.techpowerup.com/vgabios/208854/sapphire-rx570-8192-180123-1
+
+Sapphire.RX570.8192.180123_1.rom
+
+/media/4TB_Store/kvm-workspace/software/linux/vga_bios/Sapphire.RX570.8192.180123_1.rom
+
+
+https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF#UEFI_(OVMF)_compatibility_in_VBIOS
+-------------------------
+Error 43 can be caused by the GPU's VBIOS without UEFI support. To check whenever your VBIOS supports it, you will have to use rom-parser:
+
+$ git clone https://github.com/awilliam/rom-parser
+$ cd rom-parser && make
+
+Dump the GPU VBIOS:
+
+# echo 1 > /sys/bus/pci/devices/0000:01:00.0/rom
+# cat /sys/bus/pci/devices/0000:01:00.0/rom > /tmp/image.rom
+# echo 0 > /sys/bus/pci/devices/0000:01:00.0/rom
+
+And test it for compatibility:
+
+$ ./rom-parser /tmp/image.rom
+
+Valid ROM signature found @600h, PCIR offset 190h
+	PCIR: type 0 (x86 PC-AT), vendor: 10de, device: 1184, class: 030000
+	PCIR: revision 0, vendor revision: 1
+Valid ROM signature found @fa00h, PCIR offset 1ch
+	PCIR: type 3 (EFI), vendor: 10de, device: 1184, class: 030000
+	PCIR: revision 3, vendor revision: 0
+		EFI: Signature Valid, Subsystem: Boot, Machine: X64
+	Last image
+
+To be UEFI compatible, you need a "type 3 (EFI)" in the result. If it is not there, try updating your GPU VBIOS. GPU manufacturers often share VBIOS upgrades on their support pages. A large database of known compatible and working VBIOSes (along with their UEFI compatibility status!) is available on TechPowerUp.
+
+Updated VBIOS can be used in the VM without flashing. To load it in QEMU:
+
+-device vfio-pci,host=07:00.0,......,romfile=/path/to/your/gpu/bios.bin \
+-------------------------
+
+... hmmm ... with Sapphire.RX570.8192.180123_1.rom system does not crash,
+but card will not show up in the vm
+-> maybe this was not correct rom ???
+
+
+
 
 
 
