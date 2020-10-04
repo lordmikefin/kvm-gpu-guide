@@ -160,11 +160,20 @@ https://www.reddit.com/r/VFIO/comments/apjhwm/passthrough_works_but_gpu_is_unsta
 
  -> I forced my PCIe speeds to Gen2 (bios)
 
-NOTE: sort of helpped :(  Now windows says error (52) in amd driver.
+NOTE: sort of helpped :(  Now windows says error (43) in amd driver.
 And will halt on driver reinstall.
 But now the host does not freez ... so sort of helpped
 -------------------------
 
+
+... hmmm ... driver is showing error when PCIe speed is limited to Gen2
+this might be good, because AMD is causing problems for VMs since v20.5.1  !!!
+
+https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF#%22Error_43:_Driver_failed_to_load%22_on_Nvidia_GPUs_passed_to_Windows_VMs
+--
+
+I installed v20.1.1 - installer did not crash, but still no image on display :(
+--
 
 
 
