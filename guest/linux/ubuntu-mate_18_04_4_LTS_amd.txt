@@ -112,6 +112,7 @@ This has correct Subsystem Id: 	1DA2 E353  but only 4 Gb mem
 
 https://www.techpowerup.com/vgabios/203352/sapphire-rx570-8192-170629
 This has correct Subsystem Id: 	1DA2 E353  and 8 Gb mem
+This one lists Samsung as supported mem. And GPU-Z shows I have Samsung memory.
 Sapphire.RX570.8192.170629.rom
 
 https://www.techpowerup.com/vgabios/198750/sapphire-rx570-8192-180105
