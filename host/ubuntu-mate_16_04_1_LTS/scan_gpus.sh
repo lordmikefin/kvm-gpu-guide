@@ -440,7 +440,9 @@ echo "options kvm ignore_msrs=1"  | tee -a ${OUTPUT_VFIO_CONF_FILE}
 
 # TODO: Improve this. Is all needed for amd and nvidia?
 # Write Nvidia GPU device ids into 'vfio.conf' file.
-if [ ${IS_NVIDIA} == 1 ] | [ ${IS_AMD} == 1 ] ; then
+#echo "IS_NVIDIA ${IS_NVIDIA}"
+#echo "IS_AMD ${IS_AMD}"
+if [ ${IS_NVIDIA} == 1 ] || [ ${IS_AMD} == 1 ] ; then
 	echo ""  | tee -a ${OUTPUT_VFIO_CONF_FILE}
 	echo "blacklist nouveau"  | tee -a ${OUTPUT_VFIO_CONF_FILE}
 	#VFIO_OPTIONS="options vfio-pci ids="
