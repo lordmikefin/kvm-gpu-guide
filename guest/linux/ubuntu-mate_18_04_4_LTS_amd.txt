@@ -15,4 +15,32 @@ Start vm
  $ ./ubuntu-mate_18_04_4_LTS_amd.sh
 
 
+--
+(2020-10-04)
+Starting vm with AMD Radeon will Freezes/Locks Up the vm and the host ?!
+
+https://forum.level1techs.com/t/iommu-pcie-passthrough-rx580-on-archlinux-freezes-locks-up/118342/3
+
+ $ sudo lspci -v -s 1:00.0 | grep -i "MSI"
+ $ sudo lspci -v -s 2:00.0 | grep -i "MSI"
+ $ sudo lspci -v -s 3:00.0 | grep -i "MSI"
+
+"I don’t think it’s related to MSI."
+
+
+"You are using ACS override. Don’t do that.
+
+The reason the driver crashes is because it’s not true pcie isolation and the drivers are seeing something… somewhere… and causing an issue.
+
+Thems the breaks when using ACS override. Sometimes it’s k. Sometimes not.
+
+Kernel CLI should be intel_iommu=on iommu=1
+
+Nothing about ACS. Does your board require ACS? If so try physically re arranging your cards. Your symptom is exactly what I ran into on Ryzen before agesa 1006. ACS was no hope there because “one big group”"
+--
+
+TODO: maybe IOMMU group is the reason for the lock up?
+ -> remove other PCIe cards
+
+
 
