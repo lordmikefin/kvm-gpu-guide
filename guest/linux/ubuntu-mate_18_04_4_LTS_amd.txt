@@ -93,6 +93,45 @@ Updated VBIOS can be used in the VM without flashing. To load it in QEMU:
 but card will not show up in the vm
 -> maybe this was not correct rom ???
 
+--
+!!! NOTE: now card info is carbage !!!
+
+$ sudo lspci -vv -s 01:00.0
+01:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Device 67df (rev ff) (prog-if ff)
+	!!! Unknown header type 7f
+	Kernel driver in use: vfio-pci
+--
+
+
+https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF#UEFI_(OVMF)_compatibility_in_VBIOS
+-------------------------
+One should compare VBIOS versions between host and guest systems using nvflash (Linux versions under Show more versions) or GPU-Z (in Windows guest). To check the currently loaded VBIOS:
+
+$ ./nvflash --version
+
+...
+Version               : 80.04.XX.00.97
+...
+UEFI Support          : No
+UEFI Version          : N/A
+UEFI Variant Id       : N/A ( Unknown )
+UEFI Signer(s)        : Unsigned
+...
+
+And to check a given VBIOS file:
+
+$ ./nvflash --version NV299MH.rom
+
+...
+Version               : 80.04.XX.00.95
+...
+UEFI Support          : Yes
+UEFI Version          : 0x10022 (Jul  2 2013 @ 16377903 )
+UEFI Variant Id       : 0x0000000000000004 ( GK1xx )
+UEFI Signer(s)        : Microsoft Corporation UEFI CA 2011
+...
+-------------------------
+
 
 
 
