@@ -102,6 +102,25 @@ $ sudo lspci -vv -s 01:00.0
 	Kernel driver in use: vfio-pci
 --
 
+After boot all is ok :)
+01:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Device 67df (rev ef) (prog-if 00 [VGA controller])
+	Subsystem: Device 1da2:e353
+
+--
+https://www.techpowerup.com/vgabios/191558/sapphire-rx570-4096-170306
+This has correct Subsystem Id: 	1DA2 E353  but only 4 Gb mem
+
+https://www.techpowerup.com/vgabios/203352/sapphire-rx570-8192-170629
+This has correct Subsystem Id: 	1DA2 E353  and 8 Gb mem
+Sapphire.RX570.8192.170629.rom
+
+https://www.techpowerup.com/vgabios/198750/sapphire-rx570-8192-180105
+This has correct Subsystem Id: 	1DA2 E353  and 8 Gb mem  , only newer?? ... hmmm ... diff mem facturer
+Sapphire.RX570.8192.180105.rom
+--
+
+
+
 
 https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF#UEFI_(OVMF)_compatibility_in_VBIOS
 -------------------------

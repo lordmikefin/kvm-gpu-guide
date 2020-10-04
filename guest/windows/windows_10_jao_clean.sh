@@ -551,6 +551,8 @@ PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis
 if [[ ! -z ${NVIDIA_GPU} ]]; then
 	PAR="${PAR} -device vfio-pci,host=${NVIDIA_GPU},bus=root.1,addr=00.0,multifunction=on,x-vga=on"
 	#PAR="${PAR} -device vfio-pci,host=${NVIDIA_GPU},bus=root.1,addr=00.0,multifunction=on,x-vga=on,romfile=/media/4TB_Store/kvm-workspace/software/linux/vga_bios/Sapphire.RX570.8192.180123_1.rom"
+	#PAR="${PAR} -device vfio-pci,host=${NVIDIA_GPU},bus=root.1,addr=00.0,multifunction=on,x-vga=on,romfile=/media/4TB_Store/kvm-workspace/software/linux/vga_bios/Sapphire.RX570.8192.180105.rom"
+	#PAR="${PAR} -device vfio-pci,host=${NVIDIA_GPU},bus=root.1,addr=00.0,multifunction=on,x-vga=on,romfile=/media/4TB_Store/kvm-workspace/software/linux/vga_bios/Sapphire.RX570.8192.170629.rom"
 fi
 
 if [[ ! -z ${NVIDIA_SOUND} ]]; then
