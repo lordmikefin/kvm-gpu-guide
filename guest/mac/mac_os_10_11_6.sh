@@ -18,7 +18,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.4"
+CURRENT_SCRIPT_VER="0.0.5"
 CURRENT_SCRIPT_DATE="2020-10-06"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -539,16 +539,27 @@ PAR="${PAR} -device hda-duplex"
 
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
-PAR="${PAR} -vga qxl"
+#PAR="${PAR} -vga qxl"
 #PAR="${PAR} -display sdl"
 #PAR="${PAR} -display none"
 #PAR="${PAR} -vga none"
 
+# TODO: can mac show image in virtual and real display at once ???
+echo ""
+if [[ "${SELECTED}" == "0" ]]; then
+	echo "No desplay device selected. Initialize virtual one."
+	PAR="${PAR} -vga qxl"
+	# NOTE: start 'spice' only if 'qxl' virtual card is used
+	SPICE_PORT=5975
+else
+	echo "NOTE: Can not use physical and virtal display at same time :("
+	PAR="${PAR} -vga none"
+fi
 
 
 
 # Display 'spice'
-SPICE_PORT=5975
+#SPICE_PORT=5975
 if [[ -n ${SPICE_PORT} ]]; then
 	# https://wiki.gentoo.org/wiki/QEMU/Linux_guest
 	# https://www.spice-space.org/download.html
