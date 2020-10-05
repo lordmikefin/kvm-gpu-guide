@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.3"
-CURRENT_SCRIPT_DATE="2019-08-05"
+CURRENT_SCRIPT_VER="0.0.4"
+CURRENT_SCRIPT_DATE="2020-10-06"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -379,164 +379,130 @@ echo ""
 #NVIDIA_GPU="02:00.0" # Nvidia GeForce GT 710 # Micro-Star International Co., Ltd. [MSI] Device
 #NVIDIA_SOUND="02:00.1"
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+VM_GPUS_CONF_FILE="$(realpath "${CURRENT_SCRIPT_DIR}/../../host/ubuntu-mate_16_04_1_LTS/vm_GPUs.conf")"
+if [[ ! -f "${VM_GPUS_CONF_FILE}" ]]; then
+	# >&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Source script '${IMPORT_FUNCTIONS}' missing!"
+	lm_failure_message "${BASH_SOURCE[0]}" "${LINENO}" "Config file '${VM_GPUS_CONF_FILE}' missing!"
+	exit 1
+fi
+
+echo ""
+echo "VM_GPUS_CONF_FILE : ${VM_GPUS_CONF_FILE}"
+echo ""
+echo "$(cat "${VM_GPUS_CONF_FILE}")"
+echo "length : ${#VM_GPUS_CONF_FILE}"
+echo ""
+
+
+echo ""
+echo "Select card to use with the vm."
+echo ""
+
+BACKUP_IFS="${IFS}"
+#IFS="
+#"
+IFS=$'\n'
+COUNT=0
+COUNT_DEV=0
+SELECTIONS_STR="0,"
+SELECTIONS=(" #0	NONE") # Declare array
+PCI_BUS_VGA=() # Declare array
+PCI_BUS_AUDIO=() # Declare array
+echo "LINE ${COUNT} : ${LINE}"
+for LINE in $(cat "${VM_GPUS_CONF_FILE}") ; do
+	let COUNT=COUNT+1
+	#echo "LINE ${COUNT} : ${LINE}"
+	if [ ${COUNT} == 1 ]; then
+		SELECTIONS+=(${LINE}) # Append to array
+		#echo "LINE : ${LINE}"
+		#echo "COUNT : ${COUNT}"
+	elif [ ${COUNT} == 2 ]; then
+		PCI_BUS_VGA+=(${LINE}) # Append to array
+		#echo "COUNT : ${COUNT}"
+	elif [ ${COUNT} == 3 ]; then
+		PCI_BUS_AUDIO+=(${LINE}) # Append to array
+		COUNT=0
+		let COUNT_DEV=COUNT_DEV+1
+		SELECTIONS_STR+="${COUNT_DEV},"
+	fi
+done
+
+IFS="${BACKUP_IFS}"
+
+echo ""
+echo "SELECTIONS : ${SELECTIONS[@]}"
+echo ""
+echo "PCI_BUS_VGA : ${PCI_BUS_VGA[@]}"
+echo "PCI_BUS_AUDIO : ${PCI_BUS_AUDIO[@]}"
+echo "SELECTIONS_STR : ${SELECTIONS_STR}"
+echo ""
+
+#INPUT=2
+#if [[ ${SELECTIONS_STR} == *"${INPUT},"* ]]; then
+#	echo "FOUND"
+#fi
+
+unset SELECTED
+unset INPUT
+for LINE in "${SELECTIONS[@]}" ; do
+	echo " ${LINE}"
+done
+while [[ -z ${INPUT} ]]; do
+#	echo -n "Select one device: "
+#	for LINE in "${SELECTIONS[@]}" ; do
+#		echo " ${LINE}"
+#	done
+	
+	echo -n "Select one device: "
+	read INPUT
+	
+	STRING_LOW_CASE="$(lm_string_to_lower_case "${INPUT}")"  || { STRING_LOW_CASE="FAILED";  lm_failure_message; }
+
+	if [[ -z ${INPUT} ]]; then
+		INPUT="N/A"
+	fi
+	
+	if [[ ${SELECTIONS_STR} == *"${STRING_LOW_CASE},"* ]]; then
+		echo "FOUND"
+		SELECTED=${STRING_LOW_CASE}
+	else
+		unset INPUT  # Clear input ( = stay in while loop )
+	fi
+	
+#	case "${STRING_LOW_CASE}" in
+#		"yes" | "ye" | "y" )
+#			INPUT="YES" ;;
+#		"no" | "n" | "" )
+#			INPUT="NO" ;;
+#		"FAILED" )
+#			INPUT="FAILED" ;;
+#		* )
+#			unset INPUT ;; # Clear input ( = stay in while loop )
+#	esac
+
+done
+
+echo ""
+echo "SELECTED : ${SELECTED}"
+#echo $((${SELECTED}-1))
+
+
+
+# Host device bus address
+#NVIDIA_GPU="01:00.0" # Nvidia GeForce GTX 1050 # ASUSTeK Computer Inc. Device
+#NVIDIA_SOUND="01:00.1"
+#NVIDIA_GPU="02:00.0" # Nvidia GeForce GT 710 # Micro-Star International Co., Ltd. [MSI] Device
+#NVIDIA_SOUND="02:00.1"
+SEL=$((${SELECTED}-1))
+if [[ $((${SELECTED})) -gt 0 ]]; then
+	NVIDIA_GPU="${PCI_BUS_VGA[${SEL}]}"
+	NVIDIA_SOUND="${PCI_BUS_AUDIO[${SEL}]}"
+	echo ""
+	#echo "PCI_BUS_VGA : ${PCI_BUS_VGA[$((${SEL}-1))]}"
+	#echo "PCI_BUS_AUDIO : ${PCI_BUS_AUDIO[$((${SEL}-1))]}"
+	echo "PCI_BUS_VGA : ${NVIDIA_GPU}"
+	echo "PCI_BUS_AUDIO : ${NVIDIA_SOUND}"
+fi
 
 
 
