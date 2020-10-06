@@ -650,7 +650,7 @@ fi
 # USB passthrough. Keyboard and mouse.
 # TODO: parameterize. Or auto find.
 PAR="${PAR} -usb -usbdevice host:046d:c077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
-PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
+PAR="${PAR} -device usb-host,hostbus=1,hostaddr=3" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
 PAR="${PAR} -usbdevice tablet"
 
 # OVMF
