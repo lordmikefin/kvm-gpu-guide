@@ -394,7 +394,8 @@ PAR="${PAR} -rtc base=localtime"
 
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
-#PAR="${PAR} -vga qxl"
+PAR="${PAR} -vga qxl"
+#PAR="${PAR} -vga virtio"
 PAR="${PAR} -display sdl"
 #PAR="${PAR} -display none"
 
@@ -404,7 +405,7 @@ PAR="${PAR} -monitor stdio"
 # USB passthrough. Keyboard and mouse.
 # TODO: parameterize. Or auto find.
 PAR="${PAR} -usb -usbdevice host:046d:c077"
-PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4"
+PAR="${PAR} -device usb-host,hostbus=1,hostaddr=3"
 #PAR="${PAR} -usbdevice tablet"
 
 # OVMF
