@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.3"
-CURRENT_SCRIPT_DATE="2018-08-19"
+CURRENT_SCRIPT_VER="0.0.4"
+CURRENT_SCRIPT_DATE="2020-10-10"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -164,6 +164,10 @@ OVMF_VARS_WIN10="${KVM_WORKSPACE_VM_WIN10}/windows_10_game_VARS.fd"
 VM_DISK_WIN10="${KVM_WORKSPACE_VM_WIN10}/windows_10_game.qcow2"
 KVM_WORKSPACE_SOFTWARE="${KVM_WORKSPACE}/software"
 VM_DISK_DATA="${KVM_WORKSPACE_VM_WIN10}/windows_10_game_data_d_drive.qcow2"
+
+# Get 'virtio' iso file.
+KVM_WORKSPACE_ISO="${KVM_WORKSPACE}/iso"
+VIRTIO_FILE="${KVM_WORKSPACE_ISO}/virtio-win-0.1.185.iso"
 
 
 unset INPUT
@@ -449,6 +453,9 @@ PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
 #PAR="${PAR} -drive file=${ISO_FILE_USB},format=raw,if=none,id=drive-ide1-0-0"
 #PAR="${PAR} -drive file=${LOCAL_FILE},format=raw,if=none,id=drive-ide1-0-0"
 #PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
+
+# 'virtio' driver disk
+PAR="${PAR} -cdrom ${VIRTIO_FILE}"
 
 # Ubuntu ISO file
 #PAR="${PAR} -drive file=${LOCAL_FILE_UBUNTU},format=raw,if=none,id=drive-ide1-0-0"
