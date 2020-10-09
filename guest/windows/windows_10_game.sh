@@ -394,7 +394,7 @@ PAR="${PAR} -rtc base=localtime"
 
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
-PAR="${PAR} -vga qxl"
+#PAR="${PAR} -vga qxl"
 #PAR="${PAR} -vga virtio"
 PAR="${PAR} -display sdl"
 #PAR="${PAR} -display none"
