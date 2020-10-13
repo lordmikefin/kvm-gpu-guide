@@ -406,6 +406,7 @@ PAR="${PAR} -monitor stdio"
 # TODO: parameterize. Or auto find.
 PAR="${PAR} -usb -usbdevice host:046d:c077"
 PAR="${PAR} -device usb-host,hostbus=1,hostaddr=3"
+PAR="${PAR} -usb -usbdevice host:046d:0a17"  # Logitech, Inc. G330 Headset
 #PAR="${PAR} -usbdevice tablet"
 
 # OVMF
