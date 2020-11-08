@@ -10,7 +10,7 @@
 #   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/LICENSE.rst
 # 
 # Latest version of this script file:
-#   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/host/ubuntu-mate_16_04_1_LTS/scan_apps.sh
+#   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/host/ubuntu-mate_20_04_1_LTS/scan_apps.sh
 
 # Scan all applications needed for host system.
 # And list version of all applications.
@@ -19,8 +19,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.13"
-CURRENT_SCRIPT_DATE="2019-07-09"
+CURRENT_SCRIPT_VER="0.0.1"
+CURRENT_SCRIPT_DATE="2020-11-08"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
