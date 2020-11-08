@@ -374,6 +374,7 @@ dpkg_version optional joe
 dpkg_version optional gparted
 dpkg_version optional aptitude
 dpkg_version optional keepassx
+dpkg_version optional samba
 
 
 
