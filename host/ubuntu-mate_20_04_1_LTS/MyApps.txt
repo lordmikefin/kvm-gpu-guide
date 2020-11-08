@@ -1,6 +1,6 @@
 
 Result of script: scan_apps.sh
-Script version: 0.0.13 (2019-07-09)
+Script version: 0.0.1 (2020-11-08)
 -----------------------------------------------
 
 OS name: Linux, Kernel version: 5.4.0-52-generic, Arch: x86_64
