@@ -1,44 +1,45 @@
 
 Result of script: scan_gpus.sh
-Script version: 0.0.10 (2020-10-04)
+Script version: 0.0.11 (2020-11-08)
 -----------------------------------------------
 
 Card is Intel
-00:02.0 VGA compatible controller [0300]: Intel Corporation Device [8086:5912] (rev 04)
+00:02.0 VGA compatible controller [0300]: Intel Corporation HD Graphics 630 [8086:5912] (rev 04)
 	DeviceName: Onboard IGD
-	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:7a58]
-	Kernel driver in use: i915_bpo
-	Kernel modules: i915_bpo
+	Subsystem: Micro-Star International Co., Ltd. [MSI] HD Graphics 630 [1462:7a58]
+	Kernel driver in use: i915
+	Kernel modules: i915
 
 
 Card is Advanced Micro Devices
-01:00.0 VGA compatible controller [0300]: Advanced Micro Devices, Inc. [AMD/ATI] Device [1002:67df] (rev ef)
-	Subsystem: Device [1da2:e353]
-	Kernel driver in use: vfio-pci
-01:00.1 Audio device [0403]: Advanced Micro Devices, Inc. [AMD/ATI] Device [1002:aaf0]
-	Subsystem: Device [1da2:aaf0]
-	Kernel driver in use: vfio-pci
+01:00.0 VGA compatible controller [0300]: Advanced Micro Devices, Inc. [AMD/ATI] Ellesmere [Radeon RX 470/480/570/570X/580/580X/590] [1002:67df] (rev ef)
+	Subsystem: Sapphire Technology Limited Radeon RX 570 Pulse 4GB [1da2:e353]
+	Kernel driver in use: amdgpu
+	Kernel modules: amdgpu
+01:00.1 Audio device [0403]: Advanced Micro Devices, Inc. [AMD/ATI] Ellesmere HDMI Audio [Radeon RX 470/480 / 570/580/590] [1002:aaf0]
+	Subsystem: Sapphire Technology Limited Ellesmere HDMI Audio [Radeon RX 470/480 / 570/580/590] [1da2:aaf0]
+	Kernel driver in use: snd_hda_intel
 	Kernel modules: snd_hda_intel
 
 
 Card is NVIDIA
-02:00.0 VGA compatible controller [0300]: NVIDIA Corporation Device [10de:1c81] (rev a1)
-	Subsystem: ASUSTeK Computer Inc. Device [1043:85d2]
-	Kernel driver in use: vfio-pci
+02:00.0 VGA compatible controller [0300]: NVIDIA Corporation GP107 [GeForce GTX 1050] [10de:1c81] (rev a1)
+	Subsystem: ASUSTeK Computer Inc. GP107 [GeForce GTX 1050] [1043:85d2]
+	Kernel driver in use: nouveau
 	Kernel modules: nvidiafb, nouveau
-02:00.1 Audio device [0403]: NVIDIA Corporation Device [10de:0fb9] (rev a1)
-	Subsystem: ASUSTeK Computer Inc. Device [1043:85d2]
-	Kernel driver in use: vfio-pci
+02:00.1 Audio device [0403]: NVIDIA Corporation GP107GL High Definition Audio Controller [10de:0fb9] (rev a1)
+	Subsystem: ASUSTeK Computer Inc. GP107GL High Definition Audio Controller [1043:85d2]
+	Kernel driver in use: snd_hda_intel
 	Kernel modules: snd_hda_intel
 
 
 Card is NVIDIA
-03:00.0 VGA compatible controller [0300]: NVIDIA Corporation Device [10de:128b] (rev a1)
-	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:8c93]
-	Kernel driver in use: vfio-pci
+03:00.0 VGA compatible controller [0300]: NVIDIA Corporation GK208B [GeForce GT 710] [10de:128b] (rev a1)
+	Subsystem: Micro-Star International Co., Ltd. [MSI] GK208B [GeForce GT 710] [1462:8c93]
+	Kernel driver in use: nouveau
 	Kernel modules: nvidiafb, nouveau
 03:00.1 Audio device [0403]: NVIDIA Corporation GK208 HDMI/DP Audio Controller [10de:0e0f] (rev a1)
 	Subsystem: Micro-Star International Co., Ltd. [MSI] GK208 HDMI/DP Audio Controller [1462:8c93]
-	Kernel driver in use: vfio-pci
+	Kernel driver in use: snd_hda_intel
 	Kernel modules: snd_hda_intel
 
