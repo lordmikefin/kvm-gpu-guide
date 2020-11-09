@@ -21,7 +21,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
+CURRENT_SCRIPT_VER="0.0.2"
 CURRENT_SCRIPT_DATE="2020-11-09"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -461,7 +461,9 @@ elif [[ -n ${VIRTUAL_DISPLAY} ]]; then
 else
 	SPICE_PORT=5926
 	PAR="${PAR} -vga qxl"
-	PAR="${PAR} -usbdevice tablet"
+	# TODO: qemu-system-x86_64: -usbdevice tablet: '-usbdevice' is deprecated, please use '-device usb-...' instead
+	# TODO: how usb devices are set in QEMU 4.2.1 ???
+	#PAR="${PAR} -usbdevice tablet"
 fi
 
 # Display   qxl
