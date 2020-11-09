@@ -21,7 +21,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_VER="0.0.3"
 CURRENT_SCRIPT_DATE="2020-11-09"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -589,7 +589,9 @@ fi
 
 # Samba share. As default samba server address is  \\10.0.2.4\qemu\
 if [[ ! -z ${KVM_WORKSPACE_SOFTWARE} ]]; then
-	PAR="${PAR} -smb ${KVM_WORKSPACE_SOFTWARE}"
+	#PAR="${PAR} -smb ${KVM_WORKSPACE_SOFTWARE}"
+	echo "TODO: built-in SMB server conf has changed !"
+	echo " https://wiki.archlinux.org/index.php/QEMU#QEMU's_built-in_SMB_server"
 fi
 
 # TODO: Use 9p instead of cifs-samba share
