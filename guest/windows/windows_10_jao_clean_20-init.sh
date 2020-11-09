@@ -21,7 +21,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_VER="0.0.3"
 CURRENT_SCRIPT_DATE="2020-11-09"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -382,7 +382,12 @@ PAR="${PAR} -rtc base=localtime"
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
 #PAR="${PAR} -vga qxl"
-PAR="${PAR} -display sdl"
+# TODO: qemu-system-x86_64: Display 'sdl' is not available.
+# https://github.com/hashicorp/packer/issues/7675
+# https://github.com/hashicorp/packer/pull/7676
+# NOTE: Use 'gtk' instead of 'sdl' ? maybe?
+#PAR="${PAR} -display sdl"
+PAR="${PAR} -display gtk"
 #PAR="${PAR} -display none"
 
 # Monitoring screen
