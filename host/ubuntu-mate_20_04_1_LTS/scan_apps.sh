@@ -19,7 +19,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_VER="0.0.3"
 CURRENT_SCRIPT_DATE="2020-11-09"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -370,6 +370,7 @@ dpkg_version required virt-manager
 # https://mike42.me/blog/2019-08-how-to-use-the-qemu-bridge-helper-on-debian-10
 # https://github.com/cloudius-systems/osv/issues/707
 dpkg_version required bridge-utils
+dpkg_version required virt-viewer  # NOTE: needed for 'spicy' ???
 
 dpkg_version required python3
 dpkg_version required python3-pip
