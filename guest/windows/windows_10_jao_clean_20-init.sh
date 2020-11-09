@@ -21,7 +21,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.3"
+CURRENT_SCRIPT_VER="0.0.4"
 CURRENT_SCRIPT_DATE="2020-11-09"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -171,7 +171,7 @@ lm_check_KVM_WORKSPACE
 # 4,3 GB (4334315520 bytes) (2017-06-23) Win10_1703_English_x64.iso
 # 4,7 GB (4697362432 bytes) (2018-02-11) Win10_1709_English_x64.iso
 # 5,4 GB (5421459456 bytes) (2019-12-02) Win10_1909_English_x64.iso
-
+# 5,7 GB (6155782144 bytes) (2020-11-09) Win10_20H2_English_x64.iso
 
 
 KVM_WORKSPACE_ISO="${KVM_WORKSPACE}/iso"
@@ -201,7 +201,8 @@ lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
 #URL_FILE="Win10_1703_English_x64.iso"
 #URL_FILE="Win10_1709_English_x64.iso"
 #URL_FILE="Win10_1909_English_x64.iso"
-URL_FILE="Win10_2004_English_x64.iso"
+#URL_FILE="Win10_2004_English_x64.iso"
+URL_FILE="Win10_20H2_English_x64.iso"
 #URL_FILE="Windows10_USB_2018-02-11.iso"
 #URL_PLAIN="https://software-download.microsoft.com/pr"
 #URL="${URL_PLAIN}/${URL_FILE}"
