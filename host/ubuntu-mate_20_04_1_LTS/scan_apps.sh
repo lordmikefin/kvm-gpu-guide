@@ -372,6 +372,7 @@ dpkg_version required virt-manager
 dpkg_version required bridge-utils
 
 #dpkg_version required virt-viewer  # NOTE: needed for 'spicy' ??? Nope. This was already installed.
+dpkg_version required spice-client-gtk  # NOTE this will provide 'spicy'
 
 dpkg_version required python3
 dpkg_version required python3-pip
