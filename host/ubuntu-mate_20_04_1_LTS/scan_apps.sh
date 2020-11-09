@@ -19,8 +19,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
-CURRENT_SCRIPT_DATE="2020-11-08"
+CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_DATE="2020-11-09"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -364,6 +364,12 @@ echo -e "\nBash version ${BASH_VERSION}" | tee -a ${OUTPUT_FILE}
 dpkg_version required ovmf
 dpkg_version required qemu-kvm
 dpkg_version required virt-manager
+
+# Ubuntu 20.04 does not install bridge-utils with 'qemu-kvm' ???
+# https://www.cyberciti.biz/faq/how-to-install-kvm-on-ubuntu-20-04-lts-headless-server/
+# https://mike42.me/blog/2019-08-how-to-use-the-qemu-bridge-helper-on-debian-10
+# https://github.com/cloudius-systems/osv/issues/707
+dpkg_version required bridge-utils
 
 dpkg_version required python3
 dpkg_version required python3-pip
