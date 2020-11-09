@@ -22,6 +22,9 @@ Version: 1:2.2.1-3ubuntu2.1
 Package 'bridge-utils' is installed. OK
 Version: 1.6-2ubuntu1
 
+Package 'spice-client-gtk' is installed. OK
+Version: 0.37-2fakesync1
+
 Package 'python3' is installed. OK
 Version: 3.8.2-0ubuntu2
 
