@@ -54,6 +54,20 @@ NOTE: Set user and pass :)
 
 
 
+(2020-11-15)
+Download AMD driver
+https://www.amd.com/en/support
+https://www.amd.com/en/support/graphics/radeon-500-series/radeon-rx-500-series/radeon-rx-570
+Ubuntu x86 64-Bit
+
+/home/lordmike/Downloads/amdgpu-pro-20.40-1147286-ubuntu-20.04.tar.xz
+
+ $ cp -v /home/lordmike/Downloads/amdgpu-pro-20.40-1147286-ubuntu-20.04.tar.xz /mnt/software-share/linux/
+ $ cp -v /mnt/software-share/linux/amdgpu-pro-20.40-1147286-ubuntu-20.04.tar.xz /home/lordmike/Downloads/
+--
+
+
+
 (2020-11-XX)
 --
 
