@@ -24,8 +24,39 @@ TODO: how to prevent freezing?
 
 
 
+(2020-11-15)
+ $ lspci -k -s 01:00.0
+...
+01:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Ellesmere [Radeon RX 470/480/570/570X/580/580X/590] (rev ef)
+	Subsystem: Sapphire Technology Limited Radeon RX 570 Pulse 4GB
+	Kernel driver in use: amdgpu
+	Kernel modules: amdgpu
+...
+--
+
+
+
+(2020-11-15)
+ $ ls /run/user/1000/gvfs/smb-share\:server\=192.168.122.1\,share\=sambashare/linux/
+ $ cat /run/user/1000/gvfs/smb-share\:server\=192.168.122.1\,share\=sambashare/linux/software-share.sh
+...
+#!/bin/bash
+sudo mount -t cifs -o username=USERNAME,password=PASSWD //192.168.122.1/sambashare/ /mnt/software-share/ -o file_mode=0777,dir_mode=0777
+...
+ $ cp -v /run/user/1000/gvfs/smb-share\:server\=192.168.122.1\,share\=sambashare/linux/software-share.sh ~/
+ $ nano /home/lordmike/software-share.sh
+
+NOTE: Set user and pass :)
+
+ $ sudo mkdir /mnt/software-share/
+ $ /home/lordmike/software-share.sh
+--
+
+
+
 (2020-11-XX)
 --
+
 
 
 
