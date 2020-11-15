@@ -1,3 +1,23 @@
 
 (2020-11-15)
+Install Ubuntu Mate 20.04.1 into the vm.
+ $ ./ubuntu-mate_20_04_1_LTS_eth-init.sh
+--
+
+
+
+(2020-11-15)
+Start the vm.
+ $ ./ubuntu-mate_20_04_1_LTS_eth.sh
+ 
+Use "Radeon RX 570 Pulse 4GB [1da2:e353]  Advanced Micro Devices" card.
+--
+
+
+
+
+(2020-11-XX)
+--
+
+
 
