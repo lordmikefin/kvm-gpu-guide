@@ -656,7 +656,7 @@ fi
 
 # https://www.qemu.org/docs/master/system/usb.html
 # https://git.qemu.org/?p=qemu.git;a=blob_plain;f=docs/usb2.txt;hb=HEAD
-PAR="${PAR} -device usb-host,hostbus=1,hostaddr=6" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
+PAR="${PAR} -device usb-host,hostbus=1,hostaddr=3" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
 PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
 
 
