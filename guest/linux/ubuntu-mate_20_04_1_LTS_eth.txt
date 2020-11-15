@@ -94,6 +94,22 @@ Reboot.
 
 
 
+(2020-11-15)
+Test OpenCL
+http://manpages.ubuntu.com/manpages/bionic/man1/clinfo.1.html
+
+ $ sudo apt-get install clinfo
+ $ clinfo
+...
+Number of platforms                               1
+  Platform Name                                   AMD Accelerated Parallel Processing
+  Platform Vendor                                 Advanced Micro Devices, Inc.
+  Platform Version                                OpenCL 2.1 AMD-APP (3180.7)
+...
+--
+
+
+
 (2020-11-XX)
 --
 
