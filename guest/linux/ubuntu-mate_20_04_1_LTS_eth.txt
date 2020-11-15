@@ -15,6 +15,12 @@ Use "Radeon RX 570 Pulse 4GB [1da2:e353]  Advanced Micro Devices" card.
 
 
 
+(2020-11-15)
+... hmmm ... something is wrong with vm shutdown ... restarting vm will not work
+ -> Looks like GPU is not freed correctly -> and vm will freez ??
+--
+
+
 
 (2020-11-XX)
 --
