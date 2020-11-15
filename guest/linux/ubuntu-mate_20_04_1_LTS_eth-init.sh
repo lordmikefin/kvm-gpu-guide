@@ -19,7 +19,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
+CURRENT_SCRIPT_VER="0.0.2"
 CURRENT_SCRIPT_DATE="2020-11-15"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -405,7 +405,11 @@ PAR="${PAR} -boot menu=on"
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
 PAR="${PAR} -vga qxl"
-PAR="${PAR} -display sdl"
+# TODO: qemu-system-x86_64: Display 'sdl' is not available.
+# https://github.com/hashicorp/packer/issues/7675
+# https://github.com/hashicorp/packer/pull/7676
+# NOTE: Use 'gtk' instead of 'sdl' ? maybe?
+PAR="${PAR} -display gtk"
 
 #PAR="${PAR} -display none"
 #PAR="${PAR} -vga none"
@@ -417,8 +421,9 @@ PAR="${PAR} -monitor stdio"
 
 # USB passthrough. Keyboard and mouse.
 # TODO: parameterize. Or auto find.
-PAR="${PAR} -usb -usbdevice host:046d:c077"
-PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4"
+# TODO: how usb devices are set in QEMU 4.2.1 ???
+#PAR="${PAR} -usb -usbdevice host:046d:c077"
+#PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4"
 #PAR="${PAR} -usbdevice tablet"
 
 # OVMF
