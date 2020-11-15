@@ -654,6 +654,12 @@ fi
 #PAR="${PAR} -device usb-host,hostbus=1,hostaddr=3" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
 #PAR="${PAR} -usbdevice tablet"
 
+# https://www.qemu.org/docs/master/system/usb.html
+# https://git.qemu.org/?p=qemu.git;a=blob_plain;f=docs/usb2.txt;hb=HEAD
+#PAR="${PAR} -device usb-host,hostbus=1,hostaddr=6" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
+#PAR="${PAR} -device usb-host,vendorid=046d,productid=c077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+# Err:  Parameter 'vendorid' expects uint64
+
 
 # OVMF
 PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
