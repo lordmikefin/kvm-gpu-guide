@@ -68,6 +68,30 @@ Ubuntu x86 64-Bit
 
 
 
+(2020-11-15)
+Install AMD/ATI drivers. Install OpenCL SDK.
+
+https://linuxconfig.org/install-opencl-for-the-amdgpu-open-source-drivers-on-debian-and-ubuntu
+https://www.amd.com/en/support/kb/release-notes/amdgpu-installation
+!!!
+"--headless                       Headless installation (only OpenCL support)"
+!!!
+https://github.com/mantiuk/opencl_examples
+
+ $ sudo apt-get install opencl-headers
+
+ $ sudo apt install build-essential dkms
+ 
+ $ cd ~/Downloads
+ $ tar -Jxvf amdgpu-pro-20.40-1147286-ubuntu-20.04.tar.xz
+ $ cd ~/Downloads/amdgpu-pro-20.40-1147286-ubuntu-20.04/
+ $ ./amdgpu-pro-install -y --opencl=pal
+
+Reboot.
+--
+
+
+
 (2020-11-XX)
 --
 
