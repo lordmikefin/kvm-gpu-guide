@@ -85,7 +85,9 @@ https://github.com/mantiuk/opencl_examples
  $ cd ~/Downloads
  $ tar -Jxvf amdgpu-pro-20.40-1147286-ubuntu-20.04.tar.xz
  $ cd ~/Downloads/amdgpu-pro-20.40-1147286-ubuntu-20.04/
- $ ./amdgpu-pro-install -y --opencl=pal
+ $ # ./amdgpu-pro-install -y --opencl=pal
+ $ # amdgpu-pro-uninstall
+ $ ./amdgpu-pro-install --opencl=legacy,pal
 
 Reboot.
 --
