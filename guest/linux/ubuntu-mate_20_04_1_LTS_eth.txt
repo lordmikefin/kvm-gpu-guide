@@ -116,7 +116,39 @@ Is it caused by AMD restart bug? But I have no problems with windows vms ???
 
 https://github.com/gnif/vendor-reset
 https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF#Passing_through_a_device_that_does_not_support_resetting
+
+ $ ../../host/ubuntu-mate_20_04_1_LTS/ls_device_reset.sh 
+...
+[RESET]	01:00.0 VGA compatible controller [0300]: Advanced Micro Devices, Inc. [AMD/ATI] Ellesmere [Radeon RX 470/480/570/570X/580/580X/590] [1002:67df] (rev ef)
+	01:00.1 Audio device [0403]: Advanced Micro Devices, Inc. [AMD/ATI] Ellesmere HDMI Audio [Radeon RX 470/480 / 570/580/590] [1002:aaf0]
+...
+
+Looks like AMD card has reset function.
 --
+
+
+
+(2020-11-16)
+Is there something wrong with xorg config?
+Enable DRI3
+ $ ls /etc/X11/
+ $ ls /usr/share/X11/xorg.conf.d/
+ 
+https://linuxconfig.org/how-to-install-the-latest-amd-radeon-drivers-on-ubuntu-18-04-bionic-beaver-linux
+
+ $ sudo nano /etc/X11/xorg.conf
+... added lines ...
+Section "Device"
+    Identifier "AMDgpu"
+    Driver "amdgpu"
+    Option "AccelMethod" "glamor"
+    Option "DRI" "3"
+EndSection
+...
+
+Reboot.
+--
+
 
 
 
