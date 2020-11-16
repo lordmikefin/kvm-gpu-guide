@@ -251,6 +251,15 @@ https://www.etherchain.org/account/0x7c5ceff4c98551570c0dca4cd09d9e37e95aa01c
 
 
 
+(2020-11-16)
+Set mining start into forever loop.
+ $ cp -v /mnt/software-share/git/kvm-gpu-guide/guest/linux/ethminer_for_ever.sh ~/
+ $ cd ~
+ $ ./ethminer_for_ever.sh
+--
+
+
+
 (2020-11-XX)
 --
 
