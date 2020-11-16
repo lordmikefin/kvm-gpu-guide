@@ -260,7 +260,16 @@ Set mining start into forever loop.
 
 
 
+(2020-11-16)
+Monitor AMD gpu
+ $ sudo apt-get install radeontop
+ $ sudo radeontop
+--
+
+
+
 (2020-11-XX)
+TODO: auto start etherminer and radeontop
 --
 
 
