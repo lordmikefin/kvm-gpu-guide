@@ -170,6 +170,35 @@ https://github.com/gnif/vendor-reset
 
 
 
+(2020-11-16)
+Guide: install ethereum software
+https://ubuntu.com/blog/mining-ethereum-on-ubuntu-with-a-gtx-1070
+https://www.perfacilis.com/blog/crypto-currency/mining-ethereum-on-ubuntu-with-ethminer.html
+
+Ethereum Software
+
+ $ sudo add-apt-repository ppa:ethereum/ethereum -y
+ $ sudo apt update
+ $ sudo apt install ethereum -y
+
+Wallet Address. Create new
+ $ # geth account new
+ 
+Copy existing wallet
+
+ $ cd ~
+ $ mkdir .ethereum
+ $ mkdir .ethereum/keystore
+ 
+ $ cp -v /mnt/software-share/linux/.ethereum/keystore/* ~/.ethereum/keystore/
+ $ geth account list
+...
+Account #0: {6821f60e5d580f8ccbdcc22cc08c27450aafc971} keystore:///home/lordmike/.ethereum/keystore/UTC--2018-06-02T21-35-55.838282041Z--6821f60e5d580f8ccbdcc22cc08c27450aafc971
+...
+--
+
+
+
 (2020-11-XX)
 --
 
