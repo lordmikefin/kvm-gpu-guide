@@ -147,6 +147,10 @@ EndSection
 ...
 
 Reboot.
+
+ERR: qemu-system-x86_64: vfio: Unable to power on device, stuck in D3
+
+DRI does not help for reset.
 --
 
 
