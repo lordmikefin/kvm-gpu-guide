@@ -156,6 +156,13 @@ DRI does not help for reset.
 
 
 
+(2020-11-16)
+Reset device with a script
+https://forum.proxmox.com/threads/vfio-pci-refused-to-change-power-state-currently-in-d3.60846/
+--
+
+
+
 (2020-11-XX)
 --
 
