@@ -199,6 +199,58 @@ Account #0: {6821f60e5d580f8ccbdcc22cc08c27450aafc971} keystore:///home/lordmike
 
 
 
+(2020-11-16)
+Install Mining Software
+
+https://github.com/ethereum-mining/ethminer
+https://github.com/ethereum-mining/ethminer/tree/cuda8
+https://github.com/ethereum-mining/ethminer/tree/v0.18.0
+https://github.com/ethereum-mining/ethminer/releases/tag/v0.18.0
+https://github.com/ethereum-mining/ethminer/blob/v0.18.0/docs/BUILD.md
+
+ $ cd ~
+ $ sudo apt-get install git
+ $ sudo apt-get install cmake
+ $ sudo apt install opencl-dev
+ $ git clone https://github.com/ethereum-mining/ethminer.git
+ $ cd ethminer
+ $ git checkout v0.18.0
+ $ git submodule update --init --recursive
+ 
+ $ mkdir build
+ $ cd build
+ ( $ cmake .. )
+ $ cmake .. -DETHASHCUDA=OFF -DETHASHCL=ON
+ $ cmake --build .
+
+(Optional, Linux only) Install the built executable.
+ $ sudo make install
+ $ ethminer --version
+...
+ethminer 0.18.0
+Build: linux/release/gnu
+...
+
+List devices Ethminer recognises
+ $ ethminer --list-devices
+...
+ Id Pci Id    Type Name                          CL    Total Memory  Cl Max Alloc  Cl Max W.Grp 
+--- --------- ---- ----------------------------- ----  ------------  ------------  ------------ 
+  0 01:00.0   Gpu  Ellesmere                     Yes        7.66 GB       7.49 GB      256.00 B 
+...
+
+Mining test
+ $ ethminer --opencl --pool stratum://0x7c5ceff4c98551570c0dca4cd09d9e37e95aa01c@eu1.ethermine.org:4444
+
+Check status of miner:
+https://ethermine.org/miners/7c5ceff4c98551570c0dca4cd09d9e37e95aa01c/dashboard
+
+Check wallet info:
+https://www.etherchain.org/account/0x7c5ceff4c98551570c0dca4cd09d9e37e95aa01c
+--
+
+
+
 (2020-11-XX)
 --
 
