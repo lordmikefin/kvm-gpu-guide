@@ -159,6 +159,13 @@ DRI does not help for reset.
 (2020-11-16)
 Reset device with a script
 https://forum.proxmox.com/threads/vfio-pci-refused-to-change-power-state-currently-in-d3.60846/
+
+ $ sudo ./reset-device.sh 01:00
+
+This work but is not elegant.
+
+TODO: should try gnif's reset bug fix:
+https://github.com/gnif/vendor-reset
 --
 
 

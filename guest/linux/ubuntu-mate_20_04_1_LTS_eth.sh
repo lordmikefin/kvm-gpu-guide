@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
-CURRENT_SCRIPT_DATE="2020-10-15"
+CURRENT_SCRIPT_VER="0.0.3"
+CURRENT_SCRIPT_DATE="2020-10-16"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -778,6 +778,19 @@ echo ""
 sudo qemu-system-x86_64 ${PAR}
 
 
+
+#NVIDIA_GPU="01:00.0"
+if [[ ! -z ${NVIDIA_GPU} ]]; then
+    # This work but is not elegant.
+    
+    # TODO: should try gnif's reset bug fix:
+    # https://github.com/gnif/vendor-reset
+	
+	# TODO: Not really needed for Nvidia cards !
+	echo "Reset the card."
+	#sudo ../../script/reset-device.sh 01:00
+	sudo ../../script/reset-device.sh ${NVIDIA_GPU:0:5}
+fi
 
 
 
