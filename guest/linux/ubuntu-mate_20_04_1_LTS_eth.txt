@@ -275,6 +275,9 @@ This script work but is not elegant. It will suspend the host.
 
 TODO: should try gnif's reset bug fix:
 https://github.com/gnif/vendor-reset
+https://forum.level1techs.com/t/amd-polaris-vega-navi-reset-project-vendor-reset/163801/5
+
+Do this in host :)
 --
 
 
