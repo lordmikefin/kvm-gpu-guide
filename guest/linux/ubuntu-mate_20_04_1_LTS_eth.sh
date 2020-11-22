@@ -775,7 +775,7 @@ fi
 
 if [[ ! -z ${NVIDIA_GPU} ]]; then
 	echo ""
-	echo "NOTE: qemu-system-x86_64 will notify about missing 'rest'."
+	echo "NOTE: qemu-system-x86_64 will notify about missing 'reset'."
 	echo "This will happen only with AMD display cards. AMD reset bug !"
 	echo " -> vfio: Cannot reset device 0000:01:00.1, no available reset mechanism."
 fi
