@@ -278,6 +278,14 @@ https://github.com/gnif/vendor-reset
 https://forum.level1techs.com/t/amd-polaris-vega-navi-reset-project-vendor-reset/163801/5
 
 Do this in host :)
+
+Installed 'vendor-reset' module into host OS.
+Now kvm is showing warning:
+...
+qemu-system-x86_64: vfio: Cannot reset device 0000:01:00.1, no available reset mechanism.
+...
+
+Is this right? who knows? let's run with it :)
 --
 
 
