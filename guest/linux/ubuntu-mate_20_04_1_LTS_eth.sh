@@ -773,6 +773,13 @@ if [[ -n ${SPICE_PORT} ]]; then
 	echo " $ remote-viewer --title Ubuntu spice://127.0.0.1:${SPICE_PORT}"
 fi
 
+if [[ ! -z ${NVIDIA_GPU} ]]; then
+	echo ""
+	echo "NOTE: qemu-system-x86_64 will notify about missing 'rest'."
+	echo "This will happen only with AMD display cards. AMD reset bug !"
+	echo " -> vfio: Cannot reset device 0000:01:00.1, no available reset mechanism."
+fi
+
 echo ""
 #qemu-system-x86_64 ${PAR}
 sudo qemu-system-x86_64 ${PAR}
@@ -793,6 +800,7 @@ if [[ ! -z ${NVIDIA_GPU} ]]; then
 	
 	echo "Installed 'vendor-reset' module in to host"
 	echo " -> so now we should not need to suspend the card :)"
+	echo "This will happen only with AMD display cards."
 fi
 
 
