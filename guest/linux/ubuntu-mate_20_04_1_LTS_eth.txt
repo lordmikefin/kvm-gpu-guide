@@ -112,7 +112,7 @@ Number of platforms                               1
 
 (2020-11-16)
 TODO: how to prevent freezing?
-Is it caused by AMD restart bug? But I have no problems with windows vms ???
+Is it caused by AMD restart/reset bug? But I have no problems with windows vms ???
 
 https://github.com/gnif/vendor-reset
 https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF#Passing_through_a_device_that_does_not_support_resetting
@@ -264,6 +264,17 @@ Set mining start into forever loop.
 Monitor AMD gpu
  $ sudo apt-get install radeontop
  $ sudo radeontop
+--
+
+
+
+(2020-11-22)
+ $ reset-device.sh
+
+This script work but is not elegant. It will suspend the host.
+
+TODO: should try gnif's reset bug fix:
+https://github.com/gnif/vendor-reset
 --
 
 
