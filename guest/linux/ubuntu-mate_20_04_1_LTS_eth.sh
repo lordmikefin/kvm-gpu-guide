@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.3"
-CURRENT_SCRIPT_DATE="2020-10-16"
+CURRENT_SCRIPT_VER="0.0.4"
+CURRENT_SCRIPT_DATE="2020-11-22"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -787,9 +787,12 @@ if [[ ! -z ${NVIDIA_GPU} ]]; then
     # https://github.com/gnif/vendor-reset
 	
 	# TODO: Not really needed for Nvidia cards !
-	echo "Reset the card."
+	#echo "Reset the card."
 	#sudo ../../script/reset-device.sh 01:00
-	sudo ../../script/reset-device.sh ${NVIDIA_GPU:0:5}
+	#sudo ../../script/reset-device.sh ${NVIDIA_GPU:0:5}
+	
+	echo "Installed 'vendor-reset' module in to host"
+	echo " -> so now we should not need to suspend the card :)"
 fi
 
 
