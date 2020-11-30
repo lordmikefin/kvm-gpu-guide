@@ -290,8 +290,28 @@ Is this right? who knows? let's run with it :)
 
 
 
+(2020-11-30)
+Autostart etherminer
+ $ mkdir /home/lordmike/.config/autostart
+ $ nano /home/lordmike/.config/autostart/etherminer.desktop
+... create file with content
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=etherminer
+GenericName=etherminer for ever
+Exec=mate-terminal -e "/bin/bash  -c '~/ethminer_for_ever.sh; read -n1 -r -p Press_any_key key'"
+Terminal=false
+Icon=
+Categories=
+...
+ $ chmod +x /home/lordmike/.config/autostart/etherminer.desktop
+--
+
+
+
 (2020-11-XX)
-TODO: auto start etherminer and radeontop
+TODO: auto start radeontop
 --
 
 
