@@ -402,12 +402,20 @@ PAR="${PAR} -display sdl"
 # Monitoring screen
 PAR="${PAR} -monitor stdio"
 
+
 # USB passthrough. Keyboard and mouse.
 # TODO: parameterize. Or auto find.
-PAR="${PAR} -usb -usbdevice host:046d:c077"
-PAR="${PAR} -device usb-host,hostbus=1,hostaddr=3"
-PAR="${PAR} -usb -usbdevice host:046d:0a17"  # Logitech, Inc. G330 Headset
+#PAR="${PAR} -usb -usbdevice host:046d:c077"
+#PAR="${PAR} -device usb-host,hostbus=1,hostaddr=3"
+#PAR="${PAR} -usb -usbdevice host:046d:0a17"  # Logitech, Inc. G330 Headset
 #PAR="${PAR} -usbdevice tablet"
+
+# https://www.qemu.org/docs/master/system/usb.html
+# https://git.qemu.org/?p=qemu.git;a=blob_plain;f=docs/usb2.txt;hb=HEAD
+PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0x0a17" # Logitech, Inc. G330 Headset
+PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x1a2c" # 1a2c:1a2c China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
+
 
 # OVMF
 PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
