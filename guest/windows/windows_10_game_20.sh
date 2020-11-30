@@ -18,7 +18,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_VER="0.0.3"
 CURRENT_SCRIPT_DATE="2020-11-30"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -398,7 +398,9 @@ PAR="${PAR} -rtc base=localtime"
 #PAR="${PAR} -vga virtio"
 # ERR: qemu-system-x86_64: Display 'sdl' is not available.
 # TODO: what is replacement for sdl display ?
-PAR="${PAR} -display sdl"
+# NOTE: Use 'gtk' instead of 'sdl'
+#PAR="${PAR} -display sdl"
+PAR="${PAR} -display gtk"
 #PAR="${PAR} -display none"
 
 # Monitoring screen
