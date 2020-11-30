@@ -416,6 +416,7 @@ PAR="${PAR} -monitor stdio"
 
 # https://www.qemu.org/docs/master/system/usb.html
 # https://git.qemu.org/?p=qemu.git;a=blob_plain;f=docs/usb2.txt;hb=HEAD
+PAR="${PAR} -device nec-usb-xhci,id=usb" # NOTE: USB3 support
 PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
 PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0x0a17" # Logitech, Inc. G330 Headset
 PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x1a2c" # 1a2c:1a2c China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
