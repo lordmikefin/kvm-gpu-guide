@@ -396,6 +396,8 @@ PAR="${PAR} -rtc base=localtime"
 # TODO: Ask user if virtual display is needed.
 #PAR="${PAR} -vga qxl"
 #PAR="${PAR} -vga virtio"
+# ERR: qemu-system-x86_64: Display 'sdl' is not available.
+# TODO: what is replacement for sdl display ?
 PAR="${PAR} -display sdl"
 #PAR="${PAR} -display none"
 
