@@ -21,7 +21,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.4"
+CURRENT_SCRIPT_VER="0.0.5"
 CURRENT_SCRIPT_DATE="2020-12-06"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -596,6 +596,7 @@ fi
 # TOOD: verify controller exists
 #USB_CONTROLLER="03:00.0"
 #USB_CONTROLLER="04:00.0"
+USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Renesas Technology Corp. uPD720201 USB 3.0 Host Controller (rev 03)
 if [[ ! -z ${USB_CONTROLLER} ]]; then
 	PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.1,addr=00.0,multifunction=on"
 fi
