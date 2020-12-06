@@ -356,7 +356,8 @@ echo ""
 #NVIDIA_SOUND="01:00.1"
 #NVIDIA_GPU="02:00.0" # Nvidia GeForce GT 710 # Micro-Star International Co., Ltd. [MSI] Device
 #NVIDIA_SOUND="02:00.1"
-
+NVIDIA_GPU="03:00.0" # 03:00.0 VGA compatible controller: NVIDIA Corporation GK208B [GeForce GT 710] (rev a1)
+NVIDIA_SOUND="03:00.1"
 
 
 # TODO: Set parameters for QEMU
@@ -413,7 +414,7 @@ PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
 PAR="${PAR} -drive file=${OVMF_VARS_MAC10},if=pflash,format=raw,unit=1"
 
 # Add pcie bus
-#PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
+PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
 
 # VGA passthrough. GPU and sound.
 # TODO: Ask user which card should be used.
@@ -441,11 +442,13 @@ PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
 #PAR="${PAR} -drive file=${LOCAL_FILE},format=raw,if=none,id=drive-ide1-0-0"
 #PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
 PAR="${PAR} -drive id=MacDVD,if=none,snapshot=on,file=${LOCAL_FILE} "
-PAR="${PAR} -device ide-drive,bus=ide.1,drive=MacDVD "
+#PAR="${PAR} -device ide-drive,bus=ide.1,drive=MacDVD "
+PAR="${PAR} -device ide-cd,bus=ide.1,drive=MacDVD "
 
 
 # OSX_DRIVER_DISK
-PAR="${PAR} -device ide-drive,bus=ide.2,drive=MacDriver "
+#PAR="${PAR} -device ide-drive,bus=ide.2,drive=MacDriver "
+PAR="${PAR} -device ide-cd,bus=ide.2,drive=MacDriver "
 PAR="${PAR} -drive id=MacDriver,if=none,format=raw,file=${OSX_DRIVER_DISK} "
 
 
