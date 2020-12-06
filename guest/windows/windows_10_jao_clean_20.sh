@@ -419,6 +419,8 @@ fi
 
 
 
+
+
 # TODO: Set parameters for QEMU
 
 # -enable-kvm -> enable hardware virtualization
@@ -442,12 +444,13 @@ PAR="${PAR} -boot menu=on"
 PAR="${PAR} -rtc base=localtime"
 
 
-echo "VIRTUAL_DISPLAY ${VIRTUAL_DISPLAY}"
+#echo "VIRTUAL_DISPLAY ${VIRTUAL_DISPLAY}"
 if [[ ! -z ${NVIDIA_GPU} ]]; then
     # NOTE: use virtual display instead of spice with real display
     VIRTUAL_DISPLAY=true
 fi
-echo "VIRTUAL_DISPLAY ${VIRTUAL_DISPLAY}"
+#echo "VIRTUAL_DISPLAY ${VIRTUAL_DISPLAY}"
+
 
 # TODO: parametirize - ask from user
 # testing - LIDEDE USB to HDMI Adapter
