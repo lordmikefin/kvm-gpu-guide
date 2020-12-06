@@ -21,8 +21,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.3"
-CURRENT_SCRIPT_DATE="2020-11-09"
+CURRENT_SCRIPT_VER="0.0.4"
+CURRENT_SCRIPT_DATE="2020-12-06"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -442,6 +442,13 @@ PAR="${PAR} -boot menu=on"
 PAR="${PAR} -rtc base=localtime"
 
 
+echo "VIRTUAL_DISPLAY ${VIRTUAL_DISPLAY}"
+if [[ ! -z ${NVIDIA_GPU} ]]; then
+    # NOTE: use virtual display instead of spice with real display
+    VIRTUAL_DISPLAY=true
+fi
+echo "VIRTUAL_DISPLAY ${VIRTUAL_DISPLAY}"
+
 # TODO: parametirize - ask from user
 # testing - LIDEDE USB to HDMI Adapter
 #LIDEDE_USB_HDMI=true
@@ -455,9 +462,13 @@ if [[ -n ${LIDEDE_USB_HDMI} ]]; then
 elif [[ -n ${VIRTUAL_DISPLAY} ]]; then
 	PAR="${PAR} -vga std"
 	#PAR="${PAR} -vga qxl"
-	PAR="${PAR} -display sdl"
-	PAR="${PAR} -usb -usbdevice host:534d:6021" # ID 534d:6021 
-	PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
+	# NOTE: Use 'gtk' instead of 'sdl'
+	#PAR="${PAR} -display sdl"
+	PAR="${PAR} -display gtk"
+	#PAR="${PAR} -usb -usbdevice host:534d:6021" # ID 534d:6021 
+	#PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
+	#PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+    #PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
 else
 	SPICE_PORT=5926
 	PAR="${PAR} -vga qxl"
