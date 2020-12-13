@@ -73,8 +73,9 @@ sudo qemu-system-x86_64  \
 -device ich9-intel-hda \
 -device hda-duplex \
 -monitor stdio \
--usb -usbdevice host:046d:c077 \
--usb -usbdevice host:1a2c:2c27 \
+-device nec-usb-xhci,id=usb \
+-device usb-host,vendorid=0x046d,productid=0xc077 \
+-device usb-host,vendorid=0x1a2c,productid=0x2c27 \
 -drive file=/usr/share/OVMF/OVMF_CODE.fd,if=pflash,format=raw,unit=0,readonly=on \
 -drive file=/home/lordmike/kvm-workspace/vm/mac_10/mac_10_VARS.fd,if=pflash,format=raw,unit=1 \
 -drive id=MacDVD,if=none,snapshot=on,file=/home/lordmike/kvm-workspace/iso/mac_10_11_6_clover_usb.img  \
