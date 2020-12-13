@@ -164,5 +164,46 @@ https://github.com/kholia/OSX-KVM/blob/master/OVMF-notes.txt
 
 
 
+(2020-12-13)
+Testing with Kholia's OVMF files
+
+
+https://github.com/kholia/OSX-KVM/blob/master/OVMF_CODE.fd
+https://github.com/kholia/OSX-KVM/raw/master/OVMF_CODE.fd
+--
+https://github.com/kholia/OSX-KVM/blob/master/OVMF_VARS-1024x768.fd
+https://github.com/kholia/OSX-KVM/raw/master/OVMF_VARS-1024x768.fd
+--
+
+
+
+/home/lordmike/kvm-workspace/vm/mac_10/
+--
+ $ wget https://github.com/kholia/OSX-KVM/raw/master/OVMF_VARS-1024x768.fd -O /home/lordmike/kvm-workspace/vm/mac_10/OVMF_VARS-1024x768.fd
+ $ wget https://github.com/kholia/OSX-KVM/raw/master/OVMF_CODE.fd -O /home/lordmike/kvm-workspace/vm/mac_10/OVMF_CODE.fd
+--
+
+
+Testing minimal viable boot script Ubuntu 20:
+https://github.com/kholia/OSX-KVM
+Testing with Kholia's OVMF files
+
+sudo qemu-system-x86_64  \
+-enable-kvm \
+-machine pc-q35-2.4 \
+-m 4096 \
+-cpu Penryn,kvm=off,vendor=GenuineIntel \
+-smp 4,sockets=1,cores=4,threads=1 \
+-boot menu=on \
+-device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" \
+-smbios type=2 \
+-device ich9-intel-hda \
+-device hda-duplex \
+-monitor stdio \
+-drive file=/home/lordmike/kvm-workspace/vm/mac_10/OVMF_CODE.fd,if=pflash,format=raw,unit=0,readonly=on \
+-drive file=/home/lordmike/kvm-workspace/vm/mac_10/OVMF_VARS-1024x768.fd,if=pflash,format=raw,unit=1 \
+-drive id=MacDVD,if=none,snapshot=on,file=/home/lordmike/kvm-workspace/iso/mac_10_11_6_clover_usb.img  \
+-device ide-drive,bus=ide.1,drive=MacDVD 
+-------------------------------------------
 
 
