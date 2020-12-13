@@ -116,9 +116,15 @@ There is some problem with Ovmf + Clover ???
 
 
 https://www.google.com/search?client=ubuntu&hs=Va9&channel=fs&ei=YgzWX-TlJ-qArwSVtKnQCA&q=qemu+4+mac+freezes+on+boot.efi
+--
+
 
 https://patchwork.kernel.org/project/qemu-devel/patch/20170804064540.10523-1-dhiru.kholia@gmail.com/
---
+----
+You could try the following:
+
+(1) Disable S3 support on the QEMU command line... 
+----
 
 
 
