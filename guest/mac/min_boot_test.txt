@@ -59,4 +59,27 @@ sudo qemu-system-x86_64  \
 -------------------------------------------
 
 
+Testing minimal viable boot script Ubuntu 20:
+
+sudo qemu-system-x86_64  \
+-enable-kvm \
+-machine pc-q35-2.4 \
+-m 4096 \
+-cpu Penryn,kvm=off,vendor=GenuineIntel \
+-smp 4,sockets=1,cores=4,threads=1 \
+-boot menu=on \
+-device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" \
+-smbios type=2 \
+-device ich9-intel-hda \
+-device hda-duplex \
+-monitor stdio \
+-usb -usbdevice host:046d:c077 \
+-usb -usbdevice host:1a2c:2c27 \
+-drive file=/usr/share/OVMF/OVMF_CODE.fd,if=pflash,format=raw,unit=0,readonly=on \
+-drive file=/home/lordmike/kvm-workspace/vm/mac_10/mac_10_VARS.fd,if=pflash,format=raw,unit=1 \
+-drive id=MacDVD,if=none,snapshot=on,file=/home/lordmike/kvm-workspace/iso/mac_10_11_6_clover_usb.img  \
+-device ide-drive,bus=ide.1,drive=MacDVD 
+-------------------------------------------
+
+
 
