@@ -155,3 +155,14 @@ sudo qemu-system-x86_64  \
 
 
 
+(2020-12-13)
+Dhiru Kholia is combiling he's own  OVMF_CODE.fd
+
+https://github.com/kholia/OSX-KVM
+https://github.com/kholia/OSX-KVM/blob/master/OVMF-notes.txt
+--
+
+
+
+
+
