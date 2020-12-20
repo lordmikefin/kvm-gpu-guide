@@ -22,7 +22,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.3"
+CURRENT_SCRIPT_VER="0.0.4"
 CURRENT_SCRIPT_DATE="2020-12-20"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -301,6 +301,7 @@ KVM_WORKSPACE_VM_MAC10="${KVM_WORKSPACE}/vm/mac_10_13_6_u20"
 OVMF_VARS_MAC10="${KVM_WORKSPACE_VM_MAC10}/mac_10_13_6_u20_VARS-1024x768.fd"
 #VM_DISK_WIN10="${KVM_WORKSPACE_VM_WIN10}/windows_10.qcow2"
 VM_DISK_MAC10="${KVM_WORKSPACE_VM_MAC10}/mac_10_13_6_u20.qcow2"
+VM_DISK_OPENCORE_BOOT="/home/lordmike/OSX-KVM/OpenCore-Catalina/OpenCore.qcow2"
 
 
 unset INPUT
@@ -476,6 +477,10 @@ PAR="${PAR} -device ide-cd,bus=ide.1,drive=MacDVD "
 PAR="${PAR} -device ide-cd,bus=ide.2,drive=MacDriver "
 PAR="${PAR} -drive id=MacDriver,if=none,format=raw,file=${OSX_DRIVER_DISK} "
 
+
+# VM_DISK_OPENCORE_BOOT
+PAR="${PAR} -device ide-hd,bus=ide.3,drive=OpenCoreBoot "
+PAR="${PAR} -drive id=OpenCoreBoot,if=none,format=raw,file=${VM_DISK_OPENCORE_BOOT} "
 
 # Ubuntu ISO file
 #PAR="${PAR} -drive file=${LOCAL_FILE_UBUNTU},format=raw,if=none,id=drive-ide1-0-0"
