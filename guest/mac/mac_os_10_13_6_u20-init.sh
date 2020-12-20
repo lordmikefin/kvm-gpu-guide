@@ -22,7 +22,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.4"
+CURRENT_SCRIPT_VER="0.0.5"
 CURRENT_SCRIPT_DATE="2020-12-20"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -410,6 +410,7 @@ PAR="${PAR} -smbios type=2"
 
 PAR="${PAR} -device ich9-intel-hda"
 PAR="${PAR} -device hda-duplex"
+PAR="${PAR} -device ich9-ahci,id=sata"
 
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
@@ -456,10 +457,26 @@ if [[ ! -z ${NVIDIA_SOUND} ]]; then
 	PAR="${PAR} -device vfio-pci,host=${NVIDIA_SOUND},bus=root.1,addr=00.1"
 fi
 
+
+#  -device ide-hd,bus=sata.2,drive=OpenCoreBoot
+#  -drive id=OpenCoreBoot,if=none,snapshot=on,format=qcow2,file="$REPO_PATH/OpenCore-Catalina/OpenCore.qcow2"
+PAR="${PAR} -device ide-hd,bus=sata.2,drive=OpenCoreBoot"
+PAR="${PAR} -drive id=OpenCoreBoot,if=none,snapshot=on,format=qcow2,file=${VM_DISK_OPENCORE_BOOT}"
+
+#  -device ide-hd,bus=sata.3,drive=InstallMedia
+#  -drive id=InstallMedia,if=none,file="$REPO_PATH/BaseSystem.img",format=raw
+PAR="${PAR} -device ide-hd,bus=sata.3,drive=InstallMedia"
+PAR="${PAR} -drive id=InstallMedia,if=none,file=${LOCAL_FILE},format=raw"
+
+#  -device ide-hd,bus=sata.4,drive=MacHDD
+#  -drive id=MacHDD,if=none,file="$REPO_PATH/mac_hdd_ng.img",format=qcow2
+PAR="${PAR} -device ide-hd,bus=sata.4,drive=MacHDD"
+PAR="${PAR} -drive id=MacHDD,if=none,file=${VM_DISK_MAC10},format=qcow2"
+
 # Virtual disk
 #PAR="${PAR} -drive file=${VM_DISK_MAC10},format=qcow2 "
-PAR="${PAR} -drive file=${VM_DISK_MAC10},format=qcow2,if=none,id=drive-ide0-0-0"
-PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
+#PAR="${PAR} -drive file=${VM_DISK_MAC10},format=qcow2,if=none,id=drive-ide0-0-0"
+#PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
 
 # Windows 10 ISO file
 #PAR="${PAR} -drive file=${LOCAL_FILE},id=isocd,format=raw,index=2 "
@@ -467,20 +484,20 @@ PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
 #PAR="${PAR} -drive file=${ISO_FILE_USB},format=raw,if=none,id=drive-ide1-0-0"
 #PAR="${PAR} -drive file=${LOCAL_FILE},format=raw,if=none,id=drive-ide1-0-0"
 #PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
-PAR="${PAR} -drive id=MacDVD,if=none,snapshot=on,file=${LOCAL_FILE} "
+#PAR="${PAR} -drive id=MacDVD,if=none,snapshot=on,file=${LOCAL_FILE} "
 #PAR="${PAR} -device ide-drive,bus=ide.1,drive=MacDVD "
-PAR="${PAR} -device ide-cd,bus=ide.1,drive=MacDVD "
+#PAR="${PAR} -device ide-cd,bus=ide.1,drive=MacDVD "
 
 
 # OSX_DRIVER_DISK
 #PAR="${PAR} -device ide-drive,bus=ide.2,drive=MacDriver "
-PAR="${PAR} -device ide-cd,bus=ide.2,drive=MacDriver "
-PAR="${PAR} -drive id=MacDriver,if=none,format=raw,file=${OSX_DRIVER_DISK} "
+#PAR="${PAR} -device ide-cd,bus=ide.2,drive=MacDriver "
+#PAR="${PAR} -drive id=MacDriver,if=none,format=raw,file=${OSX_DRIVER_DISK} "
 
 
 # VM_DISK_OPENCORE_BOOT
-PAR="${PAR} -device ide-hd,bus=ide.3,drive=OpenCoreBoot "
-PAR="${PAR} -drive id=OpenCoreBoot,if=none,format=raw,file=${VM_DISK_OPENCORE_BOOT} "
+#PAR="${PAR} -device ide-hd,bus=ide.3,drive=OpenCoreBoot "
+#PAR="${PAR} -drive id=OpenCoreBoot,if=none,format=raw,file=${VM_DISK_OPENCORE_BOOT} "
 
 # Ubuntu ISO file
 #PAR="${PAR} -drive file=${LOCAL_FILE_UBUNTU},format=raw,if=none,id=drive-ide1-0-0"
