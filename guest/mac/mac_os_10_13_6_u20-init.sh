@@ -22,7 +22,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_VER="0.0.3"
 CURRENT_SCRIPT_DATE="2020-12-20"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -289,12 +289,16 @@ OSX_DRIVER_DISK="${KVM_WORKSPACE_ISO}/OSX-driver-disk.img"
 # $ qemu-img create -f qcow2 /opt/kvm/vm_storage/windows_10.qcow2 50G
 # $ cp -v /usr/share/OVMF/OVMF_VARS.fd /opt/kvm/vm_storage/windows_10_VARS.fd
 # OVMF binary file. Do _NOT_ over write.
-OVMF_CODE="/usr/share/OVMF/OVMF_CODE.fd"
-OVMF_VARS="/usr/share/OVMF/OVMF_VARS.fd"
+#OVMF_CODE="/usr/share/OVMF/OVMF_CODE.fd"
+#OVMF_VARS="/usr/share/OVMF/OVMF_VARS.fd"
+# TODO: how to batch the OVMF?
+# https://github.com/kholia/OSX-KVM/blob/master/OVMF-notes.txt
+OVMF_CODE="/home/lordmike/OSX-KVM/OVMF_CODE.fd" # batched ovmf by kholia
+OVMF_VARS="/home/lordmike/OSX-KVM/OVMF_VARS-1024x768.fd" # batched ovmf by kholia
 #KVM_WORKSPACE_VM_WIN10="${KVM_WORKSPACE}/vm/windows_10"
 KVM_WORKSPACE_VM_MAC10="${KVM_WORKSPACE}/vm/mac_10_13_6_u20"
 #OVMF_VARS_WIN10="${KVM_WORKSPACE_VM_WIN10}/windows_10_VARS.fd"
-OVMF_VARS_MAC10="${KVM_WORKSPACE_VM_MAC10}/mac_10_13_6_u20_VARS.fd"
+OVMF_VARS_MAC10="${KVM_WORKSPACE_VM_MAC10}/mac_10_13_6_u20_VARS-1024x768.fd"
 #VM_DISK_WIN10="${KVM_WORKSPACE_VM_WIN10}/windows_10.qcow2"
 VM_DISK_MAC10="${KVM_WORKSPACE_VM_MAC10}/mac_10_13_6_u20.qcow2"
 
