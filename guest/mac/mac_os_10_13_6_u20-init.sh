@@ -240,7 +240,7 @@ URL_FILE="BaseSystem_High_Sierra_10.13.6.img"
 
 LOCAL_FILE="${KVM_WORKSPACE_ISO}/${URL_FILE}"
 
-OSX_DRIVER_DISK="${KVM_WORKSPACE_ISO}/OSX-driver-disk.img"
+#OSX_DRIVER_DISK="${KVM_WORKSPACE_ISO}/OSX-driver-disk.img"
 # TODO: create new driver disk with:
 # CUDA driver "CUDA 418.105 driver for MAC"
 # https://www.nvidia.com/en-us/drivers/cuda/mac-driver-archive/
