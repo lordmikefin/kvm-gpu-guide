@@ -19,7 +19,14 @@
 # Create BaseSystem_High_Sierra_10.13.6.img with kholia's script:
 # https://github.com/kholia/OSX-KVM
 
+# TODO: down load drivers
+# https://github.com/kholia/OSX-KVM/blob/master/notes.md
+# http://www.macvidcards.com/drivers.html#
 
+# TODO: passthrough
+# https://github.com/kholia/OSX-KVM/blob/master/notes.md
+# https://github.com/kholia/OSX-KVM/blob/master/boot-passthrough.sh
+# Must use /OpenCore-Catalina/OpenCore-Passthrough.qcow2   ?!?!?
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
 CURRENT_SCRIPT_VER="0.0.3"
