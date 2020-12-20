@@ -22,7 +22,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
+CURRENT_SCRIPT_VER="0.0.2"
 CURRENT_SCRIPT_DATE="2020-12-20"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -592,8 +592,18 @@ if [[ -n ${SPICE_PORT} ]]; then
 	PAR="${PAR} -device virtio-serial"
 	PAR="${PAR} -chardev spicevmc,id=vdagent,name=vdagent"
 	PAR="${PAR} -device virtserialport,chardev=vdagent,name=com.redhat.spice.0"
+	
+    PAR="${PAR} -usb -device usb-kbd -device usb-tablet"
+    PAR="${PAR} -device usb-ehci,id=ehci"
+    PAR="${PAR} -device usb-kbd,bus=ehci.0"
+    PAR="${PAR} -device usb-mouse,bus=ehci.0"
+    PAR="${PAR} -device nec-usb-xhci,id=xhci"
 else
-    PAR="${PAR} -device nec-usb-xhci,id=usb"
+    PAR="${PAR} -device usb-ehci,id=ehci"
+    PAR="${PAR} -device usb-kbd,bus=ehci.0"
+    PAR="${PAR} -device usb-mouse,bus=ehci.0"
+    PAR="${PAR} -device nec-usb-xhci,id=xhci"
+    #PAR="${PAR} -device nec-usb-xhci,id=usb"
     PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
     PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
 fi
