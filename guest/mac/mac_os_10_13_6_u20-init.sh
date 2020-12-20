@@ -22,7 +22,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.7"
+CURRENT_SCRIPT_VER="0.0.8"
 CURRENT_SCRIPT_DATE="2020-12-20"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -511,9 +511,11 @@ PAR="${PAR} -drive id=MacHDD,if=none,file=${VM_DISK_MAC10},format=qcow2"
 #PAR="${PAR} -soundhw hda"
 
 # Network
-PAR="${PAR} -netdev user,id=user.0"
+#PAR="${PAR} -netdev user,id=user.0"
 #PAR="${PAR} -device e1000,netdev=user.0"
-PAR="${PAR} -device e1000-82545em,id=net0,mac=52:54:00:c9:18:27,netdev=user.0"
+#PAR="${PAR} -device e1000-82545em,id=net0,mac=52:54:00:c9:18:27,netdev=user.0"
+PAR="${PAR} -netdev bridge,br=virbr0,id=user.0"
+PAR="${PAR} -device e1000-82545em,netdev=user.0"
 
 
 
