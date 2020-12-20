@@ -370,8 +370,8 @@ echo ""
 #NVIDIA_SOUND="01:00.1"
 #NVIDIA_GPU="02:00.0" # Nvidia GeForce GT 710 # Micro-Star International Co., Ltd. [MSI] Device
 #NVIDIA_SOUND="02:00.1"
-NVIDIA_GPU="03:00.0" # 03:00.0 VGA compatible controller: NVIDIA Corporation GK208B [GeForce GT 710] (rev a1)
-NVIDIA_SOUND="03:00.1"
+#NVIDIA_GPU="03:00.0" # 03:00.0 VGA compatible controller: NVIDIA Corporation GK208B [GeForce GT 710] (rev a1)
+#NVIDIA_SOUND="03:00.1"
 
 
 # TODO: Set parameters for QEMU
