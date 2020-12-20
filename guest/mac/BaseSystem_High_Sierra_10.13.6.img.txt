@@ -1,0 +1,30 @@
+(2020-12-20)
+NOTE: Create new Hackintosh installer image.
+Thanks to kholia for creating a greate hackintosh creating project :)
+
+https://github.com/kholia/OSX-KVM
+
+ $ cd ~
+ $ git clone --depth 1 https://github.com/kholia/OSX-KVM.git
+ $ cd OSX-KVM
+
+These steps are not needed.
+ $ # echo 1 | sudo tee /sys/module/kvm/parameters/ignore_msrs
+ $ # sudo cp kvm.conf /etc/modprobe.d/kvm.conf  # for intel boxes
+ $ # sudo update-initramfs -u
+ $ # sudo apt-get install qemu uml-utilities virt-manager git wget libguestfs-tools p7zip-full -y
+ 
+Note: Modern NVIDIA GPUs are supported on HighSierra but not on later versions.
+ $ ./fetch-macOS.py
+   ->  3    041-91758    10.13.6  2019-10-19  macOS High Sierra
+
+ $ qemu-img convert BaseSystem.dmg -O raw BaseSystem.img
+ 
+These steps are not needed.
+ $ # qemu-img create -f qcow2 mac_hdd_ng.img 128G
+ $ # ./OpenCore-Boot.sh
+
+Copy installer image into kvm workspace 'iso' folder.
+ $ cp -v BaseSystem.img /home/lordmike/kvm-workspace/iso/BaseSystem_High_Sierra_10.13.6.img
+--
+
