@@ -35,8 +35,7 @@
 # Must use /OpenCore-Catalina/OpenCore-Passthrough.qcow2   ?!?!?
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.5
-"
+CURRENT_SCRIPT_VER="0.0.6"
 CURRENT_SCRIPT_DATE="2020-12-29"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -324,7 +323,9 @@ VM_DISK_MAC10="${KVM_WORKSPACE_VM_MAC10}/mac_10_13_6_u20.qcow2"
 # TODO: how to create OpenCore disk?
 # NOTE: copy the OpenCore from kholia's project
 #VM_DISK_OPENCORE_BOOT="/home/lordmike/OSX-KVM/OpenCore-Catalina/OpenCore.qcow2"
-VM_DISK_OPENCORE_BOOT="${KVM_WORKSPACE_VM_MAC10}/OpenCore.qcow2"
+#VM_DISK_OPENCORE_BOOT="${KVM_WORKSPACE_VM_MAC10}/OpenCore.qcow2"
+#VM_DISK_OPENCORE_BOOT="/home/lordmike/OSX-KVM/OpenCore-Catalina/OpenCore-Passthrough.qcow2"
+VM_DISK_OPENCORE_BOOT="${KVM_WORKSPACE_VM_MAC10}/OpenCore-Passthrough.qcow2"
 
 
 unset INPUT
