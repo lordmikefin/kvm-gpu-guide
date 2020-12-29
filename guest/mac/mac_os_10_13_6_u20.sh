@@ -35,7 +35,7 @@
 # Must use /OpenCore-Catalina/OpenCore-Passthrough.qcow2   ?!?!?
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.7"
+CURRENT_SCRIPT_VER="0.0.8"
 CURRENT_SCRIPT_DATE="2020-12-29"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -616,6 +616,12 @@ if [[ -n ${SPICE_PORT} ]]; then
     PAR="${PAR} -device usb-kbd,bus=ehci.0"
     PAR="${PAR} -device usb-mouse,bus=ehci.0"
     PAR="${PAR} -device nec-usb-xhci,id=xhci"
+    
+    PAR="${PAR} -device usb-host,bus=xhci.0,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+    PAR="${PAR} -device usb-host,bus=xhci.0,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
+    
+    # Passthrough wholw USB controller
+    #USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Renesas Technology Corp. uPD720201 USB 3.0 Host Controller (rev 03)
 else
     # NOTE: connection host usb devices causes errors and does not work !?
     # libusb: error [_open_sysfs_attr] open /sys/bus/usb/devices/1-1/bConfigurationValue failed ret=-1 errno=2
@@ -627,15 +633,15 @@ else
     # ... hmmm ... macOS High Sierra is reseting all usb deviced during boot !?!?
     
     # Passthrough wholw USB controller
-    USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Renesas Technology Corp. uPD720201 USB 3.0 Host Controller (rev 03)
+    #USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Renesas Technology Corp. uPD720201 USB 3.0 Host Controller (rev 03)
     
     #PAR="${PAR} -usb"
     #PAR="${PAR} -device usb-ehci,id=ehci"
     #PAR="${PAR} -device usb-kbd,bus=ehci.0"
     #PAR="${PAR} -device usb-mouse,bus=ehci.0"
-    #PAR="${PAR} -device nec-usb-xhci,id=xhci"
-    #PAR="${PAR} -device usb-host,bus=xhci.0,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
-    #PAR="${PAR} -device usb-host,bus=xhci.0,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
+    PAR="${PAR} -device nec-usb-xhci,id=xhci"
+    PAR="${PAR} -device usb-host,bus=xhci.0,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+    PAR="${PAR} -device usb-host,bus=xhci.0,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
     
     #PAR="${PAR} -device usb-host,bus=xhci.0,hostbus=1,hostport=15"
     #PAR="${PAR} -device usb-host,bus=xhci.0,hostbus=1,hostport=14"
@@ -738,7 +744,7 @@ if [[ ! -z ${USB_CONTROLLER} ]]; then
     # https://github.com/qemu/qemu/blob/master/docs/pcie.txt
     
     # Add pcie bus 2
-    PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1d.0,chassis=2,id=root.2"
+    PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1e.0,chassis=2,id=root.2"
     
 	#PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.1,addr=00.0,multifunction=on"
 	PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.2"
