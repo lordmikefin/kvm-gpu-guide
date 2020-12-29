@@ -23,6 +23,11 @@
 # https://github.com/kholia/OSX-KVM/blob/master/notes.md
 # http://www.macvidcards.com/drivers.html#
 # https://docs.nvidia.com/cuda/archive/9.2/cuda-installation-guide-mac-os-x/index.html
+# https://www.nvidia.com/en-us/drivers/cuda/macosx-cuda-396-148-driver/
+
+# https://www.nvidia.com/en-us/drivers/cuda/macosx-cuda-418-105-driver/
+# https://docs.nvidia.com/cuda/archive/10.1/cuda-installation-guide-mac-os-x/index.html
+# https://developer.nvidia.com/cuda-10.1-download-archive-base
 
 # TODO: passthrough
 # https://github.com/kholia/OSX-KVM/blob/master/notes.md
