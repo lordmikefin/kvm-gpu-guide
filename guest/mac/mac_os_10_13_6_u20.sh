@@ -22,6 +22,7 @@
 # TODO: down load drivers
 # https://github.com/kholia/OSX-KVM/blob/master/notes.md
 # http://www.macvidcards.com/drivers.html#
+# https://docs.nvidia.com/cuda/archive/9.2/cuda-installation-guide-mac-os-x/index.html
 
 # TODO: passthrough
 # https://github.com/kholia/OSX-KVM/blob/master/notes.md
@@ -29,8 +30,8 @@
 # Must use /OpenCore-Catalina/OpenCore-Passthrough.qcow2   ?!?!?
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.3"
-CURRENT_SCRIPT_DATE="2020-12-20"
+CURRENT_SCRIPT_VER="0.0.4"
+CURRENT_SCRIPT_DATE="2020-12-29"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -543,14 +544,16 @@ PAR=" -enable-kvm"
 # Mother board
 #PAR="${PAR} -M q35"
 #PAR="${PAR} -machine pc-q35-2.4"
-PAR="${PAR} -machine q35"
+#PAR="${PAR} -machine q35"
+PAR="${PAR} -machine pc-q35-2.9"
 
 # Memory
 PAR="${PAR} -m 4096"
 
 # CPU
 #PAR="${PAR} -cpu host,kvm=off"
-PAR="${PAR} -cpu Penryn,kvm=on,vendor=GenuineIntel"
+#PAR="${PAR} -cpu Penryn,kvm=on,vendor=GenuineIntel"
+PAR="${PAR} -cpu host,kvm=on,vendor=GenuineIntel,vmware-cpuid-freq=on,+invtsc,+hypervisor"
 PAR="${PAR} -smp 4,sockets=1,cores=4,threads=1"
 
 # Boot menu
