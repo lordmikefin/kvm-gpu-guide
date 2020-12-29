@@ -35,7 +35,7 @@
 # Must use /OpenCore-Catalina/OpenCore-Passthrough.qcow2   ?!?!?
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.6"
+CURRENT_SCRIPT_VER="0.0.7"
 CURRENT_SCRIPT_DATE="2020-12-29"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -593,6 +593,7 @@ if [[ "${SELECTED}" == "0" ]]; then
 else
 	echo "NOTE: Can not use physical and virtal display at same time :("
 	PAR="${PAR} -vga none"
+	PAR="${PAR} -display none"
 fi
 
 
@@ -616,14 +617,33 @@ if [[ -n ${SPICE_PORT} ]]; then
     PAR="${PAR} -device usb-mouse,bus=ehci.0"
     PAR="${PAR} -device nec-usb-xhci,id=xhci"
 else
-    PAR="${PAR} -device usb-ehci,id=ehci"
-    PAR="${PAR} -device usb-kbd,bus=ehci.0"
-    PAR="${PAR} -device usb-mouse,bus=ehci.0"
-    PAR="${PAR} -device nec-usb-xhci,id=xhci"
-    #PAR="${PAR} -device nec-usb-xhci,id=usb"
-    PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
-    PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
+    # NOTE: connection host usb devices causes errors and does not work !?
+    # libusb: error [_open_sysfs_attr] open /sys/bus/usb/devices/1-1/bConfigurationValue failed ret=-1 errno=2
+    # qemu-system-x86_64: libusb_release_interface: -4 [NO_DEVICE]
+    # libusb: error [udev_hotplug_event] ignoring udev action bind
+    
+    # https://bugzilla.redhat.com/show_bug.cgi?id=980415
+    # https://forums.unraid.net/topic/42679-usb-pass-through-problems/
+    # ... hmmm ... macOS High Sierra is reseting all usb deviced during boot !?!?
+    
+    # Passthrough wholw USB controller
+    USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Renesas Technology Corp. uPD720201 USB 3.0 Host Controller (rev 03)
+    
+    #PAR="${PAR} -usb"
+    #PAR="${PAR} -device usb-ehci,id=ehci"
+    #PAR="${PAR} -device usb-kbd,bus=ehci.0"
+    #PAR="${PAR} -device usb-mouse,bus=ehci.0"
+    #PAR="${PAR} -device nec-usb-xhci,id=xhci"
+    #PAR="${PAR} -device usb-host,bus=xhci.0,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+    #PAR="${PAR} -device usb-host,bus=xhci.0,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
+    
+    #PAR="${PAR} -device usb-host,bus=xhci.0,hostbus=1,hostport=15"
+    #PAR="${PAR} -device usb-host,bus=xhci.0,hostbus=1,hostport=14"
+    
+    #PAR="${PAR} -device usb-kbd"
+    #PAR="${PAR} -device usb-tablet"
 fi
+
 
 # Monitoring screen
 PAR="${PAR} -monitor stdio"
@@ -675,7 +695,7 @@ fi
 PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
 PAR="${PAR} -drive file=${OVMF_VARS_MAC10},if=pflash,format=raw,unit=1"
 
-# Add pcie bus
+# Add pcie bus 1
 PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
 
 # VGA passthrough. GPU and sound.
@@ -695,6 +715,34 @@ fi
 # TODO: samba share
 
 
+# QEMU #4: How to add a USB controller to a QEMU/KVM virtual machine
+# https://www.youtube.com/watch?v=IYOmuPzrdXk
+
+# USB controller passthrough
+# 03:00.0 USB controller: Renesas Technology Corp. uPD720201 USB 3.0 Host Controller (rev 03)
+#
+#qemu-system-x86_64: -device vfio-pci,host=03:00.0,bus=root.1,addr=00.0,multifunction=on: vfio: error opening /dev/vfio/7: No such file or directory
+#qemu-system-x86_64: -device vfio-pci,host=03:00.0,bus=root.1,addr=00.0,multifunction=on: vfio: failed to get group 7
+#
+# NOTE: Controller was not alone in group 7. I moded the card into diff PCIe slot
+#  -> Now it is alone in group7 and other devices moved into group 8
+#  -> And controller address changed from 03:00.0 to 04:00.0
+#
+
+# TODO: ask user - do you wanna to connect the USB controller :)
+# TOOD: verify controller exists
+#USB_CONTROLLER="03:00.0"
+#USB_CONTROLLER="04:00.0"
+#USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Renesas Technology Corp. uPD720201 USB 3.0 Host Controller (rev 03)
+if [[ ! -z ${USB_CONTROLLER} ]]; then
+    # https://github.com/qemu/qemu/blob/master/docs/pcie.txt
+    
+    # Add pcie bus 2
+    PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1d.0,chassis=2,id=root.2"
+    
+	#PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.1,addr=00.0,multifunction=on"
+	PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.2"
+fi
 
 
 
@@ -800,9 +848,22 @@ if [[ -n ${SPICE_PORT} ]]; then
 	echo " $ remote-viewer --title Windows spice://127.0.0.1:${SPICE_PORT}"
 fi
 
+if [[ ! -z ${USB_CONTROLLER} ]]; then
+	echo ""
+	echo "Bind usb controller to vfio"
+	sudo ../../script/vfio-bind.sh 0000:${USB_CONTROLLER}
+fi
+
 echo ""
 #qemu-system-x86_64 ${PAR}
 sudo qemu-system-x86_64 ${PAR} 
+
+if [[ ! -z ${USB_CONTROLLER} ]]; then
+	echo ""
+	echo "Bind usb controller back to xhci_hcd"
+	sudo ../../script/vfio-unbind.sh ${USB_CONTROLLER}
+	sudo ../../script/xhci_hcd-bind.sh ${USB_CONTROLLER}
+fi
 
 # TODO: How to set applesmc into varible
 #sudo qemu-system-x86_64 ${PAR}  -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc"
