@@ -18,7 +18,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_VER="0.0.3"
 CURRENT_SCRIPT_DATE="2020-12-30"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -120,5 +120,61 @@ fi
 
 unset KVM_WORKSPACE_DEFAULT
 lm_check_KVM_WORKSPACE
+
+
+# OVMF binary file. Do _NOT_ over write.
+OVMF_CODE="/usr/share/OVMF/OVMF_CODE.fd"
+KVM_WORKSPACE_VM_BSD="${KVM_WORKSPACE}/vm/ubuntu-mate_20_04-eth"
+OVMF_VARS_BSD="${KVM_WORKSPACE_VM_BSD}/ubuntu20_04_VARS-eth.fd"
+VM_DISK_BSD="${KVM_WORKSPACE_VM_BSD}/ubuntu20_04-eth.qcow2"
+KVM_WORKSPACE_SOFTWARE="${KVM_WORKSPACE}/software"
+
+unset INPUT
+lm_read_to_INPUT "Do you wanna use folder ${KVM_WORKSPACE_VM_BSD} for virtual machine?"
+case "${INPUT}" in
+	"YES" )
+		INPUT="YES" ;;
+	"NO" )
+		exit 1 ;;
+	"FAILED" | * )
+		lm_failure ;;
+esac
+
+#unset INPUT
+#lm_read_to_INPUT "Do you wanna share folder ${KVM_WORKSPACE_SOFTWARE} with virtual machine?"
+#case "${INPUT}" in
+#	"YES" ) 
+#		echo ""
+#		echo " NOTE: This is simple samba share (buildin kvm) works only with"
+#		echo "       folowing network setting:"
+#		echo ""
+#		echo " -netdev user,id=user.0 -device e1000,netdev=user.0"
+#		echo ""
+#		;;
+#	"NO" ) 
+#		KVM_WORKSPACE_SOFTWARE="" ;;
+#	"FAILED" | * )
+#		lm_failure_message; exit 1 ;;
+#esac
+
+
+# OVMF file for vm. UEFI boot.
+if [[ ! -f "${OVMF_VARS_BSD}" ]]; then
+	lm_failure_message "${BASH_SOURCE[0]}" "${LINENO}" "File ${OVMF_VARS_BSD} does not exists."
+	exit 1
+fi
+
+
+# Create Ubuntu vm virtual disk.
+if [[ ! -f "${VM_DISK_BSD}" ]]; then
+	lm_failure_message "${BASH_SOURCE[0]}" "${LINENO}" "File ${VM_DISK_BSD} does not exists."
+	exit 1
+fi
+
+
+echo ""
+echo "Starting the vm."
+echo ""
+
 
 

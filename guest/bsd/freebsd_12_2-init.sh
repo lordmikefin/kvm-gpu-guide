@@ -18,7 +18,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_VER="0.0.3"
 CURRENT_SCRIPT_DATE="2020-12-30"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -134,6 +134,77 @@ URL="${URL_PLAIN}/${URL_FILE}"
 
 LOCAL_FILE="${KVM_WORKSPACE_ISO}/${URL_FILE}"
 lm_verify_and_download_to_folder "${URL_FILE}" "${KVM_WORKSPACE_ISO}" "${URL_PLAIN}"  || lm_failure
+
+
+# OVMF binary file. Do _NOT_ over write.
+OVMF_CODE="/usr/share/OVMF/OVMF_CODE.fd"
+OVMF_VARS="/usr/share/OVMF/OVMF_VARS.fd"
+KVM_WORKSPACE_VM_BSD="${KVM_WORKSPACE}/vm/ubuntu-mate_20_04-eth"
+OVMF_VARS_BSD="${KVM_WORKSPACE_VM_BSD}/ubuntu20_04_VARS-eth.fd"
+VM_DISK_BSD="${KVM_WORKSPACE_VM_BSD}/ubuntu20_04-eth.qcow2"
+
+unset INPUT
+lm_read_to_INPUT "Do you wanna use folder ${KVM_WORKSPACE_VM_BSD} for virtual machine?"
+case "${INPUT}" in
+	"YES" )
+		INPUT="YES" ;;
+	"NO" )
+		exit 1
+		;;
+	"FAILED" | * )
+		lm_failure_message
+		INPUT="FAILED" ;;
+esac
+
+# Create Ubuntu vm folder.
+lm_create_folder_recursive "${KVM_WORKSPACE_VM_BSD}"  || lm_failure
+
+
+# OVMF file for vm. UEFI boot.
+if [[ -f "${OVMF_VARS}" ]]; then
+	if [[ ! -f "${OVMF_VARS_BSD}" ]]; then
+		lm_copy_file "${OVMF_VARS}" "${OVMF_VARS_BSD}"  || lm_failure
+	else
+		echo -e "\n File ${OVMF_VARS_BSD} alrealy exists.\n"
+	fi
+else
+	>&2 echo -e "\n File ${OVMF_VARS} missing. Did you installed OVMF?  Aborting."
+	exit 1
+fi
+
+# Create Ubuntu vm virtual disk.
+if [[ ! -f "${VM_DISK_BSD}" ]]; then
+	echo ""
+	echo "Createing file ${VM_DISK_BSD}"
+	echo ""
+	qemu-img create -f qcow2 "${VM_DISK_BSD}" 100G  || lm_failure
+else
+	echo -e "\n File ${VM_DISK_BSD} alrealy exists.\n"
+fi
+
+
+echo ""
+echo "Starting the vm."
+echo ""
+echo ""
+echo "TODO: Is this problem with FreeBSD"
+echo "NOTE: I have not found way to automatically boot from iso."
+echo ""
+echo "When vm is booting you need to enter in to bios and select the cd as boot device."
+echo ""
+echo "Enter to the bios:"
+echo "  Shell> exit"
+echo ""
+echo "Select  'Boot maintenance Manager' -> 'Boot From File'"
+echo ""
+echo "Select '[PciRoot (0x0) /Pci (0x1f,0x2) /Sata (0x0,0x0,0x0) /CDROM(0x1)]'"
+echo ""
+echo "Select '<efi>'"
+echo "         '<boot>'"
+echo "           'grub64.efi'"
+echo ""
+
+
 
 
 
