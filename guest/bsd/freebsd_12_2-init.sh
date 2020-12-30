@@ -18,7 +18,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.4"
+CURRENT_SCRIPT_VER="0.0.5"
 CURRENT_SCRIPT_DATE="2020-12-30"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -139,9 +139,9 @@ lm_verify_and_download_to_folder "${URL_FILE}" "${KVM_WORKSPACE_ISO}" "${URL_PLA
 # OVMF binary file. Do _NOT_ over write.
 OVMF_CODE="/usr/share/OVMF/OVMF_CODE.fd"
 OVMF_VARS="/usr/share/OVMF/OVMF_VARS.fd"
-KVM_WORKSPACE_VM_BSD="${KVM_WORKSPACE}/vm/ubuntu-mate_20_04-eth"
-OVMF_VARS_BSD="${KVM_WORKSPACE_VM_BSD}/ubuntu20_04_VARS-eth.fd"
-VM_DISK_BSD="${KVM_WORKSPACE_VM_BSD}/ubuntu20_04-eth.qcow2"
+KVM_WORKSPACE_VM_BSD="${KVM_WORKSPACE}/vm/freebsd_12_2"
+OVMF_VARS_BSD="${KVM_WORKSPACE_VM_BSD}/freebsd_12_2_VARS.fd"
+VM_DISK_BSD="${KVM_WORKSPACE_VM_BSD}/freebsd_12_2.qcow2"
 
 unset INPUT
 lm_read_to_INPUT "Do you wanna use folder ${KVM_WORKSPACE_VM_BSD} for virtual machine?"
