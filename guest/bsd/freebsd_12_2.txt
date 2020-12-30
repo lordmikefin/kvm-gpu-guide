@@ -1,0 +1,33 @@
+
+(2020-12-30)
+Start FreeBSD vm
+ $ ./freebsd_12_2.sh
+--
+
+
+(2020-12-30)
+Login as 'roof'
+
+https://www.freebsd.org/doc/handbook/security-sudo.html
+ $ pkg install sudo
+ $ pkg install nano
+
+Edit sudoer permissions
+ $ nano /usr/local/etc/sudoers
+
+Allow any user to run sudo if they know the password.
+Uncomment lines:
+...
+Defaults targetpw
+ALL ALL=(ALL) ALL
+...
+
+Logout and login as regular user. Test the sudo.
+ $ sudo shutdown -h now
+--
+
+
+
+(2020-12-30)
+--
+
