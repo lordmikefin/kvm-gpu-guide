@@ -18,7 +18,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.3"
+CURRENT_SCRIPT_VER="0.0.4"
 CURRENT_SCRIPT_DATE="2020-12-30"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -176,5 +176,63 @@ echo ""
 echo "Starting the vm."
 echo ""
 
+# -enable-kvm -> enable hardware virtualization
+PAR="-enable-kvm"
 
+# Mother board
+PAR="${PAR} -M q35"
+
+# Memory
+PAR="${PAR} -m 8192"
+
+# CPU
+PAR="${PAR} -cpu host,kvm=on"
+PAR="${PAR} -smp 4,sockets=1,cores=4,threads=1"
+
+# Boot menu
+PAR="${PAR} -boot menu=on"
+
+# Display   qxl
+PAR="${PAR} -vga qxl"
+PAR="${PAR} -display gtk"
+
+# Monitoring screen
+PAR="${PAR} -monitor stdio"
+
+# OVMF
+PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
+PAR="${PAR} -drive file=${OVMF_VARS_BSD},if=pflash,format=raw,unit=1"
+
+# Add pcie bus
+PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
+
+# Virtual disk
+PAR="${PAR} -drive file=${VM_DISK_BSD},format=qcow2,if=none,id=drive-ide0-0-0"
+PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
+
+## FreeBSD ISO file
+#PAR="${PAR} -drive file=${LOCAL_FILE},format=raw,if=none,id=drive-ide1-0-0"
+#PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
+
+# Sound card
+PAR="${PAR} -soundhw hda"
+
+# Network
+#PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
+PAR="${PAR} -netdev bridge,br=virbr0,id=user.0"
+PAR="${PAR} -device e1000,netdev=user.0"
+
+# Start the virtual machine with parameters
+echo ""
+echo "qemu-system-x86_64 ${PAR}"
+echo ""
+echo "https://en.wikibooks.org/wiki/QEMU/Monitor"
+echo " (qemu) help"
+echo " (qemu) info pci"
+echo ""
+sudo qemu-system-x86_64 ${PAR}
+
+
+echo ""
+echo "End of script '${CURRENT_SCRIPT}'"
 
