@@ -13,13 +13,13 @@
 #   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/guest/windows/windows_10_dev_cuda.sh
 
 # windows_10_dev_cuda.sh
-# Start windows 10 virtual machine.
+# Start windows 10 virtual machine. Host Ubuntu 20.04
 
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
-CURRENT_SCRIPT_DATE="2020-10-05"
+CURRENT_SCRIPT_VER="0.0.4"
+CURRENT_SCRIPT_DATE="2021-01-02"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -30,7 +30,7 @@ echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 unset CURRENT_SCRIPT CURRENT_SCRIPT_REALPATH CURRENT_SCRIPT_DIR WORK_DIR
 #CURRENT_SCRIPT_REALPATH="$(realpath ${0})"
-CURRENT_SCRIPT_REALPATH="$(realpath ${BASH_SOURCE[0]})"
+CURRENT_SCRIPT_REALPATH="$(readlink -f "${BASH_SOURCE[0]}")"
 CURRENT_SCRIPT="$(basename ${CURRENT_SCRIPT_REALPATH})"
 CURRENT_SCRIPT_DIR="$(dirname ${CURRENT_SCRIPT_REALPATH})"
 WORK_DIR="${PWD}"
@@ -66,7 +66,7 @@ source ${IMPORT_FUNCTIONS}
 if [ ${LM_FUNCTIONS_LOADED} == false ]; then
 	>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Something went wrong with loading funcions."
 	exit 1
-elif [ ${LM_FUNCTIONS_VER} != "1.2.1" ]; then
+elif [ ${LM_FUNCTIONS_VER} != "1.3.1" ]; then
 	lm_functions_incorrect_version
 	if [ "${INPUT}" == "FAILED" ]; then
 		lm_failure
@@ -162,7 +162,7 @@ OVMF_CODE="/usr/share/OVMF/OVMF_CODE.fd"
 KVM_WORKSPACE_VM_WIN10="${KVM_WORKSPACE}/vm/windows_10_dev_cuda"
 OVMF_VARS_WIN10="${KVM_WORKSPACE_VM_WIN10}/windows_10_dev_cuda_VARS.fd"
 VM_DISK_WIN10="${KVM_WORKSPACE_VM_WIN10}/windows_10_dev_cuda.qcow2"
-KVM_WORKSPACE_SOFTWARE="${KVM_WORKSPACE}/software"
+#KVM_WORKSPACE_SOFTWARE="${KVM_WORKSPACE}/software"
 VM_DISK_DATA="${KVM_WORKSPACE_VM_WIN10}/windows_10_dev_cuda_data_d_drive.qcow2"
 
 
@@ -178,22 +178,22 @@ case "${INPUT}" in
 		lm_failure ;;
 esac
 
-unset INPUT
-lm_read_to_INPUT "Do you wanna share folder ${KVM_WORKSPACE_SOFTWARE} with virtual machine?"
-case "${INPUT}" in
-	"YES" ) 
-		echo ""
-		echo " NOTE: This is simple samba share (buildin kvm) works only with"
-		echo "       folowing network setting:"
-		echo ""
-		echo " -netdev user,id=user.0 -device e1000,netdev=user.0"
-		echo ""
-		;;
-	"NO" ) 
-		KVM_WORKSPACE_SOFTWARE="" ;;
-	"FAILED" | * )
-		lm_failure_message; exit 1 ;;
-esac
+#unset INPUT
+#lm_read_to_INPUT "Do you wanna share folder ${KVM_WORKSPACE_SOFTWARE} with virtual machine?"
+#case "${INPUT}" in
+#	"YES" ) 
+#		echo ""
+#		echo " NOTE: This is simple samba share (buildin kvm) works only with"
+#		echo "       folowing network setting:"
+#		echo ""
+#		echo " -netdev user,id=user.0 -device e1000,netdev=user.0"
+#		echo ""
+#		;;
+#	"NO" ) 
+#		KVM_WORKSPACE_SOFTWARE="" ;;
+#	"FAILED" | * )
+#		lm_failure_message; exit 1 ;;
+#esac
 
 ## Create Ubuntu vm folder.
 #lm_create_folder_recursive "${KVM_WORKSPACE_VM_WIN10}"  || lm_failure
@@ -232,137 +232,16 @@ echo "Starting the vm."
 echo ""
 
 
+# Select GPU device (bus address).
+VM_GPUS_CONF_FILE="$(realpath "${CURRENT_SCRIPT_DIR}/../../host/ubuntu-mate_20_04_1_LTS/vm_GPUs.conf")"
+unset GPU_BUS GPU_SOUND SELECTED
+lm_select_gpu_GPU_BUS_and_GPU_SOUND "${VM_GPUS_CONF_FILE}"  || lm_failure
 
-# TODO: How to get GPU bus address? Ask from user?
-#		Set to common file. Load from there.
-
-
-VM_GPUS_CONF_FILE="$(realpath "${CURRENT_SCRIPT_DIR}/../../host/ubuntu-mate_16_04_1_LTS/vm_GPUs.conf")"
-if [[ ! -f "${VM_GPUS_CONF_FILE}" ]]; then
-	# >&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Source script '${IMPORT_FUNCTIONS}' missing!"
-	lm_failure_message "${BASH_SOURCE[0]}" "${LINENO}" "Config file '${VM_GPUS_CONF_FILE}' missing!"
-	exit 1
+if [[ ! -z ${GPU_BUS} ]]; then
+    # NOTE: use virtual display instead of spice with real display
+    VIRTUAL_DISPLAY=true
 fi
 
-echo ""
-echo "VM_GPUS_CONF_FILE : ${VM_GPUS_CONF_FILE}"
-echo ""
-echo "$(cat "${VM_GPUS_CONF_FILE}")"
-echo "length : ${#VM_GPUS_CONF_FILE}"
-echo ""
-
-
-echo ""
-echo "Select card to use with the vm."
-echo ""
-
-
-
-BACKUP_IFS="${IFS}"
-#IFS="
-#"
-IFS=$'\n'
-COUNT=0
-COUNT_DEV=0
-SELECTIONS_STR="0,"
-SELECTIONS=(" #0	NONE") # Declare array
-PCI_BUS_VGA=() # Declare array
-PCI_BUS_AUDIO=() # Declare array
-echo "LINE ${COUNT} : ${LINE}"
-for LINE in $(cat "${VM_GPUS_CONF_FILE}") ; do
-	let COUNT=COUNT+1
-	#echo "LINE ${COUNT} : ${LINE}"
-	if [ ${COUNT} == 1 ]; then
-		SELECTIONS+=(${LINE}) # Append to array
-		#echo "LINE : ${LINE}"
-		#echo "COUNT : ${COUNT}"
-	elif [ ${COUNT} == 2 ]; then
-		PCI_BUS_VGA+=(${LINE}) # Append to array
-		#echo "COUNT : ${COUNT}"
-	elif [ ${COUNT} == 3 ]; then
-		PCI_BUS_AUDIO+=(${LINE}) # Append to array
-		COUNT=0
-		let COUNT_DEV=COUNT_DEV+1
-		SELECTIONS_STR+="${COUNT_DEV},"
-	fi
-done
-
-IFS="${BACKUP_IFS}"
-
-echo ""
-echo "SELECTIONS : ${SELECTIONS[@]}"
-echo ""
-echo "PCI_BUS_VGA : ${PCI_BUS_VGA[@]}"
-echo "PCI_BUS_AUDIO : ${PCI_BUS_AUDIO[@]}"
-echo "SELECTIONS_STR : ${SELECTIONS_STR}"
-echo ""
-
-#INPUT=2
-#if [[ ${SELECTIONS_STR} == *"${INPUT},"* ]]; then
-#	echo "FOUND"
-#fi
-
-unset SELECTED
-unset INPUT
-for LINE in "${SELECTIONS[@]}" ; do
-	echo " ${LINE}"
-done
-while [[ -z ${INPUT} ]]; do
-#	echo -n "Select one device: "
-#	for LINE in "${SELECTIONS[@]}" ; do
-#		echo " ${LINE}"
-#	done
-	
-	echo -n "Select one device: "
-	read INPUT
-	
-	STRING_LOW_CASE="$(lm_string_to_lower_case "${INPUT}")"  || { STRING_LOW_CASE="FAILED";  lm_failure_message; }
-
-	if [[ -z ${INPUT} ]]; then
-		INPUT="N/A"
-	fi
-	
-	if [[ ${SELECTIONS_STR} == *"${STRING_LOW_CASE},"* ]]; then
-		echo "FOUND"
-		SELECTED=${STRING_LOW_CASE}
-	else
-		unset INPUT  # Clear input ( = stay in while loop )
-	fi
-	
-#	case "${STRING_LOW_CASE}" in
-#		"yes" | "ye" | "y" )
-#			INPUT="YES" ;;
-#		"no" | "n" | "" )
-#			INPUT="NO" ;;
-#		"FAILED" )
-#			INPUT="FAILED" ;;
-#		* )
-#			unset INPUT ;; # Clear input ( = stay in while loop )
-#	esac
-
-done
-
-echo ""
-echo "SELECTED : ${SELECTED}"
-#echo $((${SELECTED}-1))
-
-
-
-# Host device bus address
-#NVIDIA_GPU="01:00.0" # Nvidia GeForce GTX 1050 # ASUSTeK Computer Inc. Device
-#NVIDIA_SOUND="01:00.1"
-#NVIDIA_GPU="02:00.0" # Nvidia GeForce GT 710 # Micro-Star International Co., Ltd. [MSI] Device
-#NVIDIA_SOUND="02:00.1"
-SEL=$((${SELECTED}-1))
-if [[ $((${SELECTED})) -gt 0 ]]; then
-	NVIDIA_GPU="${PCI_BUS_VGA[${SEL}]}"
-	NVIDIA_SOUND="${PCI_BUS_AUDIO[${SEL}]}"
-	echo ""
-	#echo "PCI_BUS_VGA : ${PCI_BUS_VGA[$((${SEL}-1))]}"
-	#echo "PCI_BUS_AUDIO : ${PCI_BUS_AUDIO[$((${SEL}-1))]}"
-	echo "PCI_BUS_VGA : ${NVIDIA_GPU}"
-	echo "PCI_BUS_AUDIO : ${NVIDIA_SOUND}"
-fi
 
 
 
@@ -390,8 +269,37 @@ PAR="${PAR} -rtc base=localtime"
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
 #PAR="${PAR} -vga qxl"
-PAR="${PAR} -display sdl"
+#PAR="${PAR} -display sdl"
 #PAR="${PAR} -display none"
+
+if [[ -n ${VIRTUAL_DISPLAY} ]]; then
+	PAR="${PAR} -vga std"
+	#PAR="${PAR} -vga qxl"
+	# NOTE: Use 'gtk' instead of 'sdl'
+	#PAR="${PAR} -display sdl"
+	PAR="${PAR} -display gtk"
+	
+	PAR="${PAR} -device nec-usb-xhci,id=usb"
+	PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+    PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
+else
+	SPICE_PORT=5924
+	PAR="${PAR} -vga qxl"
+fi
+
+# Display 'spice'
+#SPICE_PORT=5924
+if [[ -n ${SPICE_PORT} ]]; then
+	# https://wiki.gentoo.org/wiki/QEMU/Windows_guest
+	# https://www.spice-space.org/download.html
+	# Install 'spice-guest-tools-latest.exe'
+	# -> This will add bidirectonal clipboard among other stuff ;)
+	PAR="${PAR} -spice port=${SPICE_PORT},disable-ticketing"
+	# NOTE: Install 'VirtIO Servial Driver' driver from 'virtio' iso disk.
+	PAR="${PAR} -device virtio-serial"
+	PAR="${PAR} -chardev spicevmc,id=vdagent,name=vdagent"
+	PAR="${PAR} -device virtserialport,chardev=vdagent,name=com.redhat.spice.0"
+fi
 
 
 # Monitoring screen
@@ -399,8 +307,8 @@ PAR="${PAR} -monitor stdio"
 
 # USB passthrough. Keyboard and mouse.
 # TODO: parameterize. Or auto find.
-PAR="${PAR} -usb -usbdevice host:046d:c077"
-PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4"
+#PAR="${PAR} -usb -usbdevice host:046d:c077"
+#PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4"
 #PAR="${PAR} -usbdevice tablet"
 
 # OVMF
@@ -468,7 +376,20 @@ PAR="${PAR} -device e1000,netdev=user.0"
 # Start the virtual machine with parameters
 echo "qemu-system-x86_64 ${PAR}"
 echo ""
-#qemu-system-x86_64 ${PAR}
+echo "https://en.wikibooks.org/wiki/QEMU/Monitor"
+echo " (qemu) help"
+echo " (qemu) info pci"
+echo ""
+
+if [[ -n ${SPICE_PORT} ]]; then
+	echo ""
+	echo "Connect to 'spice' remote server."
+	echo " $ spicy --title Windows 127.0.0.1 -p ${SPICE_PORT}"
+	echo "You could also use 'remote-viewer'"
+	echo " $ remote-viewer --title Windows spice://127.0.0.1:${SPICE_PORT}"
+fi
+
+echo ""
 sudo qemu-system-x86_64 ${PAR}
 
 
