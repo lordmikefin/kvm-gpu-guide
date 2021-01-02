@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.5"
-CURRENT_SCRIPT_DATE="2020-11-30"
+CURRENT_SCRIPT_VER="0.0.6"
+CURRENT_SCRIPT_DATE="2021-01-02"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -120,7 +120,7 @@ source ${IMPORT_FUNCTIONS}
 if [ ${LM_FUNCTIONS_LOADED} == false ]; then
 	>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Something went wrong with loading funcions."
 	exit 1
-elif [ ${LM_FUNCTIONS_VER} != "1.3.0" ]; then
+elif [ ${LM_FUNCTIONS_VER} != "1.3.1" ]; then
 	lm_functions_incorrect_version
 	if [ "${INPUT}" == "FAILED" ]; then
 		lm_failure
@@ -370,158 +370,16 @@ echo ""
 
 
 VM_GPUS_CONF_FILE="$(realpath "${CURRENT_SCRIPT_DIR}/../../host/ubuntu-mate_20_04_1_LTS/vm_GPUs.conf")"
-if [[ ! -f "${VM_GPUS_CONF_FILE}" ]]; then
-	# >&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Source script '${IMPORT_FUNCTIONS}' missing!"
-	lm_failure_message "${BASH_SOURCE[0]}" "${LINENO}" "Config file '${VM_GPUS_CONF_FILE}' missing!"
-	exit 1
-fi
-
-echo ""
-echo "VM_GPUS_CONF_FILE : ${VM_GPUS_CONF_FILE}"
-echo ""
-echo "$(cat "${VM_GPUS_CONF_FILE}")"
-echo "length : ${#VM_GPUS_CONF_FILE}"
-echo ""
-
-
-echo ""
-echo "Select card to use with the vm."
-echo ""
-
-# NOTE: Read more about arrays
-#   https://stackoverflow.com/questions/8880603/loop-through-an-array-of-strings-in-bash
-
-## declare an array variable
-#declare -a arr=("element1" "element2" "element3")
-#arr=("element1" "element2" "element3")
-#echo ""
-#echo "${arr[@]}"
-#echo "${arr[1]}"
-#echo ""
-
-# get length of an array
-#arraylength=${#arr[@]}
-
-# use for loop to read all values and indexes
-#for (( i=1; i<${arraylength}+1; i++ ));
-#do
-#	echo $i " / " ${arraylength} " : " ${arr[$i-1]}
-#done
-
-
-#declare -a arr_test=(arr)
-#declare -a arr_test=("${arr_test[0]}")
-#echo ""
-#echo "${arr_test[@]}"
-#echo "${arr_test[0]}"
-#echo ""
-
-
-BACKUP_IFS="${IFS}"
-#IFS="
-#"
-IFS=$'\n'
-COUNT=0
-COUNT_DEV=0
-SELECTIONS_STR="0,"
-SELECTIONS=(" #0	NONE") # Declare array
-PCI_BUS_VGA=() # Declare array
-PCI_BUS_AUDIO=() # Declare array
-echo "LINE ${COUNT} : ${LINE}"
-for LINE in $(cat "${VM_GPUS_CONF_FILE}") ; do
-	let COUNT=COUNT+1
-	#echo "LINE ${COUNT} : ${LINE}"
-	if [ ${COUNT} == 1 ]; then
-		SELECTIONS+=(${LINE}) # Append to array
-		#echo "LINE : ${LINE}"
-		#echo "COUNT : ${COUNT}"
-	elif [ ${COUNT} == 2 ]; then
-		PCI_BUS_VGA+=(${LINE}) # Append to array
-		#echo "COUNT : ${COUNT}"
-	elif [ ${COUNT} == 3 ]; then
-		PCI_BUS_AUDIO+=(${LINE}) # Append to array
-		COUNT=0
-		let COUNT_DEV=COUNT_DEV+1
-		SELECTIONS_STR+="${COUNT_DEV},"
-	fi
-done
-
-IFS="${BACKUP_IFS}"
-
-echo ""
-echo "SELECTIONS : ${SELECTIONS[@]}"
-echo ""
-echo "PCI_BUS_VGA : ${PCI_BUS_VGA[@]}"
-echo "PCI_BUS_AUDIO : ${PCI_BUS_AUDIO[@]}"
-echo "SELECTIONS_STR : ${SELECTIONS_STR}"
-echo ""
-
-#INPUT=2
-#if [[ ${SELECTIONS_STR} == *"${INPUT},"* ]]; then
-#	echo "FOUND"
-#fi
-
-unset SELECTED
-unset INPUT
-for LINE in "${SELECTIONS[@]}" ; do
-	echo " ${LINE}"
-done
-while [[ -z ${INPUT} ]]; do
-#	echo -n "Select one device: "
-#	for LINE in "${SELECTIONS[@]}" ; do
-#		echo " ${LINE}"
-#	done
-	
-	echo -n "Select one device: "
-	read INPUT
-	
-	STRING_LOW_CASE="$(lm_string_to_lower_case "${INPUT}")"  || { STRING_LOW_CASE="FAILED";  lm_failure_message; }
-
-	if [[ -z ${INPUT} ]]; then
-		INPUT="N/A"
-	fi
-	
-	if [[ ${SELECTIONS_STR} == *"${STRING_LOW_CASE},"* ]]; then
-		echo "FOUND"
-		SELECTED=${STRING_LOW_CASE}
-	else
-		unset INPUT  # Clear input ( = stay in while loop )
-	fi
-	
-#	case "${STRING_LOW_CASE}" in
-#		"yes" | "ye" | "y" )
-#			INPUT="YES" ;;
-#		"no" | "n" | "" )
-#			INPUT="NO" ;;
-#		"FAILED" )
-#			INPUT="FAILED" ;;
-#		* )
-#			unset INPUT ;; # Clear input ( = stay in while loop )
-#	esac
-
-done
-
-echo ""
-echo "SELECTED : ${SELECTED}"
-#echo $((${SELECTED}-1))
+unset GPU_BUS GPU_SOUND SELECTED
+lm_select_gpu_GPU_BUS_and_GPU_SOUND "${VM_GPUS_CONF_FILE}"  || lm_failure
 
 
 
-# Host device bus address
-#NVIDIA_GPU="01:00.0" # Nvidia GeForce GTX 1050 # ASUSTeK Computer Inc. Device
-#NVIDIA_SOUND="01:00.1"
-#NVIDIA_GPU="02:00.0" # Nvidia GeForce GT 710 # Micro-Star International Co., Ltd. [MSI] Device
-#NVIDIA_SOUND="02:00.1"
-SEL=$((${SELECTED}-1))
-if [[ $((${SELECTED})) -gt 0 ]]; then
-	NVIDIA_GPU="${PCI_BUS_VGA[${SEL}]}"
-	NVIDIA_SOUND="${PCI_BUS_AUDIO[${SEL}]}"
-	echo ""
-	#echo "PCI_BUS_VGA : ${PCI_BUS_VGA[$((${SEL}-1))]}"
-	#echo "PCI_BUS_AUDIO : ${PCI_BUS_AUDIO[$((${SEL}-1))]}"
-	echo "PCI_BUS_VGA : ${NVIDIA_GPU}"
-	echo "PCI_BUS_AUDIO : ${NVIDIA_SOUND}"
-fi
+
+
+
+
+
 
 
 
@@ -670,16 +528,16 @@ PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis
 
 # VGA passthrough. GPU and sound.
 # TODO: Ask user which card should be used.
-#NVIDIA_GPU="01:00.0"
-#NVIDIA_SOUND="01:00.1"
-#NVIDIA_GPU="02:00.0"
-#NVIDIA_SOUND="02:00.1"
-if [[ ! -z ${NVIDIA_GPU} ]]; then
-	PAR="${PAR} -device vfio-pci,host=${NVIDIA_GPU},bus=root.1,addr=00.0,multifunction=on,x-vga=on"
+#GPU_BUS="01:00.0"
+#GPU_SOUND="01:00.1"
+#GPU_BUS="02:00.0"
+#GPU_SOUND="02:00.1"
+if [[ ! -z ${GPU_BUS} ]]; then
+	PAR="${PAR} -device vfio-pci,host=${GPU_BUS},bus=root.1,addr=00.0,multifunction=on,x-vga=on"
 fi
 
-if [[ ! -z ${NVIDIA_SOUND} ]]; then
-	PAR="${PAR} -device vfio-pci,host=${NVIDIA_SOUND},bus=root.1,addr=00.1"
+if [[ ! -z ${GPU_SOUND} ]]; then
+	PAR="${PAR} -device vfio-pci,host=${GPU_SOUND},bus=root.1,addr=00.1"
 fi
 
 # Samba share. As default samba server address is  \\10.0.2.4\qemu\
@@ -774,7 +632,7 @@ if [[ -n ${SPICE_PORT} ]]; then
 	echo " $ remote-viewer --title Ubuntu spice://127.0.0.1:${SPICE_PORT}"
 fi
 
-if [[ ! -z ${NVIDIA_GPU} ]]; then
+if [[ ! -z ${GPU_BUS} ]]; then
 	echo ""
 	echo "NOTE: qemu-system-x86_64 will notify about missing 'reset'."
 	echo "This will happen only with AMD display cards. AMD reset bug !"
@@ -787,8 +645,8 @@ sudo qemu-system-x86_64 ${PAR}
 
 
 
-#NVIDIA_GPU="01:00.0"
-if [[ ! -z ${NVIDIA_GPU} ]]; then
+#GPU_BUS="01:00.0"
+if [[ ! -z ${GPU_BUS} ]]; then
     # This work but is not elegant.
     
     # TODO: should try gnif's reset bug fix:
@@ -797,7 +655,7 @@ if [[ ! -z ${NVIDIA_GPU} ]]; then
 	# TODO: Not really needed for Nvidia cards !
 	#echo "Reset the card."
 	#sudo ../../script/reset-device.sh 01:00
-	#sudo ../../script/reset-device.sh ${NVIDIA_GPU:0:5}
+	#sudo ../../script/reset-device.sh ${GPU_BUS:0:5}
 	
 	echo "Installed 'vendor-reset' module in to host"
 	echo " -> so now we should not need to suspend the card :)"
