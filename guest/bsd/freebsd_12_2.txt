@@ -29,5 +29,12 @@ Logout and login as regular user. Test the sudo.
 
 
 (2020-12-30)
+TODO: install x11 and dm
+https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/x11.html
+--
+
+
+
+(2020-12-30)
 --
 
