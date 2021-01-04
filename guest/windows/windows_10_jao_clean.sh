@@ -15,13 +15,13 @@
 # windows_10_jao_clean.sh
 # Start windows 10 virtual machine.
 
-# This is just an other clean installatioon of win 10.
+# This is just an other clean installatioon of win 10. Host Ubuntu 20.04
 # My previous vm is full of testing and I need just an other clean test ground ;)
 
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.5"
+CURRENT_SCRIPT_VER="0.0.6"
 CURRENT_SCRIPT_DATE="2021-01-04"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -247,8 +247,8 @@ echo ""
 
 
 # Select GPU device (bus address).
-VM_GPUS_CONF_FILE="$(realpath "${CURRENT_SCRIPT_DIR}/../../host/ubuntu-mate_16_04_1_LTS/vm_GPUs.conf")"
-#VM_GPUS_CONF_FILE="$(realpath "${CURRENT_SCRIPT_DIR}/../../host/ubuntu-mate_20_04_1_LTS/vm_GPUs.conf")"
+#VM_GPUS_CONF_FILE="$(realpath "${CURRENT_SCRIPT_DIR}/../../host/ubuntu-mate_16_04_1_LTS/vm_GPUs.conf")"
+VM_GPUS_CONF_FILE="$(realpath "${CURRENT_SCRIPT_DIR}/../../host/ubuntu-mate_20_04_1_LTS/vm_GPUs.conf")"
 unset GPU_BUS GPU_SOUND SELECTED
 lm_select_gpu_GPU_BUS_and_GPU_SOUND "${VM_GPUS_CONF_FILE}"  || lm_failure
 
@@ -277,6 +277,14 @@ PAR="${PAR} -boot menu=on"
 PAR="${PAR} -rtc base=localtime"
 
 
+#echo "VIRTUAL_DISPLAY ${VIRTUAL_DISPLAY}"
+if [[ ! -z ${GPU_BUS} ]]; then
+    # NOTE: use virtual display instead of spice with real display
+    VIRTUAL_DISPLAY=true
+fi
+#echo "VIRTUAL_DISPLAY ${VIRTUAL_DISPLAY}"
+
+
 # TODO: parametirize - ask from user
 # testing - LIDEDE USB to HDMI Adapter
 #LIDEDE_USB_HDMI=true
@@ -290,13 +298,21 @@ if [[ -n ${LIDEDE_USB_HDMI} ]]; then
 elif [[ -n ${VIRTUAL_DISPLAY} ]]; then
 	PAR="${PAR} -vga std"
 	#PAR="${PAR} -vga qxl"
-	PAR="${PAR} -display sdl"
-	PAR="${PAR} -usb -usbdevice host:534d:6021" # ID 534d:6021 
-	PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
+	# NOTE: Use 'gtk' instead of 'sdl'
+	#PAR="${PAR} -display sdl"
+	PAR="${PAR} -display gtk"
+	
+	PAR="${PAR} -device nec-usb-xhci,id=usb"
+	#PAR="${PAR} -usb -usbdevice host:534d:6021" # ID 534d:6021 
+	#PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
+	#PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+    #PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
 else
 	SPICE_PORT=5926
 	PAR="${PAR} -vga qxl"
-	PAR="${PAR} -usbdevice tablet"
+	# TODO: qemu-system-x86_64: -usbdevice tablet: '-usbdevice' is deprecated, please use '-device usb-...' instead
+	# TODO: how usb devices are set in QEMU 4.2.1 ???
+	#PAR="${PAR} -usbdevice tablet"
 fi
 
 # Display   qxl
@@ -326,8 +342,8 @@ PAR="${PAR} -monitor stdio"
 
 
 # USB redirection
-USB_REDIR=true
-USB_REDIR_TYPE="USB3"
+#USB_REDIR=true
+#USB_REDIR_TYPE="USB3"
 #USB_REDIR_TYPE="USB2"
 if [[ -n ${USB_REDIR} ]]; then
 	# https://www.spice-space.org/usbredir.html
@@ -362,7 +378,7 @@ fi
 
 # USB passthrough. Keyboard and mouse.
 # TODO: parameterize. Or auto find.
-PAR="${PAR} -usb -usbdevice host:046d:c077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+#PAR="${PAR} -usb -usbdevice host:046d:c077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
 #PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
 #PAR="${PAR} -usb -usbdevice host:0e8d:2008" # Bus 001 Device 005: ID 0e8d:2008 MediaTek Inc. (BV6000 Transfer files)
 #PAR="${PAR} -usb -usbdevice host:0e8d:200b" # Bus 001 Device 009: ID 0e8d:200b MediaTek Inc. (BV6000 Transfer photos)
@@ -413,14 +429,23 @@ fi
 # TOOD: verify controller exists
 #USB_CONTROLLER="03:00.0"
 #USB_CONTROLLER="04:00.0"
+USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Renesas Technology Corp. uPD720201 USB 3.0 Host Controller (rev 03)
 if [[ ! -z ${USB_CONTROLLER} ]]; then
-	PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.1,addr=00.0,multifunction=on"
+    # https://github.com/qemu/qemu/blob/master/docs/pcie.txt
+    
+    # Add pcie bus 2
+    PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1d.0,chassis=2,id=root.2"
+    
+	#PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.1,addr=00.0,multifunction=on"
+	PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.2"
 fi
 
 
 # Samba share. As default samba server address is  \\10.0.2.4\qemu\
 if [[ ! -z ${KVM_WORKSPACE_SOFTWARE} ]]; then
-	PAR="${PAR} -smb ${KVM_WORKSPACE_SOFTWARE}"
+	#PAR="${PAR} -smb ${KVM_WORKSPACE_SOFTWARE}"
+	echo "TODO: built-in SMB server conf has changed !"
+	echo " https://wiki.archlinux.org/index.php/QEMU#QEMU's_built-in_SMB_server"
 fi
 
 # TODO: Use 9p instead of cifs-samba share
