@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.6"
-CURRENT_SCRIPT_DATE="2021-01-02"
+CURRENT_SCRIPT_VER="0.0.7"
+CURRENT_SCRIPT_DATE="2021-01-04"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -287,7 +287,7 @@ OVMF_CODE="/usr/share/OVMF/OVMF_CODE.fd"
 KVM_WORKSPACE_VM_UBUNTU="${KVM_WORKSPACE}/vm/ubuntu-mate_20_04-eth"
 OVMF_VARS_UBUNTU="${KVM_WORKSPACE_VM_UBUNTU}/ubuntu20_04_VARS-eth.fd"
 VM_DISK_UBUNTU="${KVM_WORKSPACE_VM_UBUNTU}/ubuntu20_04-eth.qcow2"
-KVM_WORKSPACE_SOFTWARE="${KVM_WORKSPACE}/software"
+#KVM_WORKSPACE_SOFTWARE="${KVM_WORKSPACE}/software"
 
 
 
@@ -304,22 +304,22 @@ case "${INPUT}" in
 		lm_failure ;;
 esac
 
-unset INPUT
-lm_read_to_INPUT "Do you wanna share folder ${KVM_WORKSPACE_SOFTWARE} with virtual machine?"
-case "${INPUT}" in
-	"YES" ) 
-		echo ""
-		echo " NOTE: This is simple samba share (buildin kvm) works only with"
-		echo "       folowing network setting:"
-		echo ""
-		echo " -netdev user,id=user.0 -device e1000,netdev=user.0"
-		echo ""
-		;;
-	"NO" ) 
-		KVM_WORKSPACE_SOFTWARE="" ;;
-	"FAILED" | * )
-		lm_failure_message; exit 1 ;;
-esac
+#unset INPUT
+#lm_read_to_INPUT "Do you wanna share folder ${KVM_WORKSPACE_SOFTWARE} with virtual machine?"
+#case "${INPUT}" in
+#	"YES" ) 
+#		echo ""
+#		echo " NOTE: This is simple samba share (buildin kvm) works only with"
+#		echo "       folowing network setting:"
+#		echo ""
+#		echo " -netdev user,id=user.0 -device e1000,netdev=user.0"
+#		echo ""
+#		;;
+#	"NO" ) 
+#		KVM_WORKSPACE_SOFTWARE="" ;;
+#	"FAILED" | * )
+#		lm_failure_message; exit 1 ;;
+#esac
 
 
 
