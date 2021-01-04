@@ -21,8 +21,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.5"
-CURRENT_SCRIPT_DATE="2021-01-03"
+CURRENT_SCRIPT_VER="0.0.6"
+CURRENT_SCRIPT_DATE="2021-01-04"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -247,8 +247,8 @@ echo ""
 
 
 # Select GPU device (bus address).
-VM_GPUS_CONF_FILE="$(realpath "${CURRENT_SCRIPT_DIR}/../../host/ubuntu-mate_16_04_1_LTS/vm_GPUs.conf")"
-#VM_GPUS_CONF_FILE="$(realpath "${CURRENT_SCRIPT_DIR}/../../host/ubuntu-mate_20_04_1_LTS/vm_GPUs.conf")"
+#VM_GPUS_CONF_FILE="$(realpath "${CURRENT_SCRIPT_DIR}/../../host/ubuntu-mate_16_04_1_LTS/vm_GPUs.conf")"
+VM_GPUS_CONF_FILE="$(realpath "${CURRENT_SCRIPT_DIR}/../../host/ubuntu-mate_20_04_1_LTS/vm_GPUs.conf")"
 unset GPU_BUS GPU_SOUND SELECTED
 lm_select_gpu_GPU_BUS_and_GPU_SOUND "${VM_GPUS_CONF_FILE}"  || lm_failure
 
@@ -278,16 +278,53 @@ PAR="${PAR} -boot menu=on"
 # fix the clock - Windows and linux handle clock differently
 PAR="${PAR} -rtc base=localtime"
 
+
+#echo "VIRTUAL_DISPLAY ${VIRTUAL_DISPLAY}"
+if [[ ! -z ${GPU_BUS} ]]; then
+    # NOTE: use virtual display instead of spice with real display
+    VIRTUAL_DISPLAY=true
+fi
+#echo "VIRTUAL_DISPLAY ${VIRTUAL_DISPLAY}"
+
+
+# TODO: parametirize - ask from user
+# testing - LIDEDE USB to HDMI Adapter
+#LIDEDE_USB_HDMI=true
+#VIRTUAL_DISPLAY=true
+if [[ -n ${LIDEDE_USB_HDMI} ]]; then
+	PAR="${PAR} -vga none"
+	PAR="${PAR} -display none"
+	# testing - LIDEDE USB to HDMI Adapter
+	PAR="${PAR} -usb -usbdevice host:534d:6021" # ID 534d:6021 
+	PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
+elif [[ -n ${VIRTUAL_DISPLAY} ]]; then
+	PAR="${PAR} -vga std"
+	#PAR="${PAR} -vga qxl"
+	# NOTE: Use 'gtk' instead of 'sdl'
+	#PAR="${PAR} -display sdl"
+	PAR="${PAR} -display gtk"
+	#PAR="${PAR} -usb -usbdevice host:534d:6021" # ID 534d:6021 
+	#PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
+	#PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+    #PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
+else
+	SPICE_PORT=5925
+	PAR="${PAR} -vga qxl"
+	# TODO: qemu-system-x86_64: -usbdevice tablet: '-usbdevice' is deprecated, please use '-device usb-...' instead
+	# TODO: how usb devices are set in QEMU 4.2.1 ???
+	#PAR="${PAR} -usbdevice tablet"
+fi
+
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
-PAR="${PAR} -vga qxl" # NOTE: Install 'qxl' driver from 'virtio' iso disk.
+#PAR="${PAR} -vga qxl" # NOTE: Install 'qxl' driver from 'virtio' iso disk.
 #PAR="${PAR} -vga std"
 #PAR="${PAR} -vga virtio"
 #PAR="${PAR} -display sdl"
 #PAR="${PAR} -display none"
 
 # Display 'spice'
-SPICE_PORT=5925
+#SPICE_PORT=5925
 if [[ -n ${SPICE_PORT} ]]; then
 	# https://wiki.gentoo.org/wiki/QEMU/Windows_guest
 	# https://www.spice-space.org/download.html
@@ -341,11 +378,11 @@ fi
 
 # USB passthrough. Keyboard and mouse.
 # TODO: parameterize. Or auto find.
-PAR="${PAR} -usb -usbdevice host:046d:c077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
-PAR="${PAR} -device usb-host,hostbus=1,hostaddr=3" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
+#PAR="${PAR} -usb -usbdevice host:046d:c077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+#PAR="${PAR} -device usb-host,hostbus=1,hostaddr=3" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
 #PAR="${PAR} -usb -usbdevice host:0e8d:2008" # Bus 001 Device 005: ID 0e8d:2008 MediaTek Inc. (BV6000 Transfer files)
 #PAR="${PAR} -usb -usbdevice host:0e8d:200b" # Bus 001 Device 009: ID 0e8d:200b MediaTek Inc. (BV6000 Transfer photos)
-PAR="${PAR} -usbdevice tablet"
+#PAR="${PAR} -usbdevice tablet"
 
 # OVMF
 PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
