@@ -19,7 +19,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
+CURRENT_SCRIPT_VER="0.0.2"
 CURRENT_SCRIPT_DATE="2021-01-06"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -324,21 +324,6 @@ fi
 
 echo ""
 echo "Starting the vm."
-echo ""
-echo "NOTE: I have not found way to automatically boot from iso."
-echo ""
-echo "When vm is booting you need to enter in to bios and select the cd as boot device."
-echo ""
-echo "Enter to the bios:"
-echo "  Shell> exit"
-echo ""
-echo "Select  'Boot maintenance Manager' -> 'Boot From File'"
-echo ""
-echo "Select '[PciRoot (0x0) /Pci (0x1f,0x2) /Sata (0x0,0x0,0x0) /CDROM(0x1)]'"
-echo ""
-echo "Select '<efi>'"
-echo "         '<boot>'"
-echo "           'grub64.efi'"
 echo ""
 
 
