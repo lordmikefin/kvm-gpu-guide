@@ -332,6 +332,39 @@ https://www.etherchain.org/account/0xbb1c6750ce9f76e6f53540cb37155ef7ff3354ab
 
 
 
+(2021-01-10)
+Update Mining Software
+
+https://github.com/ethereum-mining/ethminer/releases/tag/v0.19.0
+https://github.com/ethereum-mining/ethminer/tree/v0.19.0
+
+ $ ethminer --version
+...
+ethminer 0.18.0
+Build: linux/release/gnu
+...
+
+ $ cd ~
+ $ cd ethminer
+ $ git checkout v0.19.0
+ $ git submodule update --init --recursive
+ 
+ $ rm -R build
+ $ mkdir build
+ $ cd build
+ $ cmake .. -DETHASHCUDA=OFF -DETHASHCL=ON
+ $ cmake --build .
+
+(Optional, Linux only) Install the built executable.
+ $ sudo make install
+ $ ethminer --version
+...
+ethminer 0.19.0
+Build: linux/release/gnu
+...
+--
+
+
 (2021-01-XX)
 TODO: auto start radeontop
 --
