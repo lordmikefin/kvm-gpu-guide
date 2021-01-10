@@ -310,7 +310,29 @@ Categories=
 
 
 
-(2020-11-XX)
+(2021-01-10)
+Created new wallet
+
+ $ nano ~/ethminer_for_ever.sh
+... replace Coinmotion address
+0x7c5ceff4c98551570c0dca4cd09d9e37e95aa01c
+>>> with Binance address
+0xbb1c6750ce9f76e6f53540cb37155ef7ff3354ab
+...
+
+Mining test
+ $ ethminer --opencl --pool stratum://0xbb1c6750ce9f76e6f53540cb37155ef7ff3354ab@eu1.ethermine.org:4444
+
+Check status of miner:
+https://ethermine.org/miners/bb1c6750ce9f76e6f53540cb37155ef7ff3354ab/dashboard
+
+Check wallet info:
+https://www.etherchain.org/account/0xbb1c6750ce9f76e6f53540cb37155ef7ff3354ab
+--
+
+
+
+(2021-01-XX)
 TODO: auto start radeontop
 --
 
