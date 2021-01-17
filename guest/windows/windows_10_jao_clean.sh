@@ -429,7 +429,7 @@ fi
 # TOOD: verify controller exists
 #USB_CONTROLLER="03:00.0"
 #USB_CONTROLLER="04:00.0"
-USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Renesas Technology Corp. uPD720201 USB 3.0 Host Controller (rev 03)
+#USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Renesas Technology Corp. uPD720201 USB 3.0 Host Controller (rev 03)
 if [[ ! -z ${USB_CONTROLLER} ]]; then
     # https://github.com/qemu/qemu/blob/master/docs/pcie.txt
     
