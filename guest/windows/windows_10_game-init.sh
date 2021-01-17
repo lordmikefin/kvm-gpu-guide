@@ -13,14 +13,14 @@
 #   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/guest/windows/windows_10_game-init.sh
 
 # windows_10_game-init.sh
-# Initialize windows 10 virtual machine.
+# Initialize windows 10 virtual machine. Host Ubuntu 20.04
 # This script will create a new vm into folder ~/kvm-workspace/vm/windows_10_game/
 
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
-CURRENT_SCRIPT_DATE="2018-08-05"
+CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_DATE="2021-01-17"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -67,7 +67,7 @@ source ${IMPORT_FUNCTIONS}
 if [ ${LM_FUNCTIONS_LOADED} == false ]; then
 	>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Something went wrong with loading funcions."
 	exit 1
-elif [ ${LM_FUNCTIONS_VER} != "1.0.0" ]; then
+elif [ ${LM_FUNCTIONS_VER} != "1.3.1" ]; then
 	lm_functions_incorrect_version
 	if [ "${INPUT}" == "FAILED" ]; then
 		lm_failure
@@ -361,7 +361,10 @@ PAR="${PAR} -rtc base=localtime"
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
 #PAR="${PAR} -vga qxl"
-PAR="${PAR} -display sdl"
+# ERR: qemu-system-x86_64: Display 'sdl' is not available.
+# NOTE: Use 'gtk' instead of 'sdl'
+#PAR="${PAR} -display sdl"
+PAR="${PAR} -display gtk"
 #PAR="${PAR} -display none"
 
 # Monitoring screen
@@ -369,9 +372,12 @@ PAR="${PAR} -monitor stdio"
 
 # USB passthrough. Keyboard and mouse.
 # TODO: parameterize. Or auto find.
-PAR="${PAR} -usb -usbdevice host:046d:c077"
-PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4"
+#PAR="${PAR} -usb -usbdevice host:046d:c077"
+#PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4"
 #PAR="${PAR} -usbdevice tablet"
+PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
+
 
 # OVMF
 PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
@@ -382,8 +388,8 @@ PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis
 
 # VGA passthrough. GPU and sound.
 # TODO: Ask user which card should be used.
-NVIDIA_GPU="01:00.0"
-NVIDIA_SOUND="01:00.1"
+#NVIDIA_GPU="01:00.0"
+#NVIDIA_SOUND="01:00.1"
 #NVIDIA_GPU="02:00.0"
 #NVIDIA_SOUND="02:00.1"
 if [[ ! -z ${NVIDIA_GPU} ]]; then
