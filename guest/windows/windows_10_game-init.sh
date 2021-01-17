@@ -19,7 +19,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.5"
+CURRENT_SCRIPT_VER="0.0.6"
 CURRENT_SCRIPT_DATE="2021-01-17"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -264,6 +264,7 @@ OVMF_VARS="/usr/share/OVMF/OVMF_VARS.fd"
 KVM_WORKSPACE_VM_WIN10="${KVM_WORKSPACE}/vm/windows_10_game"
 OVMF_VARS_WIN10="${KVM_WORKSPACE_VM_WIN10}/windows_10_game_VARS.fd"
 VM_DISK_WIN10="${KVM_WORKSPACE_VM_WIN10}/windows_10_game.qcow2"
+VM_DISK_DATA="${KVM_WORKSPACE_VM_WIN10}/windows_10_game_data_d_drive.qcow2"
 
 
 unset INPUT
@@ -301,6 +302,17 @@ if [[ ! -f "${VM_DISK_WIN10}" ]]; then
 	qemu-img create -f qcow2 "${VM_DISK_WIN10}" 50G  || lm_failure
 else
 	echo -e "\n File ${VM_DISK_WIN10} alrealy exists.\n"
+fi
+
+
+# Create data disk d-drive.
+if [[ ! -f "${VM_DISK_DATA}" ]]; then
+	echo ""
+	echo "Createing file ${VM_DISK_DATA}"
+	echo ""
+	qemu-img create -f qcow2 "${VM_DISK_DATA}" 200G  || lm_failure
+else
+	echo -e "\n File ${VM_DISK_DATA} alrealy exists.\n"
 fi
 
 
