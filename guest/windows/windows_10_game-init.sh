@@ -19,7 +19,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.4"
+CURRENT_SCRIPT_VER="0.0.5"
 CURRENT_SCRIPT_DATE="2021-01-17"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -421,7 +421,10 @@ PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
 PAR="${PAR} -soundhw hda"
 
 # Network
-PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
+#PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
+
+# TODO: parametarize the net
+PAR="${PAR} -net none"  # Disable network for windows initialization. Enable local user creation.
 
 # Start the virtual machine with parameters
 echo "qemu-system-x86_64 ${PAR}"
