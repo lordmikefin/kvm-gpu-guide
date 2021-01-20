@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.5"
-CURRENT_SCRIPT_DATE="2021-01-04"
+CURRENT_SCRIPT_VER="0.0.6"
+CURRENT_SCRIPT_DATE="2021-01-20"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -282,6 +282,12 @@ if [[ ! -z ${GPU_BUS} ]]; then
     VIRTUAL_DISPLAY=true
 fi
 
+
+# Always passthrough headset
+PAR="${PAR} -device nec-usb-xhci,id=usb" # NOTE: USB3 support
+PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0x0a17" # Logitech, Inc. G330 Headset
+
+
 if [[ -n ${VIRTUAL_DISPLAY} ]]; then
 	PAR="${PAR} -vga std"
 	#PAR="${PAR} -vga qxl"
@@ -289,11 +295,9 @@ if [[ -n ${VIRTUAL_DISPLAY} ]]; then
 	#PAR="${PAR} -display sdl"
 	PAR="${PAR} -display gtk"
 	
-    PAR="${PAR} -device nec-usb-xhci,id=usb" # NOTE: USB3 support
 	#PAR="${PAR} -usb -usbdevice host:534d:6021" # ID 534d:6021 
 	#PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
     PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
-    PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0x0a17" # Logitech, Inc. G330 Headset
     PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
 else
 	SPICE_PORT=5926
