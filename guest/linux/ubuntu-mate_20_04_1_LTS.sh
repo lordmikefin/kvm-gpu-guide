@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
-CURRENT_SCRIPT_DATE="2021-01-06"
+CURRENT_SCRIPT_VER="0.0.3"
+CURRENT_SCRIPT_DATE="2021-01-13"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -383,6 +383,14 @@ PAR="${PAR} -soundhw hda"
 
 
 # Network
+# NOTE: Define mac address. Otherwise all vms are using the default one.
+# https://www.linux-kvm.org/page/Networking
+# Generate a MAC address
+#MACADDRESS="DE:AD:BE:EF:$((RANDOM%256)):$((RANDOM%256))"
+RAND_HEX1=$(printf '%02X' $((RANDOM%256)))
+RAND_HEX2=$(printf '%02X' $((RANDOM%256)))
+MACADDRESS="DE:AD:BE:EF:${RAND_HEX1}:${RAND_HEX2}"
+
 # This is User-mode networking
 #PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
 #PAR="${PAR} -netdev user,hostfwd=tcp::10022-:22,id=user.0"
@@ -416,7 +424,7 @@ PAR="${PAR} -soundhw hda"
 #  $ virsh net-start default
 #PAR="${PAR} -net nic -net bridge,br=virbr0"
 PAR="${PAR} -netdev bridge,br=virbr0,id=user.0"
-PAR="${PAR} -device e1000,netdev=user.0"
+PAR="${PAR} -device e1000,netdev=user.0,mac=${MACADDRESS}"
 
 
 # Start the virtual machine with parameters
