@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.5"
-CURRENT_SCRIPT_DATE="2020-12-30"
+CURRENT_SCRIPT_VER="0.0.6"
+CURRENT_SCRIPT_DATE="2020-02-13"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -59,7 +59,7 @@ source ${IMPORT_FUNCTIONS}
 if [ ${LM_FUNCTIONS_LOADED} == false ]; then
 	>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Something went wrong with loading funcions."
 	exit 1
-elif [ ${LM_FUNCTIONS_VER} != "1.3.0" ]; then
+elif [ ${LM_FUNCTIONS_VER} != "1.3.1" ]; then
 	lm_functions_incorrect_version
 	if [ "${INPUT}" == "FAILED" ]; then
 		lm_failure
@@ -218,9 +218,15 @@ PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
 PAR="${PAR} -soundhw hda"
 
 # Network
+# NOTE: Define mac address. Otherwise all vms are using the default one.
+# https://www.linux-kvm.org/page/Networking
+# Generate a MAC address
+RAND_HEX1=$(printf '%02X' $((RANDOM%256)))
+RAND_HEX2=$(printf '%02X' $((RANDOM%256)))
+MACADDRESS="DE:AD:BE:EF:${RAND_HEX1}:${RAND_HEX2}"
 #PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
 PAR="${PAR} -netdev bridge,br=virbr0,id=user.0"
-PAR="${PAR} -device e1000,netdev=user.0"
+PAR="${PAR} -device e1000,netdev=user.0,mac=${MACADDRESS}"
 
 # Start the virtual machine with parameters
 echo ""
