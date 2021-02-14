@@ -19,8 +19,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.7"
-CURRENT_SCRIPT_DATE="2018-08-26"
+CURRENT_SCRIPT_VER="0.0.8"
+CURRENT_SCRIPT_DATE="2021-02-14"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -67,7 +67,7 @@ source ${IMPORT_FUNCTIONS}
 if [ ${LM_FUNCTIONS_LOADED} == false ]; then
 	>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Something went wrong with loading funcions."
 	exit 1
-elif [ ${LM_FUNCTIONS_VER} != "1.0.0" ]; then
+elif [ ${LM_FUNCTIONS_VER} != "1.3.4" ]; then
 	lm_functions_incorrect_version
 	if [ "${INPUT}" == "FAILED" ]; then
 		lm_failure
@@ -366,16 +366,17 @@ PAR="${PAR} -rtc base=localtime"
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
 #PAR="${PAR} -vga qxl"
-PAR="${PAR} -display sdl"
+#PAR="${PAR} -display sdl"
 #PAR="${PAR} -display none"
+PAR="${PAR} -display gtk"
 
 # Monitoring screen
 PAR="${PAR} -monitor stdio"
 
 # USB passthrough. Keyboard and mouse.
 # TODO: parameterize. Or auto find.
-PAR="${PAR} -usb -usbdevice host:046d:c077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
-PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
+#PAR="${PAR} -usb -usbdevice host:046d:c077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+#PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
 #PAR="${PAR} -usbdevice tablet"
 
 # OVMF
@@ -426,7 +427,10 @@ PAR="${PAR} -cdrom ${LOCAL_FILE}"
 PAR="${PAR} -soundhw hda"
 
 # Network
-PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
+MACADDRESS="$(lm_generate_mac_address)"  || lm_failure
+#PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
+PAR="${PAR} -netdev bridge,br=virbr0,id=user.0"
+PAR="${PAR} -device e1000,netdev=user.0,mac=${MACADDRESS}"
 
 # Start the virtual machine with parameters
 echo "qemu-system-x86_64 ${PAR}"
