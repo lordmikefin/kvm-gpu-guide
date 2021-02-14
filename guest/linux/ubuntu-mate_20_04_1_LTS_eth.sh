@@ -530,6 +530,7 @@ PAR="${PAR} -soundhw hda"
 
 
 # Network
+MACADDRESS="$(lm_generate_mac_address)"  || lm_failure
 # This is User-mode networking
 #PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
 #PAR="${PAR} -netdev user,hostfwd=tcp::10022-:22,id=user.0"
@@ -563,7 +564,7 @@ PAR="${PAR} -soundhw hda"
 #  $ virsh net-start default
 #PAR="${PAR} -net nic -net bridge,br=virbr0"
 PAR="${PAR} -netdev bridge,br=virbr0,id=user.0"
-PAR="${PAR} -device e1000,netdev=user.0"
+PAR="${PAR} -device e1000,netdev=user.0,mac=${MACADDRESS}"
 
 
 # Start the virtual machine with parameters
