@@ -21,8 +21,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
-CURRENT_SCRIPT_DATE="2019-12-09"
+CURRENT_SCRIPT_VER="0.0.3"
+CURRENT_SCRIPT_DATE="2021-02-15"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -69,7 +69,7 @@ source ${IMPORT_FUNCTIONS}
 if [ ${LM_FUNCTIONS_LOADED} == false ]; then
 	>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Something went wrong with loading funcions."
 	exit 1
-elif [ ${LM_FUNCTIONS_VER} != "1.2.1" ]; then
+elif [ ${LM_FUNCTIONS_VER} != "1.3.4" ]; then
 	lm_functions_incorrect_version
 	if [ "${INPUT}" == "FAILED" ]; then
 		lm_failure
@@ -382,16 +382,17 @@ PAR="${PAR} -rtc base=localtime"
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
 #PAR="${PAR} -vga qxl"
-PAR="${PAR} -display sdl"
+#PAR="${PAR} -display sdl"
 #PAR="${PAR} -display none"
+PAR="${PAR} -display gtk"
 
 # Monitoring screen
 PAR="${PAR} -monitor stdio"
 
 # USB passthrough. Keyboard and mouse.
 # TODO: parameterize. Or auto find.
-PAR="${PAR} -usb -usbdevice host:046d:c077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
-PAR="${PAR} -device usb-host,hostbus=1,hostaddr=5" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
+#PAR="${PAR} -usb -usbdevice host:046d:c077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+#PAR="${PAR} -device usb-host,hostbus=1,hostaddr=5" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
 #PAR="${PAR} -usbdevice tablet"
 
 # OVMF
