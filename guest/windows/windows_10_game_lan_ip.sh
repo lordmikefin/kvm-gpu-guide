@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.5"
-CURRENT_SCRIPT_DATE="2021-01-04"
+CURRENT_SCRIPT_VER="0.0.6"
+CURRENT_SCRIPT_DATE="2021-02-15"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -66,7 +66,7 @@ source ${IMPORT_FUNCTIONS}
 if [ ${LM_FUNCTIONS_LOADED} == false ]; then
 	>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Something went wrong with loading funcions."
 	exit 1
-elif [ ${LM_FUNCTIONS_VER} != "1.3.1" ]; then
+elif [ ${LM_FUNCTIONS_VER} != "1.3.4" ]; then
 	lm_functions_incorrect_version
 	if [ "${INPUT}" == "FAILED" ]; then
 		lm_failure
@@ -298,7 +298,7 @@ if [[ -n ${VIRTUAL_DISPLAY} ]]; then
     PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
     PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xca04" # 046d:ca04 Logitech, Inc. Formula Vibration Feedback Wheel
 else
-	SPICE_PORT=5926
+	SPICE_PORT=5928
 	PAR="${PAR} -vga qxl"
 	# TODO: qemu-system-x86_64: -usbdevice tablet: '-usbdevice' is deprecated, please use '-device usb-...' instead
 	# TODO: how usb devices are set in QEMU 4.2.1 ???
