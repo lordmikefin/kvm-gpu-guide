@@ -19,8 +19,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
-CURRENT_SCRIPT_DATE="2018-08-05"
+CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_DATE="2021-02-15"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -67,7 +67,7 @@ source ${IMPORT_FUNCTIONS}
 if [ ${LM_FUNCTIONS_LOADED} == false ]; then
 	>&2 echo "${BASH_SOURCE[0]}: line ${LINENO}: Something went wrong with loading funcions."
 	exit 1
-elif [ ${LM_FUNCTIONS_VER} != "1.0.0" ]; then
+elif [ ${LM_FUNCTIONS_VER} != "1.3.4" ]; then
 	lm_functions_incorrect_version
 	if [ "${INPUT}" == "FAILED" ]; then
 		lm_failure
@@ -361,16 +361,17 @@ PAR="${PAR} -rtc base=localtime"
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
 #PAR="${PAR} -vga qxl"
-PAR="${PAR} -display sdl"
+#PAR="${PAR} -display sdl"
 #PAR="${PAR} -display none"
+PAR="${PAR} -display gtk"
 
 # Monitoring screen
 PAR="${PAR} -monitor stdio"
 
 # USB passthrough. Keyboard and mouse.
 # TODO: parameterize. Or auto find.
-PAR="${PAR} -usb -usbdevice host:046d:c077"
-PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4"
+#PAR="${PAR} -usb -usbdevice host:046d:c077"
+#PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4"
 #PAR="${PAR} -usbdevice tablet"
 
 # OVMF
@@ -382,8 +383,8 @@ PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis
 
 # VGA passthrough. GPU and sound.
 # TODO: Ask user which card should be used.
-NVIDIA_GPU="01:00.0"
-NVIDIA_SOUND="01:00.1"
+#NVIDIA_GPU="01:00.0"
+#NVIDIA_SOUND="01:00.1"
 #NVIDIA_GPU="02:00.0"
 #NVIDIA_SOUND="02:00.1"
 if [[ ! -z ${NVIDIA_GPU} ]]; then
@@ -414,7 +415,9 @@ PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
 PAR="${PAR} -soundhw hda"
 
 # Network
-PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
+#PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
+# TODO: parametarize the net
+PAR="${PAR} -net none"  # Disable network for windows initialization. Enable local user creation.
 
 # Start the virtual machine with parameters
 echo "qemu-system-x86_64 ${PAR}"
