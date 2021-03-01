@@ -365,7 +365,29 @@ Build: linux/release/gnu
 --
 
 
-(2021-01-XX)
+(2021-03-01)
+Remotly run 'ethminer' in 'screen'.
+
+Setup in 'eth' vm:
+ $ sudo apt-get install openssh-server
+ $ sudo apt-get install screen
+
+Setup in the host:
+ $ sudo apt-get install net-tools
+ $ arp -a
+...
+? (192.168.122.32) at de:ad:be:ef:a0:41 [ether] on virbr0
+...
+ $ ssh 192.168.122.32
+ @192.168.122.32$ screen
+ @192.168.122.32$ ~/ethminer_for_ever.sh
+ [Ctrl + a, d]  (detach the screen)
+ @192.168.122.32$ screen -r
+--
+
+
+
+(2021-03-XX)
 TODO: auto start radeontop
 --
 
