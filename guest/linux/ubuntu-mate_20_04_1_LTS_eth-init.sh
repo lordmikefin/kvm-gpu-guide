@@ -386,7 +386,7 @@ PAR="${PAR} -M q35"
 #PAR="${PAR} -machine pc-q35-2.4"
 
 # Memory
-PAR="${PAR} -m 8192"
+PAR="${PAR} -m 4096"
 
 # CPU
 PAR="${PAR} -cpu host,kvm=off"
