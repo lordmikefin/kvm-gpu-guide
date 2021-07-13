@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.3"
-CURRENT_SCRIPT_DATE="2021-02-13"
+CURRENT_SCRIPT_VER="0.0.4"
+CURRENT_SCRIPT_DATE="2021-07-14"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -194,7 +194,25 @@ PAR="${PAR} -boot menu=on"
 
 # Display   qxl
 PAR="${PAR} -vga qxl"
-PAR="${PAR} -display gtk"
+#PAR="${PAR} -display gtk"
+
+SPICE_PORT=5970
+# Display 'spice'
+if [[ -n ${SPICE_PORT} ]]; then
+	# NOTE: This is guide for Linux  !
+	# https://wiki.gentoo.org/wiki/QEMU/Linux_guest
+	# https://www.spice-space.org/download.html
+	# $ sudo apt-get install spice-vdagent
+	# -> This will add bidirectonal clipboard among other stuff ;)
+	# TODO: Is there spice agent for BSD
+	# https://www.reddit.com/r/freebsd/comments/eehq9i/qemuguestagent_for_freebsd/
+	# https://github.com/aborche/qemu-guest-agent
+	PAR="${PAR} -spice port=${SPICE_PORT},disable-ticketing"
+	# 
+	PAR="${PAR} -device virtio-serial"
+	PAR="${PAR} -chardev spicevmc,id=vdagent,name=vdagent"
+	PAR="${PAR} -device virtserialport,chardev=vdagent,name=com.redhat.spice.0"
+fi
 
 # Monitoring screen
 PAR="${PAR} -monitor stdio"
@@ -231,6 +249,15 @@ echo "https://en.wikibooks.org/wiki/QEMU/Monitor"
 echo " (qemu) help"
 echo " (qemu) info pci"
 echo ""
+
+if [[ -n ${SPICE_PORT} ]]; then
+	echo ""
+	echo "Connect to 'spice' remote server."
+	echo " $ spicy --title GhostBSD 127.0.0.1 -p ${SPICE_PORT}"
+	echo "You could also use 'remote-viewer'"
+	echo " $ remote-viewer --title GhostBSD spice://127.0.0.1:${SPICE_PORT}"
+fi
+
 sudo qemu-system-x86_64 ${PAR}
 
 
