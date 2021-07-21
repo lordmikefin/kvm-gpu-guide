@@ -18,7 +18,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.5"
+CURRENT_SCRIPT_VER="0.0.6"
 CURRENT_SCRIPT_DATE="2021-07-21"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -237,6 +237,16 @@ fi
 
 # Monitoring screen
 PAR="${PAR} -monitor stdio"
+
+# USB3 support
+PAR="${PAR} -device nec-usb-xhci,id=usb"
+
+# USB passthrough. Keyboard and mouse.
+PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
+
+# TODO: for some reason physical mouse does not work in x11 with scfb driver ?!?!?! But it works in console graphic ??? why?
+PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical 
+
 
 # OVMF
 PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"

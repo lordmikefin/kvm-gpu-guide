@@ -18,7 +18,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
+CURRENT_SCRIPT_VER="0.0.2"
 CURRENT_SCRIPT_DATE="2021-07-21"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -250,10 +250,12 @@ PAR="${PAR} -device nec-usb-xhci,id=usb"
 
 # USB passthrough. Keyboard and mouse.
 PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
-
-# TODO: for some reason physical mouse does not work in x11 with scfb driver ?!?!?! But it works in console graphic ??? why?
 PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
 #PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc05a" # ID 046d:c05a Logitech, Inc. M90/M100 Optical Mouse
+
+# TODO: for some reason physical mouse does not work in x11 with scfb driver ?!?!?! But it works in console graphic ??? why?
+# Solution: add input device into xorg.conf
+
 
 
 # OVMF
@@ -300,6 +302,34 @@ echo "https://en.wikibooks.org/wiki/QEMU/Monitor"
 echo " (qemu) help"
 echo " (qemu) info pci"
 echo ""
+
+echo ""
+echo "NOTE: Mouse will not work in X11 until it is configured !!!"
+echo "   https://forums.freebsd.org/threads/xorg-ignoring-section-inputdevice.51187/"
+echo "   https://forums.freebsd.org/threads/restarting-x.14776/"
+echo ""
+echo " Drop into emergency shell and manually configure the X"
+echo ""
+echo " $ sudo nano /etc/X11/xorg.conf"
+echo "-- add lines --"
+echo 'Section "Device"'
+echo '    Identifier "Card0"'
+echo '    Driver     "scfb"'
+echo 'EndSection'
+echo ''
+echo 'Section "InputDevice"'
+echo '    Identifier  "Mouse0"'
+echo '    Driver      "mouse"'
+echo '    Option      "Protocol" "auto"'
+echo '    Option      "Device" "/dev/sysmouse"'
+echo '    Option      "ZAxisMapping" "4 5 6 7"'
+echo 'EndSection'
+echo "-- --"
+echo ""
+echo "Exit the shell and start X whitout configuration"
+echo ""
+echo ""
+
 
 if [[ -n ${SPICE_PORT} ]]; then
 	echo ""
