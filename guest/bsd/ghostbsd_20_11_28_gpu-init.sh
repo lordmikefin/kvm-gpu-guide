@@ -18,7 +18,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_VER="0.0.3"
 CURRENT_SCRIPT_DATE="2021-07-21"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -214,7 +214,7 @@ PAR="${PAR} -boot menu=on"
 PAR="${PAR} -monitor stdio"
 
 
-SELECTED="0"
+#SELECTED="0"
 echo ""
 if [[ "${SELECTED}" == "0" ]]; then
 	echo "No desplay device selected. Initialize virtual one."
@@ -266,8 +266,8 @@ PAR="${PAR} -drive file=${OVMF_VARS_BSD},if=pflash,format=raw,unit=1"
 PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
 
 # Testing GPU
-#GPU_BUS="01:00.0"
-#GPU_SOUND="01:00.1"
+GPU_BUS="01:00.0"
+GPU_SOUND="01:00.1"
 if [[ ! -z ${GPU_BUS} ]]; then
 	PAR="${PAR} -device vfio-pci,host=${GPU_BUS},bus=root.1,addr=00.0,multifunction=on,x-vga=on"
 fi
