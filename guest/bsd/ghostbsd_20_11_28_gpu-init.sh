@@ -10,15 +10,15 @@
 #   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/LICENSE.rst
 # 
 # Latest version of this script file:
-#   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/guest/bsd/ghostbsd_20_11_28.sh
+#   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/guest/bsd/ghostbsd_20_11_28_gpu-init.sh
 
-# ghostbsd_20_11_28.sh
-# Start ghostbsd_20_11_28 virtual machine.
-
+# ghostbsd_20_11_28_gpu-init.sh
+# Initialize ghostbsd_20_11_28 virtual machine for testing GPU.
+# This script will create a new vm into folder ~/kvm-workspace/vm/ghostbsd_20_11_28_gpu/
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.5"
+CURRENT_SCRIPT_VER="0.0.1"
 CURRENT_SCRIPT_DATE="2021-07-21"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -122,12 +122,26 @@ unset KVM_WORKSPACE_DEFAULT
 lm_check_KVM_WORKSPACE
 
 
+# TODO: copy FreeBSD-12.2-RELEASE-amd64-dvd1.iso into folder 'iso'
+# https://www.freebsd.org/where.html
+# https://download.freebsd.org/ftp/releases/amd64/amd64/ISO-IMAGES/12.2/
+KVM_WORKSPACE_ISO="${KVM_WORKSPACE}/iso"
+lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
+
+URL_FILE="GhostBSD-20.11.28.iso"
+URL_PLAIN="download.fr.ghostbsd.org/releases/amd64/20.11.28"
+URL="${URL_PLAIN}/${URL_FILE}"
+
+LOCAL_FILE="${KVM_WORKSPACE_ISO}/${URL_FILE}"
+lm_verify_and_download_to_folder "${URL_FILE}" "${KVM_WORKSPACE_ISO}" "${URL_PLAIN}"  || lm_failure
+
+
 # OVMF binary file. Do _NOT_ over write.
 OVMF_CODE="/usr/share/OVMF/OVMF_CODE.fd"
-KVM_WORKSPACE_VM_BSD="${KVM_WORKSPACE}/vm/ghostbsd_20_11_28"
-OVMF_VARS_BSD="${KVM_WORKSPACE_VM_BSD}/ghostbsd_20_11_28_VARS.fd"
-VM_DISK_BSD="${KVM_WORKSPACE_VM_BSD}/ghostbsd_20_11_28.qcow2"
-KVM_WORKSPACE_SOFTWARE="${KVM_WORKSPACE}/software"
+OVMF_VARS="/usr/share/OVMF/OVMF_VARS.fd"
+KVM_WORKSPACE_VM_BSD="${KVM_WORKSPACE}/vm/ghostbsd_20_11_28_gpu"
+OVMF_VARS_BSD="${KVM_WORKSPACE_VM_BSD}/ghostbsd_20_11_28_gpu_VARS.fd"
+VM_DISK_BSD="${KVM_WORKSPACE_VM_BSD}/ghostbsd_20_11_28_gpu.qcow2"
 
 unset INPUT
 lm_read_to_INPUT "Do you wanna use folder ${KVM_WORKSPACE_VM_BSD} for virtual machine?"
@@ -135,55 +149,43 @@ case "${INPUT}" in
 	"YES" )
 		INPUT="YES" ;;
 	"NO" )
-		exit 1 ;;
+		exit 1
+		;;
 	"FAILED" | * )
-		lm_failure ;;
+		lm_failure_message
+		INPUT="FAILED" ;;
 esac
 
-#unset INPUT
-#lm_read_to_INPUT "Do you wanna share folder ${KVM_WORKSPACE_SOFTWARE} with virtual machine?"
-#case "${INPUT}" in
-#	"YES" ) 
-#		echo ""
-#		echo " NOTE: This is simple samba share (buildin kvm) works only with"
-#		echo "       folowing network setting:"
-#		echo ""
-#		echo " -netdev user,id=user.0 -device e1000,netdev=user.0"
-#		echo ""
-#		;;
-#	"NO" ) 
-#		KVM_WORKSPACE_SOFTWARE="" ;;
-#	"FAILED" | * )
-#		lm_failure_message; exit 1 ;;
-#esac
+# Create Ubuntu vm folder.
+lm_create_folder_recursive "${KVM_WORKSPACE_VM_BSD}"  || lm_failure
 
 
 # OVMF file for vm. UEFI boot.
-if [[ ! -f "${OVMF_VARS_BSD}" ]]; then
-	lm_failure_message "${BASH_SOURCE[0]}" "${LINENO}" "File ${OVMF_VARS_BSD} does not exists."
+if [[ -f "${OVMF_VARS}" ]]; then
+	if [[ ! -f "${OVMF_VARS_BSD}" ]]; then
+		lm_copy_file "${OVMF_VARS}" "${OVMF_VARS_BSD}"  || lm_failure
+	else
+		echo -e "\n File ${OVMF_VARS_BSD} alrealy exists.\n"
+	fi
+else
+	>&2 echo -e "\n File ${OVMF_VARS} missing. Did you installed OVMF?  Aborting."
 	exit 1
 fi
 
-
 # Create Ubuntu vm virtual disk.
 if [[ ! -f "${VM_DISK_BSD}" ]]; then
-	lm_failure_message "${BASH_SOURCE[0]}" "${LINENO}" "File ${VM_DISK_BSD} does not exists."
-	exit 1
+	echo ""
+	echo "Createing file ${VM_DISK_BSD}"
+	echo ""
+	qemu-img create -f qcow2 "${VM_DISK_BSD}" 100G  || lm_failure
+else
+	echo -e "\n File ${VM_DISK_BSD} alrealy exists.\n"
 fi
 
 
 echo ""
 echo "Starting the vm."
 echo ""
-
-
-
-# Select GPU device (bus address).
-VM_GPUS_CONF_FILE="$(realpath "${CURRENT_SCRIPT_DIR}/../../host/ubuntu-mate_20_04_1_LTS/vm_GPUs.conf")"
-unset GPU_BUS GPU_SOUND SELECTED
-lm_select_gpu_GPU_BUS_and_GPU_SOUND "${VM_GPUS_CONF_FILE}"  || lm_failure
-
-
 
 # -enable-kvm -> enable hardware virtualization
 PAR="-enable-kvm"
@@ -204,20 +206,27 @@ PAR="${PAR} -boot menu=on"
 # Display   qxl
 #PAR="${PAR} -vga qxl"
 #PAR="${PAR} -display gtk"
+#PAR="${PAR} -vga none"
+#PAR="${PAR} -display none"
 
+
+# Monitoring screen
+PAR="${PAR} -monitor stdio"
+
+
+SELECTED="0"
 echo ""
 if [[ "${SELECTED}" == "0" ]]; then
 	echo "No desplay device selected. Initialize virtual one."
 	PAR="${PAR} -vga qxl"
 	# NOTE: start 'spice' only if 'qxl' virtual card is used
-	SPICE_PORT=5970
+	SPICE_PORT=5971
 else
 	echo "NOTE: Can not use physical and virtal display at same time :("
 	PAR="${PAR} -vga none"
 fi
 
-
-#SPICE_PORT=5970
+#SPICE_PORT=5971
 # Display 'spice'
 if [[ -n ${SPICE_PORT} ]]; then
 	# NOTE: This is guide for Linux  !
@@ -235,8 +244,17 @@ if [[ -n ${SPICE_PORT} ]]; then
 	PAR="${PAR} -device virtserialport,chardev=vdagent,name=com.redhat.spice.0"
 fi
 
-# Monitoring screen
-PAR="${PAR} -monitor stdio"
+
+# USB3 support
+PAR="${PAR} -device nec-usb-xhci,id=usb"
+
+# USB passthrough. Keyboard and mouse.
+PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
+
+# TODO: for some reason physical mouse does not work in x11 with scfb driver ?!?!?! But it works in console graphic ??? why?
+PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+#PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc05a" # ID 046d:c05a Logitech, Inc. M90/M100 Optical Mouse
+
 
 # OVMF
 PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
@@ -245,13 +263,25 @@ PAR="${PAR} -drive file=${OVMF_VARS_BSD},if=pflash,format=raw,unit=1"
 # Add pcie bus
 PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
 
+# Testing GPU
+#GPU_BUS="01:00.0"
+#GPU_SOUND="01:00.1"
+if [[ ! -z ${GPU_BUS} ]]; then
+	PAR="${PAR} -device vfio-pci,host=${GPU_BUS},bus=root.1,addr=00.0,multifunction=on,x-vga=on"
+fi
+
+if [[ ! -z ${GPU_SOUND} ]]; then
+	PAR="${PAR} -device vfio-pci,host=${GPU_SOUND},bus=root.1,addr=00.1"
+fi
+
+
 # Virtual disk
 PAR="${PAR} -drive file=${VM_DISK_BSD},format=qcow2,if=none,id=drive-ide0-0-0"
 PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
 
-## FreeBSD ISO file
-#PAR="${PAR} -drive file=${LOCAL_FILE},format=raw,if=none,id=drive-ide1-0-0"
-#PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
+# FreeBSD ISO file
+PAR="${PAR} -drive file=${LOCAL_FILE},format=raw,if=none,id=drive-ide1-0-0"
+PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
 
 # Sound card
 PAR="${PAR} -soundhw hda"
