@@ -34,6 +34,8 @@ TODO: add resolution (modes) for the X screen
       https://wiki.freebsd.org/Newcons
       https://forums.ghostbsd.org/viewtopic.php?t=1082
       https://www.freebsd.org/cgi/man.cgi?query=vga&sektion=4&format=html
+      https://www.kraxel.org/blog/2019/09/display-devices-in-qemu/
+      https://wiki.gentoo.org/wiki/QEMU/Options
 
  $ pkg search xf86-video
  $ xrandr

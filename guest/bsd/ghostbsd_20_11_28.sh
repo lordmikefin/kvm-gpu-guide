@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.7"
-CURRENT_SCRIPT_DATE="2021-07-22"
+CURRENT_SCRIPT_VER="0.0.8"
+CURRENT_SCRIPT_DATE="2021-07-23"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -214,10 +214,17 @@ PAR="${PAR} -device nec-usb-xhci,id=usb"
 echo ""
 if [[ "${SELECTED}" == "0" ]]; then
 	echo "No desplay device selected. Initialize virtual one."
-	PAR="${PAR} -vga qxl"
+	#PAR="${PAR} -vga qxl"
 	#PAR="${PAR} -vga virtio"
 	# NOTE: start 'spice' only if 'qxl' virtual card is used
 	SPICE_PORT=5970
+	# NOTE: testing other qemu virtual displays
+	#       https://www.kraxel.org/blog/2019/09/display-devices-in-qemu/
+	#       https://superuser.com/questions/1646807/qemu-kvm-emulating-vmware-graphics
+	#       https://wiki.gentoo.org/wiki/QEMU/Options
+	#PAR="${PAR} -device vmware-svga,id=video0,vgamem_mb=16,bus=pcie.0,addr=0x1"
+	PAR="${PAR} -vga vmware"
+	#PAR="${PAR} -vga cirrus"
 else
 	echo "NOTE: Can not use physical and virtal display at same time :("
 	PAR="${PAR} -vga none"
