@@ -266,10 +266,10 @@ PAR="${PAR} -drive file=${OVMF_VARS_BSD},if=pflash,format=raw,unit=1"
 PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
 
 # Testing GPU
-#GPU_BUS="01:00.0"  # Sapphire Technology Limited Radeon RX 570 Pulse 4GB [1da2:e353]  Advanced Micro Devices
-#GPU_SOUND="01:00.1"
-GPU_BUS="02:00.0"  # ASUSTeK Computer Inc. GP107 [GeForce GTX 1050] [1043:85d2]
-GPU_SOUND="02:00.1"
+GPU_BUS="01:00.0"  # Sapphire Technology Limited Radeon RX 570 Pulse 4GB [1da2:e353]  Advanced Micro Devices
+GPU_SOUND="01:00.1"
+#GPU_BUS="02:00.0"  # ASUSTeK Computer Inc. GP107 [GeForce GTX 1050] [1043:85d2]
+#GPU_SOUND="02:00.1"
 if [[ ! -z ${GPU_BUS} ]]; then
 	PAR="${PAR} -device vfio-pci,host=${GPU_BUS},bus=root.1,addr=00.0,multifunction=on,x-vga=on"
 fi

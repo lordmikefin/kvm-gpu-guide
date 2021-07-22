@@ -42,6 +42,8 @@ TODO: add resolution (modes) for the X screen
  $ tail -n200 /var/log/Xorg.0.log
  $ sudo pw groupmod video -m lordmike || sudo pw groupmod wheel -m lordmike
  $ sudo nano /boot/loader.conf
+ $ Xorg -configure
+ $ Xorg -retro -config /root/xorg.conf.new
 
 NOTE: /etc/X11/xorg.conf  already contains:
 -- Begin --
