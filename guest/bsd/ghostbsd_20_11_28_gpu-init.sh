@@ -294,6 +294,10 @@ MACADDRESS="$(lm_generate_mac_address)"  || lm_failure
 PAR="${PAR} -netdev bridge,br=virbr0,id=user.0"
 PAR="${PAR} -device e1000,netdev=user.0,mac=${MACADDRESS}"
 
+
+# TODO: add resolution (modes) for the X screen
+#       https://www.x.org/releases/current/doc/man/man5/xorg.conf.5.xhtml
+
 # Start the virtual machine with parameters
 echo ""
 echo "qemu-system-x86_64 ${PAR}"
