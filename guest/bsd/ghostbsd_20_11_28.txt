@@ -33,6 +33,7 @@ TODO: add resolution (modes) for the X screen
       https://forums.freebsd.org/threads/console-resolution-in-freebsd-12.72060/
       https://wiki.freebsd.org/Newcons
       https://forums.ghostbsd.org/viewtopic.php?t=1082
+      https://www.freebsd.org/cgi/man.cgi?query=vga&sektion=4&format=html
 
  $ pkg search xf86-video
  $ xrandr
