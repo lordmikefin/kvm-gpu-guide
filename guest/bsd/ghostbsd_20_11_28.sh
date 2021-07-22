@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.6"
-CURRENT_SCRIPT_DATE="2021-07-21"
+CURRENT_SCRIPT_VER="0.0.7"
+CURRENT_SCRIPT_DATE="2021-07-22"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -201,6 +201,12 @@ PAR="${PAR} -smp 4,sockets=1,cores=4,threads=1"
 # Boot menu
 PAR="${PAR} -boot menu=on"
 
+# Monitoring screen
+PAR="${PAR} -monitor stdio"
+
+# USB3 support
+PAR="${PAR} -device nec-usb-xhci,id=usb"
+
 # Display   qxl
 #PAR="${PAR} -vga qxl"
 #PAR="${PAR} -display gtk"
@@ -214,6 +220,11 @@ if [[ "${SELECTED}" == "0" ]]; then
 else
 	echo "NOTE: Can not use physical and virtal display at same time :("
 	PAR="${PAR} -vga none"
+    # USB passthrough. Keyboard and mouse.
+    PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
+    
+    # TODO: for some reason physical mouse does not work in x11 with scfb driver ?!?!?! But it works in console graphic ??? why?
+    PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical 
 fi
 
 
@@ -235,17 +246,7 @@ if [[ -n ${SPICE_PORT} ]]; then
 	PAR="${PAR} -device virtserialport,chardev=vdagent,name=com.redhat.spice.0"
 fi
 
-# Monitoring screen
-PAR="${PAR} -monitor stdio"
 
-# USB3 support
-PAR="${PAR} -device nec-usb-xhci,id=usb"
-
-# USB passthrough. Keyboard and mouse.
-PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
-
-# TODO: for some reason physical mouse does not work in x11 with scfb driver ?!?!?! But it works in console graphic ??? why?
-PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical 
 
 
 # OVMF
