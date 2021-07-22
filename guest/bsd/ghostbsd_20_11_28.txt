@@ -4,11 +4,43 @@ Start GhostBSD vm
  $ ./ghostbsd_20_11_28.sh
 --
 
+(2021-07-22)
+Install wget
+ $ pkg search wget
+ $ sudo pkg install wget
+--
+
+(2021-07-22)
+Install inxi - a command line system information tool
+  https://github.com/smxi/inxi
+
+ $ wget -O inxi https://github.com/smxi/inxi/raw/master/inxi
+ $ sudo chmod +x inxi
+ $ sudo ./inxi
+ $ sudo ./inxi -Fxz
+--
 
 
 (2021-07-22)
 TODO: add resolution (modes) for the X screen
       https://www.x.org/releases/current/doc/man/man5/xorg.conf.5.xhtml
+      https://www.freebsd.org/cgi/man.cgi?scfb
+      https://lists.freebsd.org/pipermail/freebsd-questions/2016-June/272395.html
+      https://unix.stackexchange.com/questions/361243/using-native-1366-x-768-resolution-in-a-lenovo-ideapad
+      https://forums.freebsd.org/threads/restarting-x.14776/
+      https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=248165
+      https://docs.freebsd.org/en/books/handbook/x11/#x-config
+      https://forums.freebsd.org/threads/console-resolution-in-freebsd-12.72060/
+      https://wiki.freebsd.org/Newcons
+      https://forums.ghostbsd.org/viewtopic.php?t=1082
+
+ $ pkg search xf86-video
+ $ xrandr
+ $ xrandr --fb 1400x1050
+ $ xrandr --size 1400x1050
+ $ tail -n200 /var/log/Xorg.0.log
+ $ sudo pw groupmod video -m lordmike || sudo pw groupmod wheel -m lordmike
+ $ sudo nano /boot/loader.conf
 
 NOTE: /etc/X11/xorg.conf  already contains:
 -- Begin --
