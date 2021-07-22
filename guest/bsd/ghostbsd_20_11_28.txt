@@ -1,0 +1,30 @@
+
+(2021-07-22)
+Start GhostBSD vm
+ $ ./ghostbsd_20_11_28.sh
+--
+
+
+
+(2021-07-22)
+TODO: add resolution (modes) for the X screen
+      https://www.x.org/releases/current/doc/man/man5/xorg.conf.5.xhtml
+
+NOTE: /etc/X11/xorg.conf  already contains:
+-- Begin --
+Section "Device"
+    Identifier "Card0"
+    Driver     "scfb"
+EndSection
+-- End   --
+
+This because "scfb" was used at initialization
+--
+
+
+
+
+(2021-07-22)
+--
+
+
