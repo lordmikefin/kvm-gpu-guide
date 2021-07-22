@@ -26,14 +26,24 @@ This because "scfb" was used at initialization
 (2021-07-22)
 TODO: setup for SPICE
 https://www.spice-space.org/download.html
+https://www.spice-space.org/spice-user-manual.html
 
 TODO: setup SPICE vdagent - spice-vdagent-0.21.0.tar.bz2
       https://gitlab.freedesktop.org/spice/linux/vd_agent
+      https://community.clearlinux.org/t/share-clipboard-and-file-transfer-between-host-and-kvm-qemu-guest/4689/3
 
 TODO: setup x.org QXL video driver - xf86-video-qxl-0.1.5.tar.bz2; Also contains Xspice
       http://cgit.freedesktop.org/xorg/driver/xf86-video-qxl
 --
 
+
+
+(2021-07-22)
+TODO: install qemu-guest-agent
+      https://github.com/aborche/qemu-guest-agent
+      https://documentation.suse.com/sles/15-SP2/html/SLES-all/cha-qemu-ga.html
+      https://www.programmersought.com/article/88881528985/
+--
 
 
 (2021-07-22)
