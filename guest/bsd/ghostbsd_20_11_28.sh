@@ -215,6 +215,7 @@ echo ""
 if [[ "${SELECTED}" == "0" ]]; then
 	echo "No desplay device selected. Initialize virtual one."
 	PAR="${PAR} -vga qxl"
+	#PAR="${PAR} -vga virtio"
 	# NOTE: start 'spice' only if 'qxl' virtual card is used
 	SPICE_PORT=5970
 else
