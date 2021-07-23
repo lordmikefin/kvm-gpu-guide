@@ -79,6 +79,20 @@ Here is xorg.conf sample file:
 
 
 (2021-07-23)
+TODO: mount samba share
+      https://www.ocf.berkeley.edu/~reinholz/freebsd/mount_smbfs.html
+      https://www.cyberciti.biz/faq/mounting-a-nas-with-freebsd-mount_smbfs/
+
+BSD sample command:
+  # mount_smbfs -I 10.1.2.3 //vivek@nas05/data /nas05
+
+Linux sample command:
+  $ sudo mount -t cifs //10.0.2.4/qemu/ /mnt/software-share/ -o file_mode=0777,dir_mode=0777
+--
+
+
+
+(2021-07-23)
 TODO: How to get real card 'Radeon RX 570' or 'GeForce GTX 1050' to work in BSD?
  - Install drivers
 
