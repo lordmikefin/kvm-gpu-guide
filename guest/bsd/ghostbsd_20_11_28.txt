@@ -4,11 +4,13 @@ Start GhostBSD vm
  $ ./ghostbsd_20_11_28.sh
 --
 
+
 (2021-07-22)
 Install wget
  $ pkg search wget
  $ sudo pkg install wget
 --
+
 
 (2021-07-22)
 Install inxi - a command line system information tool
@@ -48,16 +50,41 @@ TODO: add resolution (modes) for the X screen
  $ Xorg -retro -config /root/xorg.conf.new
 
 NOTE: /etc/X11/xorg.conf  already contains:
--- Begin --
+== Begin ==
 Section "Device"
     Identifier "Card0"
     Driver     "scfb"
 EndSection
--- End   --
+== End   ==
 
 This because "scfb" was used at initialization
 --
 
+
+(2021-07-23)
+Resolution changed from 800x600   :)
+NOTE: I was not able to change resolution for Qemu-KVM 'qxl' vga card.
+      Also when I was using real card 'Radeon RX 570' or 'GeForce GTX 1050'.
+      I could not change the resolution.
+
+Only "scfb" driver works when qemu 'qxl' vga card is used.
+I had to change qemu vga card to 'vmware'.
+And use 'xf86-video-vmware' driver in the bsd.
+
+Here is xorg.conf sample file:
+  "xorg_bsd_sample.conf"
+  [ https://gist.github.com/lordmikefin/34cf6ad048b0f733308f3404b9ef8cc4 ]
+--
+
+
+
+(2021-07-23)
+TODO: How to get real card 'Radeon RX 570' or 'GeForce GTX 1050' to work in BSD?
+ - Install drivers
+
+NOTE: I could not find nvidia driver. Radeon driver does not work?!
+ $ pkg search xf86-video
+--
 
 
 (2021-07-22)
@@ -83,7 +110,8 @@ TODO: install qemu-guest-agent
 --
 
 
-(2021-07-22)
+
+(2021-07-XX)
 --
 
 
