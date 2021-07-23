@@ -95,6 +95,8 @@ https://www.spice-space.org/spice-user-manual.html
 TODO: setup SPICE vdagent - spice-vdagent-0.21.0.tar.bz2
       https://gitlab.freedesktop.org/spice/linux/vd_agent
       https://community.clearlinux.org/t/share-clipboard-and-file-transfer-between-host-and-kvm-qemu-guest/4689/3
+      https://www.spinics.net/lists/spice-devel/msg39036.html
+      https://www.spinics.net/lists/spice-devel/msg39045.html
 
 TODO: setup x.org QXL video driver - xf86-video-qxl-0.1.5.tar.bz2; Also contains Xspice
       http://cgit.freedesktop.org/xorg/driver/xf86-video-qxl
