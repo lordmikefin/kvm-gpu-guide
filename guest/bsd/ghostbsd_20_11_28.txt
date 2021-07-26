@@ -96,7 +96,7 @@ Alternatively use Caja and type location:
 
 
 (2021-07-26)
-TODO: github/ssh connection
+github/ssh connection
 
 Copy/create github private key into ~/.ssh/key/
 
@@ -116,6 +116,9 @@ Set default 'git pull' feature:
 Set git user info:
  $ git config --global user.email "lordmike@iki.fi"
  $ git config --global user.name "Lord Mike"
+
+Add the key into ssh agent:
+ $ ssh-add ~/.ssh/key/LordMike_MikkoNiemela_ssh_key_private_OpenSSH.key
 --
 
 
