@@ -94,7 +94,6 @@ Alternatively use Caja and type location:
 --
 
 
-
 (2021-07-26)
 github/ssh connection
 
@@ -119,6 +118,13 @@ Set git user info:
 
 Add the key into ssh agent:
  $ ssh-add ~/.ssh/key/LordMike_MikkoNiemela_ssh_key_private_OpenSSH.key
+--
+
+
+
+(2021-07-26)
+TODO: install jdk
+TODO: install eclipse
 --
 
 
