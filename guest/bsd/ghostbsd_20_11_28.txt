@@ -78,16 +78,20 @@ Here is xorg.conf sample file:
 
 
 
-(2021-07-23)
-TODO: mount samba share
-      https://www.ocf.berkeley.edu/~reinholz/freebsd/mount_smbfs.html
+(2021-07-26)
+mount samba share
+      https://www.freebsd.org/cgi/man.cgi?mount_smbfs(8)
       https://www.cyberciti.biz/faq/mounting-a-nas-with-freebsd-mount_smbfs/
 
-BSD sample command:
-  # mount_smbfs -I 10.1.2.3 //vivek@nas05/data /nas05
+ $ id lordmike
+ ==
+ uid=1002(lordmike) gid=0(wheel) groups=0(wheel),5(operator),44(video)
+ ==
+ $ sudo mkdir /mnt/software-share/
+ $ sudo mount_smbfs -u 1002 -I 192.168.122.1 //SERVER/sambashare /mnt/software-share
 
-Linux sample command:
-  $ sudo mount -t cifs //10.0.2.4/qemu/ /mnt/software-share/ -o file_mode=0777,dir_mode=0777
+Alternatively use Caja and type location:
+  smb://192.168.122.1/
 --
 
 
