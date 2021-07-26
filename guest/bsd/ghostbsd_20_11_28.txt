@@ -77,7 +77,6 @@ Here is xorg.conf sample file:
 --
 
 
-
 (2021-07-26)
 mount samba share
       https://www.freebsd.org/cgi/man.cgi?mount_smbfs(8)
@@ -92,6 +91,12 @@ mount samba share
 
 Alternatively use Caja and type location:
   smb://192.168.122.1/
+--
+
+
+
+(2021-07-26)
+TODO: github/ssh connection
 --
 
 
