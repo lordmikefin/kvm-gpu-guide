@@ -134,6 +134,18 @@ Add the key into ssh agent:
 --
 
 
+(2021-07-29)
+Install jdk8
+ $ sudo pkg install openjdk8
+
+Installation will note about mounting:
+ $ sudo nano /etc/fstab
+== Add row ==
+fdesc       /dev/fd     fdescfs     rw      0   0
+==
+--
+
+
 
 (2021-07-26)
 TODO: install jdk
