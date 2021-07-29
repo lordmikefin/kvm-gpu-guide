@@ -153,9 +153,9 @@ Install python3 and pip
 --
 
 
-
-(2021-07-26)
-TODO: install eclipse
+(2021-07-30)
+ $ pkg search eclipse
+ $ sudo pkg install eclipse
 --
 
 
