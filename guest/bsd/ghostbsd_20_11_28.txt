@@ -13,6 +13,8 @@ Make sure european repo server is used by pkg
 
 Change url:
   http://pkg.fr.ghostbsd.org/stable/FreeBSD:12:amd64/latest
+
+ + Remember to enable it :)
 --
 
 
