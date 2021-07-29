@@ -160,6 +160,18 @@ Install python3 and pip
 
 
 
+(2021-07-30)
+Install pydev
+NOTE: eclipse files are in /usr/local/share/eclipse/plugins
+
+https://sourceforge.net/projects/pydev/files/pydev/PyDev%208.3.0/
+
+ $ sudo unzip "PyDev 8.3.0.zip" -d /usr/local/share/eclipse
+--
+
+
+
+
 (2021-07-23)
 TODO: How to get real card 'Radeon RX 570' or 'GeForce GTX 1050' to work in BSD?
  - Install drivers
