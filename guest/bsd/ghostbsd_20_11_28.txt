@@ -146,9 +146,15 @@ fdesc       /dev/fd     fdescfs     rw      0   0
 --
 
 
+(2021-07-29)
+Install python3 and pip
+ $ sudo pkg install python3
+ $ sudo pkg install py37-pip
+--
+
+
 
 (2021-07-26)
-TODO: install jdk
 TODO: install eclipse
 --
 
