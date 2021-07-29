@@ -5,6 +5,17 @@ Start GhostBSD vm
 --
 
 
+(2021-07-29)
+Make sure european repo server is used by pkg
+  https://forums.ghostbsd.org/viewtopic.php?t=1505
+
+ $ sudo nano /usr/local/etc/pkg/repos/GhostBSD.conf
+
+Change url:
+  http://pkg.fr.ghostbsd.org/stable/FreeBSD:12:amd64/latest
+--
+
+
 (2021-07-22)
 Install wget
  $ pkg search wget
