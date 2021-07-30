@@ -159,7 +159,6 @@ Install python3 and pip
 --
 
 
-
 (2021-07-30)
 Install pydev
 NOTE: eclipse files are in /usr/local/share/eclipse/plugins
@@ -169,6 +168,23 @@ https://sourceforge.net/projects/pydev/files/pydev/PyDev%208.3.0/
  $ sudo unzip "PyDev 8.3.0.zip" -d /usr/local/share/eclipse
 --
 
+
+(2021-07-30)
+Install egit
+ https://www.eclipse.org/egit/download/
+ https://www.eclipse.org/downloads/download.php?file=/egit/updates/org.eclipse.egit.repository-5.12.0.202106070339-r.zip
+
+ $ sudo unzip "org.eclipse.egit.repository-5.12.0.202106070339-r.zip" -d /usr/local/share/eclipse
+
+NOTE: this did not work :(
+Use install method within eclipse
+  https://download.eclipse.org/egit/updates
+NOTE: Installation failed. Maybe because bsd repo has 2020-06 version of eclipse
+
+Older version with releas date 2020-03-18 works.
+  https://wiki.eclipse.org/EGit/FAQ#Where_can_I_find_older_releases_of_EGit.3F
+  https://download.eclipse.org/egit/updates-5.7/
+--
 
 
 
