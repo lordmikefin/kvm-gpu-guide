@@ -387,6 +387,29 @@ Setup in the host:
 
 
 
+(2021-08-28)
+Created MetaMask wallet
+https://etherscan.io/address/0x94136b5260145f949b16691a36c7ad0122d68c80
+
+ $ nano ~/ethminer_for_ever.sh
+... replace Coinmotion address
+0xbb1c6750ce9f76e6f53540cb37155ef7ff3354ab
+>>> with Binance address
+0x94136b5260145f949b16691a36c7ad0122d68c80
+...
+
+Mining test
+ $ ethminer --opencl --pool stratum://0x94136b5260145f949b16691a36c7ad0122d68c80@eu1.ethermine.org:4444
+
+Check status of miner:
+https://ethermine.org/miners/0x94136b5260145f949b16691a36c7ad0122d68c80/dashboard
+
+Check wallet info:
+https://www.etherchain.org/account/0x94136b5260145f949b16691a36c7ad0122d68c80
+--
+
+
+
 (2021-03-XX)
 TODO: auto start radeontop
 --
