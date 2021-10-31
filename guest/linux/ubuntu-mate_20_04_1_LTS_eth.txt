@@ -410,6 +410,47 @@ https://www.etherchain.org/account/0x94136b5260145f949b16691a36c7ad0122d68c80
 
 
 
+(2021-10-31)
+TODO: Change mining to NANO with unMineable using T-Rex miner with Ethash algorithm
+
+Created Exodus wallet
+https://www.exodus.com/
+
+NANO account at Exodus wallet
+nano_3yc3wggmgno8rwcc9eewek1u6g8y8rqrzggw3dxrabn9du4yy8cfe7qytaj3
+
+
+https://unmineable.com/coins/NANO
+"Standard mining fee 1%"
+"Payouts from 0.1 NANO"
+"NANO:YourAddress.YourWorkerName"
+https://www.coingecko.com/en/coins/nano/eur
+"0.1 NANO ~ 0.52 EUR"
+https://github.com/trexminer/T-Rex
+"Developer fee is 1%"
+
+https://support.unmineable.com/how-to-setup-t-rex-for-gpu-mining/
+"t-rex.exe -a ethash -o ethash.unmineable.com:3333 -u COIN:YOURADDRESS.WORKER_NAME -p x"
+
+User:
+NANO:nano_3yc3wggmgno8rwcc9eewek1u6g8y8rqrzggw3dxrabn9du4yy8cfe7qytaj3.mate20eth
+
+Track worker progress and get payed:
+https://unmineable.com/coins/NANO/address/nano_3yc3wggmgno8rwcc9eewek1u6g8y8rqrzggw3dxrabn9du4yy8cfe7qytaj3
+
+https://github.com/trexminer/T-Rex/releases/latest
+https://github.com/trexminer/T-Rex/releases/tag/0.24.5
+https://github.com/trexminer/T-Rex/releases/download/0.24.5/t-rex-0.24.5-linux.tar.gz
+
+ $ mkdir t-rex
+ $ cd t-rex
+ $ wget https://github.com/trexminer/T-Rex/releases/download/0.24.5/t-rex-0.24.5-linux.tar.gz
+ $ tar -zxvf t-rex-0.24.5-linux.tar.gz
+
+ $ ./t-rex -a ethash -o ethash.unmineable.com:3333 -u NANO:nano_3yc3wggmgno8rwcc9eewek1u6g8y8rqrzggw3dxrabn9du4yy8cfe7qytaj3.mate20eth -p x
+--
+
+
 (2021-03-XX)
 TODO: auto start radeontop
 --
