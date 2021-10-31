@@ -411,7 +411,8 @@ https://www.etherchain.org/account/0x94136b5260145f949b16691a36c7ad0122d68c80
 
 
 (2021-10-31)
-TODO: Change mining to NANO with unMineable using T-Rex miner with Ethash algorithm
+Change mining to NANO with unMineable using PhoenixMiner miner with Ethash algorithm
+NOTE: 1st tried with T-Rex miner, but it does not support AMD cards :(
 
 Created Exodus wallet
 https://www.exodus.com/
@@ -448,6 +449,26 @@ https://github.com/trexminer/T-Rex/releases/download/0.24.5/t-rex-0.24.5-linux.t
  $ tar -zxvf t-rex-0.24.5-linux.tar.gz
 
  $ ./t-rex -a ethash -o ethash.unmineable.com:3333 -u NANO:nano_3yc3wggmgno8rwcc9eewek1u6g8y8rqrzggw3dxrabn9du4yy8cfe7qytaj3.mate20eth -p x
+  -> got CUDA initialize error -> oh right I have AMD card :)
+
+Let's try PhoenixMiner
+https://support.unmineable.com/how-to-setup-phoenixminer-for-gpu-mining/
+"PhoenixMiner.exe -pool ethash.unmineable.com:3333 -wal COIN:YOURADDRESS.WORKER_NAME -pass x"
+
+https://phoenixminer.org/documentation/Introduction/
+"miner that supports both AMD and Nvidia"
+"It runs under Windows x64 and Linux x64"
+"developer fee of 0.65%"
+
+https://phoenixminer.info/downloads/
+https://phoenixminer.info/downloads/PhoenixMiner_5.8c_Linux.tar.gz
+
+ $ mkdir PhoenixMiner
+ $ cd PhoenixMiner
+ $ wget https://phoenixminer.info/downloads/PhoenixMiner_5.8c_Linux.tar.gz
+ $ tar -zxvf PhoenixMiner_5.8c_Linux.tar.gz
+
+ $ ./PhoenixMiner_5.8c_Linux/PhoenixMiner -pool ethash.unmineable.com:3333 -wal NANO:nano_3yc3wggmgno8rwcc9eewek1u6g8y8rqrzggw3dxrabn9du4yy8cfe7qytaj3.mate20eth -pass x
 --
 
 
