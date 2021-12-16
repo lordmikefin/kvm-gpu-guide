@@ -1,0 +1,16 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU]
+"AUOptions"=dword:00000002
+
+; https://www.windowscentral.com/how-stop-updates-installing-automatically-windows-10
+
+; 2 — Notify for download and auto install.
+; 3 — Auto download and notify for install.
+; 4 — Auto download and schedule the install.
+; 5 — Allow local admin to choose settings.
+; 7 — Auto Download, Notify to install, Notify to Restart.
+
+; NOTE: These options work exactly like the Group Policy settings. Group Policy settings are available only in M$ Win PRO !!!
+; NOTE: Option number 2 is the closest to disable Windows Update on Windows 10 permanently.
+
