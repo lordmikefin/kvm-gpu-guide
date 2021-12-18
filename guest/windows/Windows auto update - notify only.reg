@@ -2,9 +2,11 @@ Windows Registry Editor Version 5.00
 
 [HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU]
 "AUOptions"=dword:00000002
+"NoAutoRebootWithLoggedOnUsers"=dword:00000001
 
 ; https://www.windowscentral.com/how-stop-updates-installing-automatically-windows-10
 
+; AUOptions values:
 ; 2 — Notify for download and auto install.
 ; 3 — Auto download and notify for install.
 ; 4 — Auto download and schedule the install.
@@ -13,4 +15,18 @@ Windows Registry Editor Version 5.00
 
 ; NOTE: These options work exactly like the Group Policy settings. Group Policy settings are available only in M$ Win PRO !!!
 ; NOTE: Option number 2 is the closest to disable Windows Update on Windows 10 permanently.
+
+
+; NOTE(2021-12-18): "AUOptions" in "AU" did not work for me. Atleast not alone :(
+; Lets try other one.
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update]
+"AUOptions"=dword:00000002
+
+; https://gist.github.com/JimmyAppelt/1b85b518c7fd44b6742fe2aafa17b646
+
+;  + Added "NoAutoRebootWithLoggedOnUsers" into "AU"
+
+; Maybe it works now :)
+
 
