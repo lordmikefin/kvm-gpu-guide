@@ -5,6 +5,7 @@
 Thanks to David Le Bansais for creating the app.
 
   https://kill-update.en.softonic.com/
+  
   https://github.com/dlebansais/Kill-Update
 
 
@@ -17,6 +18,7 @@ NOTE: Setting Windows update to not auto install with registery settings did not
 ## Install Kill-Update
 
 NOTE: Run Command Prompt As Administrator
+
   https://www.isunshare.com/windows-10/2-ways-to-run-command-prompt-as-administrator-in-win-10.html
 
 .. code-block:: batch
