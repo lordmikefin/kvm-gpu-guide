@@ -1,0 +1,11 @@
+
+Use Kill-Update app to kill Windows auto update and auto boot.
+Thanks to David Le Bansais for creating the app.
+
+  https://kill-update.en.softonic.com/
+  https://github.com/dlebansais/Kill-Update
+
+
+NOTE: Setting Windows update to not auto install with registery settings did not work :(
+
+

@@ -30,3 +30,10 @@ Windows Registry Editor Version 5.00
 ; Maybe it works now :)
 
 
+; NOTE(2022-01-16): Even with these registery settings Win 10 Home will auto update and boot :(
+
+
+; Next thing try Kill-Update app. Thanks to David Le Bansais for creating the app.
+;  https://kill-update.en.softonic.com/
+;  https://github.com/dlebansais/Kill-Update
+
