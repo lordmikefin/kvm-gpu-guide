@@ -11,6 +11,7 @@ Windows Registry Editor Version 5.00
 
 
 [HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"ShowCortanaButton"=dword:00000000
 
 ; https://consumingtech.com/hide-show-cortana-button-on-taskbar-in-windows-10/
 
