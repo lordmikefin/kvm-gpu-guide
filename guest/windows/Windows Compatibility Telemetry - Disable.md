@@ -16,12 +16,20 @@ Links about Windows task scheduler
 
 ## Disable tasks using compattelrunner.exe
 
+NOTE: Run Command Prompt As Administrator
+
+  https://www.isunshare.com/windows-10/2-ways-to-run-command-prompt-as-administrator-in-win-10.html
+
 ```bat
 schtasks /change /tn "\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser" /DISABLE
 schtasks /change /tn "\Microsoft\Windows\Application Experience\ProgramDataUpdater" /DISABLE
 ```
 
 ## Enable tasks using compattelrunner.exe
+
+NOTE: Run Command Prompt As Administrator
+
+  https://www.isunshare.com/windows-10/2-ways-to-run-command-prompt-as-administrator-in-win-10.html
 
 ```bat
 schtasks /change /tn "\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser" /ENABLE
