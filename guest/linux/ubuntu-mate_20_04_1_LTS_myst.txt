@@ -43,6 +43,16 @@ cdc_ether              20480  0
 usbnet                 45056  1 cdc_ether
 --
 
+NOTE: blacklist 'r8152' driver
+https://askubuntu.com/questions/110341/how-to-blacklist-kernel-modules
+
+ $ sudo nano /etc/modprobe.d/blacklist.conf
+...
+# (2022-04-10) The USB-eth adapter is used only by VMs
+#   Bus 002 Device 007: ID 0bda:8153 Realtek Semiconductor Corp. RTL8153 Gigabit Ethernet Adapter
+blacklist r8152
+--
+
 
 
 
