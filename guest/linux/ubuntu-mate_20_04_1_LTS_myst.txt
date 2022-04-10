@@ -9,6 +9,44 @@ NOTE: This adapter will be passed for vm.
 
 
 (2022-04-10)
+Connect adapter and find it's drivers.
+
+$ lsusb
+...
+Bus 002 Device 007: ID 0bda:8153 Realtek Semiconductor Corp. RTL8153 Gigabit Ethernet Adapter
+--
+
+
+$ dmesg
+...
+[10237275.593699] usb 2-6: new SuperSpeed Gen 1 USB device number 7 using xhci_hcd
+[10237275.614327] usb 2-6: New USB device found, idVendor=0bda, idProduct=8153, bcdDevice=30.00
+[10237275.614333] usb 2-6: New USB device strings: Mfr=1, Product=2, SerialNumber=6
+[10237275.614336] usb 2-6: Product: USB 10/100/1000 LAN
+[10237275.614338] usb 2-6: Manufacturer: Realtek
+[10237275.614341] usb 2-6: SerialNumber: 000001000000
+[10237275.646506] usbcore: registered new interface driver r8152
+[10237275.654299] usbcore: registered new interface driver cdc_ether
+[10237275.774114] usb 2-6: reset SuperSpeed Gen 1 USB device number 7 using xhci_hcd
+[10237275.826800] r8152 2-6:1.0 eth0: v1.10.11
+[10237275.876930] r8152 2-6:1.0 enx00e04c6800e1: renamed from eth0
+--
+
+
+$ lsmod | grep r8152
+r8152                  69632  0
+mii                    20480  2 usbnet,r8152
+--
+
+$ lsmod | grep cdc_ether
+cdc_ether              20480  0
+usbnet                 45056  1 cdc_ether
+--
+
+
+
+
+(2022-04-10)
 Install Ubuntu Mate 20.04.1 into the vm.
  $ ./ubuntu-mate_20_04_1_LTS_myst-init.sh
 --
