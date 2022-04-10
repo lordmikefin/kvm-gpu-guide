@@ -1,0 +1,17 @@
+
+(2022-04-10)
+Set usb-eth adapter into host without using it (disable driver).
+
+NOTE: This adapter will be passed for vm.
+      VM will use extra nic to connect directly to Internet.
+      This will provide public IP from ISP.
+--
+
+
+(2022-04-10)
+Install Ubuntu Mate 20.04.1 into the vm.
+ $ ./ubuntu-mate_20_04_1_LTS_myst-init.sh
+--
+
+
+
