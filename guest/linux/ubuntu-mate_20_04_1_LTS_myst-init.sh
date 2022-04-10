@@ -459,10 +459,15 @@ PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
 PAR="${PAR} -soundhw hda"
 
 # Network
-MACADDRESS="$(lm_generate_mac_address)"  || lm_failure
+#MACADDRESS="$(lm_generate_mac_address)"  || lm_failure
 #PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
-PAR="${PAR} -netdev bridge,br=virbr0,id=user.0"
-PAR="${PAR} -device e1000,netdev=user.0,mac=${MACADDRESS}"
+#PAR="${PAR} -netdev bridge,br=virbr0,id=user.0"
+#PAR="${PAR} -device e1000,netdev=user.0,mac=${MACADDRESS}"
+PAR="${PAR} -net none"  # Disable default network and use only USB-eth adapter
+
+# Bus 002 Device 007: ID 0bda:8153 Realtek Semiconductor Corp. RTL8153 Gigabit Ethernet Adapter
+PAR="${PAR} -usb -usbdevice host:0bda:8153"
+
 
 # Start the virtual machine with parameters
 echo ""
