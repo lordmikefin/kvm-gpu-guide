@@ -13,14 +13,15 @@
 #   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/guest/linux/ubuntu-mate_20_04_1_LTS_myst-init.sh
 
 # ubuntu-mate_20_04_1_LTS_myst-init.sh
-# Initialize ubuntu-mate_20_04-myst virtual machine for myth mining.
+# Initialize ubuntu-mate_20_04-myst virtual machine for myst mining.
 # This script will create a new vm into folder ~/kvm-workspace/vm/ubuntu-mate_20_04-myst/
 
+# https://mystnodes.com/
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
-CURRENT_SCRIPT_DATE="2022-04-10"
+CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_DATE="2022-04-11"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 

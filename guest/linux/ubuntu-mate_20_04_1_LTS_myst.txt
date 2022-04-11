@@ -63,3 +63,13 @@ Install Ubuntu Mate 20.04.1 into the vm.
 
 
 
+(2022-04-10)
+Start the vm.
+ $ ./ubuntu-mate_20_04_1_LTS_myst.sh
+--
+
+
+
+
+
+
