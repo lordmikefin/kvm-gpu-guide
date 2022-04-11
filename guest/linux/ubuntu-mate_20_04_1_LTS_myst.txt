@@ -63,9 +63,19 @@ Install Ubuntu Mate 20.04.1 into the vm.
 
 
 
-(2022-04-10)
+(2022-04-11)
 Start the vm.
  $ ./ubuntu-mate_20_04_1_LTS_myst.sh
+--
+
+
+
+
+(2022-04-xx)
+TODO: setup myst node
+
+  https://mystnodes.com/
+  https://mystnodes.com/onboarding/desktop/linux/0
 --
 
 
