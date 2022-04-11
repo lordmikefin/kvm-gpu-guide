@@ -403,17 +403,45 @@ PAR="${PAR} -boot menu=on"
 
 
 # Display   qxl
+# TODO: Why cursor is not shown in 'gtk' display?
 # TODO: Ask user if virtual display is needed.
 PAR="${PAR} -vga qxl"
+#PAR="${PAR} -vga virtio"
 # TODO: qemu-system-x86_64: Display 'sdl' is not available.
 # https://github.com/hashicorp/packer/issues/7675
 # https://github.com/hashicorp/packer/pull/7676
 # NOTE: Use 'gtk' instead of 'sdl' ? maybe?
-PAR="${PAR} -display gtk"
+#PAR="${PAR} -display gtk"
+#PAR="${PAR} -display gtk,gl=on -show-cursor"
+# QEMU docs about display:
+# https://www.qemu.org/docs/master/system/qemu-manpage.html#hxtool-3
+
+# qemu-system-x86_64: -sdl: SDL support is disabled
+#PAR="${PAR} -sdl"
+#PAR="${PAR} -display sdl"
+#PAR="${PAR} -g 800x600"
+
+#PAR="${PAR} -display spice-app"
 
 #PAR="${PAR} -display none"
 #PAR="${PAR} -vga none"
 #PAR="${PAR} -nographic"
+
+
+# Display 'spice'
+#SPICE_PORT=5924 # This port is used by Windows VM
+SPICE_PORT=5956
+if [[ -n ${SPICE_PORT} ]]; then
+	# https://wiki.gentoo.org/wiki/QEMU/Linux_guest
+	# https://www.spice-space.org/download.html
+	# $ sudo apt-get install spice-vdagent
+	# -> This will add bidirectonal clipboard among other stuff ;)
+	PAR="${PAR} -spice port=${SPICE_PORT},disable-ticketing"
+	# 
+	PAR="${PAR} -device virtio-serial"
+	PAR="${PAR} -chardev spicevmc,id=vdagent,name=vdagent"
+	PAR="${PAR} -device virtserialport,chardev=vdagent,name=com.redhat.spice.0"
+fi
 
 
 # Monitoring screen
@@ -480,6 +508,15 @@ echo "https://en.wikibooks.org/wiki/QEMU/Monitor"
 echo " (qemu) help"
 echo " (qemu) info pci"
 echo ""
+
+if [[ -n ${SPICE_PORT} ]]; then
+	echo ""
+	echo "Connect to 'spice' remote server."
+	echo " $ spicy --title Ubuntu 127.0.0.1 -p ${SPICE_PORT}"
+	echo "You could also use 'remote-viewer'"
+	echo " $ remote-viewer --title Ubuntu spice://127.0.0.1:${SPICE_PORT}"
+fi
+
 #qemu-system-x86_64 ${PAR}
 sudo qemu-system-x86_64 ${PAR}
 
