@@ -70,13 +70,66 @@ Start the vm.
 
 
 
-
-(2022-04-xx)
-TODO: setup myst node
+(2022-04-11)
+setup myst node
 
   https://mystnodes.com/
   https://mystnodes.com/onboarding/desktop/linux/0
+To install myst node type such commands into terminal:
+
+ $ sudo add-apt-repository ppa:mysteriumnetwork/node
+ 
+More info about the repo: https://launchpad.net/~mysteriumnetwork/+archive/ubuntu/node
+
+ $ sudo apt-get update
+ $ sudo apt install myst
+
+ $ sudo systemctl status mysterium-node.service
 --
+
+
+
+(2022-04-11)
+Claim node
+
+  https://mystnodes.com/claiming
+
+opening the Node UI in your browser and do manual claiming there:
+  [local-ip-of-your-node]:4449
+
+ $ ip address
+...
+2: enx00e04c6800e1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 00:e0:4c:68:00:e1 brd ff:ff:ff:ff:ff:ff
+    inet XXX.XXX.XXX.XXX/24 brd XXX.XXX.XXX.XXX scope global dynamic noprefixroute enx00e04c6800e1
+...
+
+  http://XXX.XXX.XXX.XXX:4449
+
+NOTE: Withdrawal Address (required)
+ - Add your ERC-20 Polygon compatible wallet for automatic withdrawals
+
+My MetaMask wallet:
+https://polygonscan.com/address/0x94136b5260145f949b16691a36c7ad0122d68c80
+
+Instructions how to setup MYST token on MetaMask:
+https://docs.mysterium.network/for-node-runners/how-to-setup-polygon-myst-on-metamask
+
+
+Network registration
+NOTE: To register your node on blockchain you need to deposit a small amount of MYST token to cover registration fee.
+
+Send not less than 0.2 MYST to the address below. Important: only Polygon blockchain MYST is supported!
+0x3B02d658551b84531E57CB0c77784bBA928924fb
+--
+
+
+
+
+
+(2022-04-xx)
+--
+
 
 
 
