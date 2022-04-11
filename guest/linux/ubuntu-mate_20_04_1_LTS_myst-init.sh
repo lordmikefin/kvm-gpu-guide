@@ -466,7 +466,10 @@ PAR="${PAR} -soundhw hda"
 PAR="${PAR} -net none"  # Disable default network and use only USB-eth adapter
 
 # Bus 002 Device 007: ID 0bda:8153 Realtek Semiconductor Corp. RTL8153 Gigabit Ethernet Adapter
-PAR="${PAR} -usb -usbdevice host:0bda:8153"
+# Err: qemu-system-x86_64: -usbdevice host:0bda:8153: '-usbdevice' is deprecated, please use '-device usb-...' instead
+#PAR="${PAR} -usb -usbdevice host:0bda:8153"
+PAR="${PAR} -device nec-usb-xhci,id=usb"
+PAR="${PAR} -device usb-host,vendorid=0x0bda,productid=0x8153"
 
 
 # Start the virtual machine with parameters
