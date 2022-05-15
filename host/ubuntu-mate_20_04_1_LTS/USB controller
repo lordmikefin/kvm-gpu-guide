@@ -76,3 +76,16 @@ IOMMU Group 8:
 IOMMU Group 9:
 	00:1f.6 Ethernet controller [0200]: Intel Corporation Ethernet Connection (2) I219-V [8086:15b8]
 
+
+(2022-05-15)
+My 1st "Sonnet Technologies USB3 4PM Allegro PCI-E Karte" broke down :(
+I got replacement card and it has different usb controller chip ???
+ - OLD: 03:00.0 USB controller [0c03]: Renesas Technology Corp. uPD720201 USB 3.0 Host Controller [1912:0014] (rev 03)
+ - NEW: 05:00.0 USB controller [0c03]: Fresco Logic FL1100 USB 3.0 Host Controller [1b73:1100] (rev 10)
+
+$ ./ls_iommu_groups.sh
+...
+IOMMU Group 16:
+	05:00.0 USB controller [0c03]: Fresco Logic FL1100 USB 3.0 Host Controller [1b73:1100] (rev 10)
+...
+
