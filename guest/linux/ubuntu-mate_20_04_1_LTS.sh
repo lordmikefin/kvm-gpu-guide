@@ -335,8 +335,11 @@ fi
 if [[ -n ${SPICE_PORT} ]]; then
     echo "NOTE: usb devices are not auto connected with 'spice'"
 else 
-    PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
-    PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+    #PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
+    #PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+    
+    # pass USB controller only when display card is passed
+    USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Fresco Logic FL1100 USB 3.0 Host Controller (rev 10)
 fi
 
 
@@ -360,6 +363,20 @@ fi
 if [[ ! -z ${GPU_SOUND} ]]; then
 	PAR="${PAR} -device vfio-pci,host=${GPU_SOUND},bus=root.1,addr=00.1"
 fi
+
+
+# USB controller passthrough
+if [[ ! -z ${USB_CONTROLLER} ]]; then
+    # https://github.com/qemu/qemu/blob/master/docs/pcie.txt
+    
+    # Add pcie bus 2
+    PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1d.0,chassis=2,id=root.2"
+    
+	#PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.1,addr=00.0,multifunction=on"
+	PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.2"
+fi
+
+
 
 # Samba share. As default samba server address is  \\10.0.2.4\qemu\
 if [[ ! -z ${KVM_WORKSPACE_SOFTWARE} ]]; then
@@ -445,10 +462,25 @@ if [[ ! -z ${GPU_BUS} ]]; then
 	echo " -> vfio: Cannot reset device 0000:01:00.1, no available reset mechanism."
 fi
 
+
+if [[ ! -z ${USB_CONTROLLER} ]]; then
+	echo ""
+	echo "Bind usb controller to vfio"
+	sudo ../../script/vfio-bind.sh 0000:${USB_CONTROLLER}
+fi
+
+
 echo ""
 #qemu-system-x86_64 ${PAR}
 sudo qemu-system-x86_64 ${PAR}
 
+
+if [[ ! -z ${USB_CONTROLLER} ]]; then
+	echo ""
+	echo "Bind usb controller back to xhci_hcd"
+	sudo ../../script/vfio-unbind.sh ${USB_CONTROLLER}
+	sudo ../../script/xhci_hcd-bind.sh ${USB_CONTROLLER}
+fi
 
 
 #GPU_BUS="01:00.0"
