@@ -1,0 +1,21 @@
+
+
+(2022-05-29)
+Initialize GhostBSD vm
+ $ ./ghostbsd_22_01_12-init.sh
+
+Starting X will fail
+ -> Select SCFB from the list
+
+Then click:
+ -> Install GhostBSD
+--
+
+
+(2022-05-29)
+Start GhostBSD vm
+ $ ./ghostbsd_22_01_12.sh
+--
+
+
+
