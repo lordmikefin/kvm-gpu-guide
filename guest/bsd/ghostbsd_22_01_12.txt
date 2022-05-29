@@ -18,4 +18,31 @@ Start GhostBSD vm
 --
 
 
+(2022-05-29)
+Install nano
+ $ pkg search nano
+ $ sudo pkg install nano
+--
+
+
+
+
+
+
+
+(2022-05-29)
+TODO: Is there need to make sure european repo server is used by pkg
+  https://forums.ghostbsd.org/viewtopic.php?t=1505
+
+ $ sudo nano /usr/local/etc/pkg/repos/GhostBSD.conf.fr
+ $ sudo nano /usr/local/etc/pkg/repos/GhostBSD.conf.us
+ $ sudo nano /usr/local/etc/pkg/repos/GhostBSD.conf.ca
+
+TODO: Should I disable us and ca repos???
+--
+
+
+(2022-05-29)
+--
+
 
