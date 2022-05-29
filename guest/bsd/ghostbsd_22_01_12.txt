@@ -67,6 +67,27 @@ Install inxi - a command line system information tool
 --
 
 
+(2022-05-29)
+mount samba share
+      https://www.freebsd.org/cgi/man.cgi?mount_smbfs(8)
+      https://www.cyberciti.biz/faq/mounting-a-nas-with-freebsd-mount_smbfs/
+
+ $ id lordmike
+ ==
+ uid=1002(lordmike) gid=0(wheel) groups=0(wheel),5(operator),44(video)
+ ==
+ $ sudo mkdir /mnt/software-share/
+ $ # sudo mount_smbfs -u 1002 -I 192.168.122.1 //SERVER/sambashare /mnt/software-share
+ $ echo "sudo mount_smbfs -u 1002 -I 192.168.122.1 //SERVER/sambashare /mnt/software-share" >> ~/samba_connect_software-share
+ $ sudo chmod +x ~/samba_connect_software-share
+ $ ~/samba_connect_software-share
+ $ ls /mnt/software-share/
+
+Alternatively use Caja and type location:
+  smb://192.168.122.1/
+--
+
+
 
 
 
