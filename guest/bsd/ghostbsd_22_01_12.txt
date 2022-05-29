@@ -56,6 +56,17 @@ Just copy-paste lines from the sample :)
 --
 
 
+(2022-05-29)
+Install inxi - a command line system information tool
+  https://github.com/smxi/inxi
+
+ $ wget -O inxi https://github.com/smxi/inxi/raw/master/inxi
+ $ sudo chmod +x inxi
+ $ sudo ./inxi
+ $ sudo ./inxi -Fxz
+--
+
+
 
 
 
