@@ -32,6 +32,34 @@ Install wget
 --
 
 
+(2022-05-29)
+Resolution changed from 800x600   :)
+NOTE: I was not able to change resolution for Qemu-KVM 'qxl' vga card.
+      Also when I was using real card 'Radeon RX 570' or 'GeForce GTX 1050'.
+      I could not change the resolution.
+
+Only "scfb" driver works when qemu 'qxl' vga card is used.
+I had to change qemu vga card to 'vmware'.
+And use 'xf86-video-vmware' driver in the bsd.
+
+Install driver "vmware"
+ $ pkg search xf86-video-vmware
+ $ sudo pkg install xf86-video-vmware
+
+Here is xorg.conf sample file:
+  "xorg_bsd_sample.conf"
+  [ https://gist.github.com/lordmikefin/34cf6ad048b0f733308f3404b9ef8cc4 ]
+
+ $ sudo nano /etc/X11/xorg.conf
+
+Just copy-paste lines from the sample :)
+--
+
+
+
+
+
+
 
 
 
