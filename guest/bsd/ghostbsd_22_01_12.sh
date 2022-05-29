@@ -217,7 +217,7 @@ if [[ "${SELECTED}" == "0" ]]; then
 	#PAR="${PAR} -vga qxl"
 	#PAR="${PAR} -vga virtio"
 	# NOTE: start 'spice' only if 'qxl' virtual card is used
-	SPICE_PORT=5970
+	SPICE_PORT=5971
 	# NOTE: testing other qemu virtual displays
 	#       https://www.kraxel.org/blog/2019/09/display-devices-in-qemu/
 	#       https://superuser.com/questions/1646807/qemu-kvm-emulating-vmware-graphics
