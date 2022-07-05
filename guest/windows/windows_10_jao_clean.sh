@@ -313,6 +313,7 @@ else
 	# TODO: qemu-system-x86_64: -usbdevice tablet: '-usbdevice' is deprecated, please use '-device usb-...' instead
 	# TODO: how usb devices are set in QEMU 4.2.1 ???
 	#PAR="${PAR} -usbdevice tablet"
+	PAR="${PAR} -device nec-usb-xhci,id=usb"
 fi
 
 # Display   qxl
