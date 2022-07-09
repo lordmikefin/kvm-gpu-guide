@@ -21,8 +21,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.7"
-CURRENT_SCRIPT_DATE="2021-02-15"
+CURRENT_SCRIPT_VER="0.0.8"
+CURRENT_SCRIPT_DATE="2022-07-09"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -436,6 +436,8 @@ fi
 #USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Renesas Technology Corp. uPD720201 USB 3.0 Host Controller (rev 03)
 
 # TODO: pass USB controller only when display card is passed
+
+# TODO: When usb controller is passed and vm is shutdown the host os will crash! What is wrong with windows shutdown?!?!?!
 USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Fresco Logic FL1100 USB 3.0 Host Controller (rev 10)
 if [[ ! -z ${USB_CONTROLLER} ]]; then
     # https://github.com/qemu/qemu/blob/master/docs/pcie.txt
@@ -556,6 +558,11 @@ fi
 echo ""
 #qemu-system-x86_64 ${PAR}
 sudo qemu-system-x86_64 ${PAR}
+
+# TODO: When usb controller is passed and vm is shutdown the host os will crash! What is wrong with windows shutdown?!?!?!
+echo ""
+echo "Test logging after qemu closed."
+echo ""
 
 
 if [[ ! -z ${USB_CONTROLLER} ]]; then
