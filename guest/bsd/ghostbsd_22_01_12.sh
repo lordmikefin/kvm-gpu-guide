@@ -259,11 +259,14 @@ fi
 
 # VGA passthrough. GPU and sound.
 if [[ ! -z ${GPU_BUS} ]]; then
-	PAR="${PAR} -device vfio-pci,host=${GPU_BUS},bus=root.1,addr=00.0,multifunction=on,x-vga=on"
+    # Add pcie bus
+    PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
+    
+    PAR="${PAR} -device vfio-pci,host=${GPU_BUS},bus=root.1,addr=00.0,multifunction=on,x-vga=on"
 fi
 
 if [[ ! -z ${GPU_SOUND} ]]; then
-	PAR="${PAR} -device vfio-pci,host=${GPU_SOUND},bus=root.1,addr=00.1"
+    PAR="${PAR} -device vfio-pci,host=${GPU_SOUND},bus=root.1,addr=00.1"
 fi
 
 
