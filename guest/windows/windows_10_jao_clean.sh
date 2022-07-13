@@ -567,9 +567,9 @@ echo ""
 
 if [[ ! -z ${USB_CONTROLLER} ]]; then
 	echo ""
-	echo "Bind usb controller back to xhci_hcd"
-	sudo ../../script/vfio-unbind.sh ${USB_CONTROLLER}
-	sudo ../../script/xhci_hcd-bind.sh ${USB_CONTROLLER}
+	#echo "Bind usb controller back to xhci_hcd"
+	#sudo ../../script/vfio-unbind.sh ${USB_CONTROLLER}
+	#sudo ../../script/xhci_hcd-bind.sh ${USB_CONTROLLER}
 fi
 
 
