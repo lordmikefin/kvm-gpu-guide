@@ -88,6 +88,26 @@ Alternatively use Caja and type location:
 --
 
 
+(2022-07-13)
+How to list PCI devices in BSD?
+
+https://www.freebsd.org/cgi/man.cgi?query=lspci&sektion=8&manpath=freebsd-release-ports
+ "lspci - list all	PCI devices"
+https://www.freebsd.org/cgi/man.cgi?query=pciconf&sektion=8
+ "pciconf --	diagnostic utility for the PCI bus"
+
+https://unix.stackexchange.com/questions/541688/how-to-see-pcie-device-info-on-freebsd
+"Install the pciutils package which provide the lspci command:
+ pkg install pciutils"
+
+
+ $ sudo pkg update
+ $ pkg search pciutils
+ $ sudo pkg install pciutils
+ $ lspci
+--
+
+
 
 
 
