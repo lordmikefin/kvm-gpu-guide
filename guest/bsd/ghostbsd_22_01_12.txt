@@ -122,6 +122,18 @@ https://www.freebsd.org/cgi/man.cgi?query=lsusb&sektion=8&manpath=freebsd-releas
 
 
 
+(2022-07-14)
+TODO: setup radeon x11 drivers
+
+https://docs.freebsd.org/en/books/handbook/x11/
+https://docs.freebsd.org/en/books/handbook/x11/#x-config-video-cards
+2D and 3D acceleration is supported on most newer AMD KMS driver graphics cards provided by AMD.
+Driver name: amdgpu
+--
+
+
+
+
 
 
 
@@ -140,7 +152,7 @@ TODO: Should I disable us and ca repos???
 --
 
 
-(2022-05-29)
+(2022-07-14)
 --
 
 
