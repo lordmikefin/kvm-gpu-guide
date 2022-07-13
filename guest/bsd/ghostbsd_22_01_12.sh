@@ -226,9 +226,9 @@ if [[ "${SELECTED}" == "0" ]]; then
 	PAR="${PAR} -vga vmware"
 	#PAR="${PAR} -vga cirrus"
 else
-	#echo "NOTE: Can not use physical and virtal display at same time :("
-	#PAR="${PAR} -vga none"
-	PAR="${PAR} -vga vmware"
+	echo "NOTE: Can not use physical and virtal display at same time :("
+	PAR="${PAR} -vga none"
+	#PAR="${PAR} -vga vmware"
 	
     # USB passthrough. Keyboard and mouse.
     PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
