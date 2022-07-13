@@ -438,6 +438,8 @@ fi
 # TODO: pass USB controller only when display card is passed
 
 # TODO: When usb controller is passed and vm is shutdown the host os will crash! What is wrong with windows shutdown?!?!?!
+# TODO: Update windows driver? Sonnet Technologies  Fresco Logic FL1100 USB 3.0 Host Controller [1b73:1100]
+# http://deviceinbox.com/id/ven-1B73-dev-1100.html
 # NOTE: It looks like reseting usb controller helps??? maybe?  sudo ../../script/reset-device.sh 05:00
 
 # Reset all PCI cards at once
