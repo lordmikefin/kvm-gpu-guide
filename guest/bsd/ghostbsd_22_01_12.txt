@@ -108,6 +108,17 @@ https://unix.stackexchange.com/questions/541688/how-to-see-pcie-device-info-on-f
 --
 
 
+(2022-07-14)
+How to list usb devices?
+
+https://www.freebsd.org/cgi/man.cgi?query=lsusb&sektion=8&manpath=freebsd-release-ports
+
+ $ sudo pkg update
+ $ pkg search usbutils
+ $ sudo pkg install usbutils
+ $ lsusb
+--
+
 
 
 
