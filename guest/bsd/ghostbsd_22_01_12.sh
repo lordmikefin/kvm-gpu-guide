@@ -226,8 +226,10 @@ if [[ "${SELECTED}" == "0" ]]; then
 	PAR="${PAR} -vga vmware"
 	#PAR="${PAR} -vga cirrus"
 else
-	echo "NOTE: Can not use physical and virtal display at same time :("
-	PAR="${PAR} -vga none"
+	#echo "NOTE: Can not use physical and virtal display at same time :("
+	#PAR="${PAR} -vga none"
+	PAR="${PAR} -vga vmware"
+	
     # USB passthrough. Keyboard and mouse.
     PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
     
@@ -252,6 +254,16 @@ if [[ -n ${SPICE_PORT} ]]; then
 	PAR="${PAR} -device virtio-serial"
 	PAR="${PAR} -chardev spicevmc,id=vdagent,name=vdagent"
 	PAR="${PAR} -device virtserialport,chardev=vdagent,name=com.redhat.spice.0"
+fi
+
+
+# VGA passthrough. GPU and sound.
+if [[ ! -z ${GPU_BUS} ]]; then
+	PAR="${PAR} -device vfio-pci,host=${GPU_BUS},bus=root.1,addr=00.0,multifunction=on,x-vga=on"
+fi
+
+if [[ ! -z ${GPU_SOUND} ]]; then
+	PAR="${PAR} -device vfio-pci,host=${GPU_SOUND},bus=root.1,addr=00.1"
 fi
 
 
