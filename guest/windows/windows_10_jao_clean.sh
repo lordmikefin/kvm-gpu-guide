@@ -438,6 +438,11 @@ fi
 # TODO: pass USB controller only when display card is passed
 
 # TODO: When usb controller is passed and vm is shutdown the host os will crash! What is wrong with windows shutdown?!?!?!
+# NOTE: It looks like reseting usb controller helps??? maybe?  sudo ../../script/reset-device.sh 05:00
+
+# Reset all PCI cards at once
+# $ sudo ../../script/reset-devices.sh 01:00 02:00 03:00 05:00
+
 USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Fresco Logic FL1100 USB 3.0 Host Controller (rev 10)
 if [[ ! -z ${USB_CONTROLLER} ]]; then
     # https://github.com/qemu/qemu/blob/master/docs/pcie.txt
