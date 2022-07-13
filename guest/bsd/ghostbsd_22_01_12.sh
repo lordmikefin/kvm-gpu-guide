@@ -255,6 +255,20 @@ if [[ -n ${SPICE_PORT} ]]; then
 fi
 
 
+# TODO: pass USB controller only when display card is passed
+# TODO: pass display card :)
+
+USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Fresco Logic FL1100 USB 3.0 Host Controller (rev 10)
+if [[ ! -z ${USB_CONTROLLER} ]]; then
+    # https://github.com/qemu/qemu/blob/master/docs/pcie.txt
+    
+    # Add pcie bus 2
+    PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1d.0,chassis=2,id=root.2"
+    
+    #PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.1,addr=00.0,multifunction=on"
+    PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.2"
+fi
+
 
 
 # OVMF
@@ -297,6 +311,14 @@ if [[ -n ${SPICE_PORT} ]]; then
 	echo "You could also use 'remote-viewer'"
 	echo " $ remote-viewer --title GhostBSD spice://127.0.0.1:${SPICE_PORT}"
 fi
+
+
+if [[ ! -z ${USB_CONTROLLER} ]]; then
+	echo ""
+	echo "Bind usb controller to vfio"
+	sudo ../../script/vfio-bind.sh 0000:${USB_CONTROLLER}
+fi
+
 
 sudo qemu-system-x86_64 ${PAR}
 
