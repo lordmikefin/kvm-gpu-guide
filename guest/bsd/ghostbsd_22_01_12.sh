@@ -291,7 +291,7 @@ PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
 PAR="${PAR} -drive file=${OVMF_VARS_BSD},if=pflash,format=raw,unit=1"
 
 # Add pcie bus
-PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
+#PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
 
 # Virtual disk
 PAR="${PAR} -drive file=${VM_DISK_BSD},format=qcow2,if=none,id=drive-ide0-0-0"
