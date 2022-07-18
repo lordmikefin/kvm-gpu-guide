@@ -439,6 +439,8 @@ fi
 
 # TODO: When usb controller is passed and vm is shutdown the host os will crash! What is wrong with windows shutdown?!?!?!
 # TODO: Update windows driver? Sonnet Technologies  Fresco Logic FL1100 USB 3.0 Host Controller [1b73:1100]
+# NOTE: Driver from Fresco is buggy !!!  :(
+#       If it was installed, then remove it and let windows update to install generic M$ driver!!! WTF!?!?!?
 # http://www.sonnettech.com/support/kb/kb.php?cat=473&expand=&action=a3#a3
 # https://support.frescologic.com/portal/en/kb/fresco-logic
 # https://support.frescologic.com/portal/en/kb/articles/usb
