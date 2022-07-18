@@ -120,6 +120,13 @@ https://www.freebsd.org/cgi/man.cgi?query=lsusb&sektion=8&manpath=freebsd-releas
 --
 
 
+(2022-07-18)
+List driver of PCI device:
+https://www.freebsd.org/cgi/man.cgi?query=pciconf
+
+ $ pciconf -l pci0:1:0:0
+--
+
 
 
 (2022-07-14)
@@ -129,6 +136,12 @@ https://docs.freebsd.org/en/books/handbook/x11/
 https://docs.freebsd.org/en/books/handbook/x11/#x-config-video-cards
 2D and 3D acceleration is supported on most newer AMD KMS driver graphics cards provided by AMD.
 Driver name: amdgpu
+
+ $ pkg search amdgpu
+...
+xf86-video-amdgpu-22.0.0       X.Org amdgpu display driver
+...
+ $ sudo pkg install xf86-video-amdgpu
 --
 
 
