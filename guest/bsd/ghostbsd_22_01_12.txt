@@ -158,7 +158,7 @@ TODO: setup nvidia x11 drivers
 
 https://unix.stackexchange.com/questions/593481/how-to-enable-hardware-acceleration-in-freebsd
 
- $ tail -f -n200 /var/log/Xorg.0.log
+ $ tail -n200 /var/log/Xorg.0.log
 ...
 [    25.832] (II) LoadModule: "vmware"
 [    25.862] (II) Loading /usr/local/lib/xorg/modules/drivers/vmware_drv.so
