@@ -188,11 +188,11 @@ The amdgpu module is for post-HD7000 or Tahiti GPUs.
 
     Install the graphics/drm-kmod package
 
-        # pkg install drm-kmod 
+        # sudo pkg install drm-kmod 
 
     The post-installation message presents essential information. With FreeBSD 13⋯, this command will safely configure your /etc/rc.conf:
 
-        # sysrc -f /etc/rc.conf kld_list+=amdgpu 
+        # sudo sysrc -f /etc/rc.conf kld_list+=amdgpu 
 
     Ensure that your UID is a member of the video group.
 
