@@ -125,6 +125,14 @@ List driver of PCI device:
 https://www.freebsd.org/cgi/man.cgi?query=pciconf
 
  $ pciconf -l pci0:1:0:0
+ $ sudo pciconf -lvbce pci0:1:0:0
+...
+vgapci0@pci0:1:0:0:     class=0x030000 rev=0xef hdr=0x00 vendor=0x1002 device=0x67df subvendor=0x1da2 subdevice=0xe353
+    vendor     = 'Advanced Micro Devices, Inc. [AMD/ATI]'
+    device     = 'Ellesmere [Radeon RX 470/480/570/570X/580/580X/590]'
+    class      = display
+    subclass   = VGA
+...
 --
 
 
@@ -166,6 +174,30 @@ https://unix.stackexchange.com/questions/593481/how-to-enable-hardware-accelerat
 [    27.054] (EE) 
 Fatal server error:
 [    27.054] (EE) no screens found(EE)
+...
+--
+
+
+(2022-07-19)
+https://wiki.freebsd.org/Graphics
+https://wiki.freebsd.org/Graphics#AMD_GPU
+...
+AMD GPU
+
+The amdgpu module is for post-HD7000 or Tahiti GPUs.
+
+    Install the graphics/drm-kmod package
+
+        # pkg install drm-kmod 
+
+    The post-installation message presents essential information. With FreeBSD 13⋯, this command will safely configure your /etc/rc.conf:
+
+        # sysrc -f /etc/rc.conf kld_list+=amdgpu 
+
+    Ensure that your UID is a member of the video group.
+
+    Restart your system. You should see amdgpu listed, and a flash of the console when the display driver is switched.
+    Start X.Org via your usual method (i.e. startx, GDM, etc.) 
 ...
 --
 
