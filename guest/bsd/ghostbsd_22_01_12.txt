@@ -130,7 +130,7 @@ https://www.freebsd.org/cgi/man.cgi?query=pciconf
 
 
 (2022-07-14)
-TODO: setup radeon x11 drivers
+TODO: setup radeon/amd x11 drivers
 
 https://docs.freebsd.org/en/books/handbook/x11/
 https://docs.freebsd.org/en/books/handbook/x11/#x-config-video-cards
@@ -144,6 +144,30 @@ xf86-video-amdgpu-22.0.0       X.Org amdgpu display driver
  $ sudo pkg install xf86-video-amdgpu
 --
 
+
+(2022-07-19)
+TODO: setup nvidia x11 drivers
+
+https://unix.stackexchange.com/questions/593481/how-to-enable-hardware-acceleration-in-freebsd
+
+ $ tail -f -n200 /var/log/Xorg.0.log
+...
+[    25.832] (II) LoadModule: "vmware"
+[    25.862] (II) Loading /usr/local/lib/xorg/modules/drivers/vmware_drv.so
+[    27.054] (II) Module vmware: vendor="X.Org Foundation"
+[    27.054]    compiled for 1.20.14, module version = 13.3.0
+[    27.054]    Module class: X.Org Video Driver
+[    27.054]    ABI class: X.Org Video Driver, version 24.1
+[    27.054] (II) vmware: driver for VMware SVGA: vmware0405, vmware0710
+[    27.054] (--) Using syscons driver with X support (version 2.0)
+[    27.054] (++) using VT number 9
+
+[    27.054] (EE) No devices detected.
+[    27.054] (EE) 
+Fatal server error:
+[    27.054] (EE) no screens found(EE)
+...
+--
 
 
 
