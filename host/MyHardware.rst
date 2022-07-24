@@ -75,7 +75,13 @@ Supageek PCI-E to USB 3.0  Expansion Card
 
 NOTE: this card is supported by macOS and others :)
 Sonnet Technologies USB3 4PM Allegro PCI-E Karte (4-Port, USB 3.0) 
-( https://www.amazon.de/-/en/gp/product/B00GRGCV2G/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1 )
+( https://www.amazon.de/-/en/gp/product/B00GRGCV2G )
+NOTE: this card uses Fresco Logic FL1100 controller chip.
+
+Testing cheaper card:
+Inateck Superspeed 4 Ports PCI-E to USB 3.0 Expansion Card
+( https://www.amazon.de/-/en/gp/product/B00B6ZCNGM )
+NOTE: this card uses Fresco Logic FL1100 controller chip.
 
 NOTE: When connecting Android into virtual machine it will reconnect on permission. But it newer reconnects. For this reason I passthrough this card into VM.
 
