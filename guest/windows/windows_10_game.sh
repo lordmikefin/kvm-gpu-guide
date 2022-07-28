@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.7"
-CURRENT_SCRIPT_DATE="2021-02-15"
+CURRENT_SCRIPT_VER="0.0.8"
+CURRENT_SCRIPT_DATE="2022-07-28"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -298,8 +298,11 @@ if [[ -n ${VIRTUAL_DISPLAY} ]]; then
 	
 	#PAR="${PAR} -usb -usbdevice host:534d:6021" # ID 534d:6021 
 	#PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
-    PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
-    PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
+    #PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+    #PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
+    
+    # USB controller passthrough
+    USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Fresco Logic FL1100 USB 3.0 Host Controller (rev 10)
 else
 	SPICE_PORT=5928
 	PAR="${PAR} -vga qxl"
@@ -361,6 +364,16 @@ if [[ ! -z ${GPU_SOUND} ]]; then
 	PAR="${PAR} -device vfio-pci,host=${GPU_SOUND},bus=root.1,addr=00.1"
 fi
 
+#USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Fresco Logic FL1100 USB 3.0 Host Controller (rev 10)
+if [[ ! -z ${USB_CONTROLLER} ]]; then
+    # https://github.com/qemu/qemu/blob/master/docs/pcie.txt
+    
+    # Add pcie bus 2
+    PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1d.0,chassis=2,id=root.2"
+    # Passthrough the usb controller
+	PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.2"
+fi
+
 # Samba share. As default samba server address is  \\10.0.2.4\qemu\
 if [[ ! -z ${KVM_WORKSPACE_SOFTWARE} ]]; then
 	PAR="${PAR} -smb ${KVM_WORKSPACE_SOFTWARE}"
@@ -420,6 +433,14 @@ if [[ -n ${SPICE_PORT} ]]; then
 	echo "You could also use 'remote-viewer'"
 	echo " $ remote-viewer --title Windows spice://127.0.0.1:${SPICE_PORT}"
 fi
+
+
+if [[ ! -z ${USB_CONTROLLER} ]]; then
+	echo ""
+	echo "Bind usb controller to vfio"
+	sudo ../../script/vfio-bind.sh 0000:${USB_CONTROLLER}
+fi
+
 
 echo ""
 sudo qemu-system-x86_64 ${PAR}

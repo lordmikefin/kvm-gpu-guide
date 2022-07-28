@@ -21,8 +21,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.9"
-CURRENT_SCRIPT_DATE="2022-07-13"
+CURRENT_SCRIPT_VER="0.0.10"
+CURRENT_SCRIPT_DATE="2022-07-28"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -307,6 +307,9 @@ elif [[ -n ${VIRTUAL_DISPLAY} ]]; then
 	#PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
 	#PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
     #PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
+    
+    # USB controller passthrough
+    USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Fresco Logic FL1100 USB 3.0 Host Controller (rev 10)
 else
 	SPICE_PORT=5926
 	PAR="${PAR} -vga qxl"
@@ -435,8 +438,6 @@ fi
 #USB_CONTROLLER="04:00.0"
 #USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Renesas Technology Corp. uPD720201 USB 3.0 Host Controller (rev 03)
 
-# TODO: pass USB controller only when display card is passed
-
 # TODO: When usb controller is passed and vm is shutdown the host os will crash! What is wrong with windows shutdown?!?!?!
 # TODO: Update windows driver? Sonnet Technologies  Fresco Logic FL1100 USB 3.0 Host Controller [1b73:1100]
 # NOTE: Driver from Fresco is buggy !!!  :(
@@ -450,7 +451,7 @@ fi
 # Reset all PCI cards at once
 # $ sudo ../../script/reset-devices.sh 01:00 02:00 03:00 05:00
 
-USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Fresco Logic FL1100 USB 3.0 Host Controller (rev 10)
+#USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Fresco Logic FL1100 USB 3.0 Host Controller (rev 10)
 if [[ ! -z ${USB_CONTROLLER} ]]; then
     # https://github.com/qemu/qemu/blob/master/docs/pcie.txt
     
