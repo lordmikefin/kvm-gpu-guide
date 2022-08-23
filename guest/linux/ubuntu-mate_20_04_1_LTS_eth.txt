@@ -472,7 +472,29 @@ https://phoenixminer.info/downloads/PhoenixMiner_5.8c_Linux.tar.gz
 --
 
 
-(2021-03-XX)
+
+(2022-08-23)
+Update PhoenixMiner from 5.8c to 6.2c
+
+https://phoenixminer.info/downloads/
+https://phoenixminer.info/downloads/PhoenixMiner_6.2c_Linux.tar.gz
+
+ $ # mkdir PhoenixMiner
+ $ cd ~/PhoenixMiner
+ $ wget https://phoenixminer.info/downloads/PhoenixMiner_6.2c_Linux.tar.gz
+ $ tar -zxvf PhoenixMiner_6.2c_Linux.tar.gz
+
+ $ ./PhoenixMiner_6.2c_Linux/PhoenixMiner -pool ethash.unmineable.com:3333 -wal NANO:nano_3yc3wggmgno8rwcc9eewek1u6g8y8rqrzggw3dxrabn9du4yy8cfe7qytaj3.mate20eth -pass x
+ 
+ $ nano ~/ethminer_for_ever.sh
+--
+
+
+
+
+
+
+(2022-08-XX)
 TODO: auto start radeontop
 --
 
