@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.8"
-CURRENT_SCRIPT_DATE="2021-02-14"
+CURRENT_SCRIPT_VER="0.0.9"
+CURRENT_SCRIPT_DATE="2022-08-23"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -466,8 +466,23 @@ fi
 # https://www.qemu.org/docs/master/system/usb.html
 # https://git.qemu.org/?p=qemu.git;a=blob_plain;f=docs/usb2.txt;hb=HEAD
 #PAR="${PAR} -device usb-host,hostbus=1,hostaddr=3" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
-PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
-PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+#PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
+#PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+
+
+# https://www.qemu.org/docs/master/system/usb.html
+# https://git.qemu.org/?p=qemu.git;a=blob_plain;f=docs/usb2.txt;hb=HEAD
+if [[ -n ${SPICE_PORT} ]]; then
+    echo "NOTE: usb devices are not auto connected with 'spice'"
+    # pass USB controller only when display card is passed
+    #USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Fresco Logic FL1100 USB 3.0 Host Controller (rev 10)
+else 
+    PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
+    PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+    
+    # pass USB controller only when display card is passed
+    USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Fresco Logic FL1100 USB 3.0 Host Controller (rev 10)
+fi
 
 
 # OVMF
@@ -490,6 +505,20 @@ fi
 if [[ ! -z ${GPU_SOUND} ]]; then
 	PAR="${PAR} -device vfio-pci,host=${GPU_SOUND},bus=root.1,addr=00.1"
 fi
+
+
+# USB controller passthrough
+if [[ ! -z ${USB_CONTROLLER} ]]; then
+    # https://github.com/qemu/qemu/blob/master/docs/pcie.txt
+    
+    # Add pcie bus 2
+    PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1d.0,chassis=2,id=root.2"
+    
+	#PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.1,addr=00.0,multifunction=on"
+	PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.2"
+fi
+
+
 
 # Samba share. As default samba server address is  \\10.0.2.4\qemu\
 if [[ ! -z ${KVM_WORKSPACE_SOFTWARE} ]]; then
@@ -590,6 +619,15 @@ if [[ ! -z ${GPU_BUS} ]]; then
 	echo "This will happen only with AMD display cards. AMD reset bug !"
 	echo " -> vfio: Cannot reset device 0000:01:00.1, no available reset mechanism."
 fi
+
+
+if [[ ! -z ${USB_CONTROLLER} ]]; then
+	echo ""
+	echo "Bind usb controller to vfio"
+	sudo ../../script/vfio-bind.sh 0000:${USB_CONTROLLER}
+fi
+
+
 
 echo ""
 #qemu-system-x86_64 ${PAR}
