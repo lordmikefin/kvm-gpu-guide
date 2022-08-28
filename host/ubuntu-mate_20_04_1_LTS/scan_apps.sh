@@ -401,6 +401,20 @@ app_version optional keepassx
 app_version optional samba
 
 
+# NOTE: needed by win11
+# TODO: install swtpm
+# https://github.com/stefanberger/swtpm
+# https://askubuntu.com/questions/1396067/how-do-i-install-swtpm-on-ubuntu-21-10
+# $ sudo add-apt-repository ppa:itrue/swtpm
+# $ sudo apt-get update
+# $ sudo apt-get install swtpm swtpm-tools
+
+# NOTE: needed by win11
+# TODO: install screen
+# $ sudo apt install screen
+
+
+
 # TODO: How to get 'retext' version ??
 #  Check if it exists. If not point to guide.  TODO: create the guide :)
 #    $ which retext

@@ -19,7 +19,7 @@
 # https://www.tecklyfe.com/how-to-create-a-windows-11-virtual-machine-in-qemu/
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
+CURRENT_SCRIPT_VER="0.0.2"
 CURRENT_SCRIPT_DATE="2022-08-28"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -271,6 +271,7 @@ KVM_WORKSPACE_VM_WIN11="${KVM_WORKSPACE}/vm/windows_11"
 OVMF_VARS_WIN11="${KVM_WORKSPACE_VM_WIN11}/windows_11_VARS.fd"
 VM_DISK_WIN11="${KVM_WORKSPACE_VM_WIN11}/windows_11.qcow2"
 
+EMULATED_TPM="/tmp/emulated_tpm_windows_11"
 
 unset INPUT
 lm_read_to_INPUT "Do you wanna use folder ${KVM_WORKSPACE_VM_WIN11} for virtual machine?"
@@ -311,6 +312,44 @@ fi
 
 
 
+# TODO: install swtpm
+# https://github.com/stefanberger/swtpm
+# https://askubuntu.com/questions/1396067/how-do-i-install-swtpm-on-ubuntu-21-10
+# $ sudo add-apt-repository ppa:itrue/swtpm
+# $ sudo apt-get update
+# $ sudo apt-get install swtpm swtpm-tools
+
+# TODO: install screen
+# $ sudo apt install screen
+
+
+# https://www.tecklyfe.com/how-to-create-a-windows-11-virtual-machine-in-qemu/
+
+# create a temp directory for the SWTPM simulator and create the socket in TPM2 mode 
+
+# mkdir /tmp/emulated_tpm
+# swtpm socket --tpmstate dir=/tmp/emulated_tpm --ctrl type=unixio,path=/tmp/emulated_tpm/swtpm-sock --log level=20 --tpm2
+if [[ ! -d "${EMULATED_TPM}" ]]; then
+	echo ""
+	echo "Createing direcotry ${EMULATED_TPM}"
+	echo ""
+    mkdir ${EMULATED_TPM}
+else
+	echo -e "\n Direcotry ${EMULATED_TPM} alrealy exists.\n"
+fi
+
+echo ""
+echo "create the socket in TPM2 mode. Run command in screen in detached mode."
+#swtpm socket --tpmstate dir=${EMULATED_TPM} --ctrl type=unixio,path=${EMULATED_TPM}/swtpm-sock --log level=20 --tpm2
+screen -dmS "emulated_tpm_windows_11" bash -c "swtpm socket --tpmstate dir=${EMULATED_TPM} --ctrl type=unixio,path=${EMULATED_TPM}/swtpm-sock --log level=20 --tpm2"
+
+echo ""
+echo "List all screens."
+echo " $ screen -list"
+echo "Connect to screens."
+echo " $ screen -xS emulated_tpm_windows_11"
+
+
 echo ""
 echo "Starting the vm."
 echo ""
@@ -329,11 +368,6 @@ echo "Select '<efi>'"
 echo "         '<boot>'"
 echo "           'grub64.efi'"
 echo ""
-
-
-# https://www.tecklyfe.com/how-to-create-a-windows-11-virtual-machine-in-qemu/
-
-# TODO: create a temp directory for the SWTPM simulator and create the socket in TPM2 mode 
 
 
 
