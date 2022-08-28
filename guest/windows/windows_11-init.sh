@@ -462,6 +462,12 @@ PAR="${PAR} -soundhw hda"
 # Network
 # NOTE: Disable network during install.
 # TODO: Is this still the way to create a local account?
+#       Nope. Now windows installer will requires the connection?!?!? WHY!!!
+# https://www.groovypost.com/howto/install-windows-11-without-an-internet-connection/
+#  !!! bypassing the network selection is now hiden !!!
+# -> When the “Let’s connect you to a network” screen appears, press Shift + F10 on your keyboard.
+# -> In the Command Prompt window that appears, type the following command "OOBE\BYPASSNRO", and hit Enter.
+# -> Your PC will restart and begin the OOBE again – When the “Let’s connect you to a network” screen appears, click the "I don’t have internet" link.
 #MACADDRESS="$(lm_generate_mac_address)"  || lm_failure
 #PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
 #PAR="${PAR} -netdev bridge,br=virbr0,id=user.0"
