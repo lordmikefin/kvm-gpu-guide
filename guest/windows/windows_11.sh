@@ -177,9 +177,13 @@ VM_DISK_DATA="${KVM_WORKSPACE_VM_WIN11}/windows_11_data_d_drive.qcow2"
 
 EMULATED_TPM="/tmp/emulated_tpm_windows_11"
 
+# https://getlabsdone.com/how-to-install-windows-11-on-kvm/
+# https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/
+# https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.221-1/virtio-win-0.1.221.iso
 # Get 'virtio' iso file.
 KVM_WORKSPACE_ISO="${KVM_WORKSPACE}/iso"
-VIRTIO_FILE="${KVM_WORKSPACE_ISO}/virtio-win-0.1.126.iso"
+#VIRTIO_FILE="${KVM_WORKSPACE_ISO}/virtio-win-0.1.126.iso"
+VIRTIO_FILE="${KVM_WORKSPACE_ISO}/virtio-win-0.1.221.iso"
 
 
 unset INPUT
