@@ -391,6 +391,11 @@ PAR="${PAR} -boot menu=on"
 # fix the clock - Windows and linux handle clock differently
 PAR="${PAR} -rtc base=localtime"
 
+# Enable TPM and Secure Boot
+PAR="${PAR} -chardev socket,id=chrtpm,path=${EMULATED_TPM}/swtpm-sock"
+PAR="${PAR} -tpmdev emulator,id=tpm0,chardev=chrtpm"
+PAR="${PAR} -device tpm-tis,tpmdev=tpm0"
+
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
 #PAR="${PAR} -vga qxl"
@@ -472,6 +477,10 @@ echo ""
 sudo qemu-system-x86_64 ${PAR}
 
 
+echo ""
+echo "Stoping the screen with running the socket in TPM2 mode."
+echo " $ screen -S emulated_tpm_windows_11 -X quit"
+screen -S emulated_tpm_windows_11 -X quit
 
 echo ""
 echo "End of script '${CURRENT_SCRIPT}'"
