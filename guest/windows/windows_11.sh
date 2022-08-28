@@ -239,6 +239,7 @@ else
 fi
 
 
+# https://www.tecklyfe.com/how-to-create-a-windows-11-virtual-machine-in-qemu/
 # TODO: how to verify that TPM socket is running?
 echo ""
 echo "create the socket in TPM2 mode. Run command in screen in detached mode."
