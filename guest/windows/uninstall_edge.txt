@@ -1,0 +1,37 @@
+
+
+https://www.technewstoday.com/how-to-uninstall-microsoft-edge-windows-11/
+
+NOTE: open terminal as admin:
+ - Press Windows key + R
+ - Type cmd and press Ctrl + Shift + Enter to run as administrator. 
+
+cd %PROGRAMFILES(X86)%\Microsoft\Edge\Application\VERSION NUMBER\Installer
+
+cd %PROGRAMFILES(X86)%\Microsoft\Edge\Application\104.0.1293.70\Installer
+
+.\setup.exe -uninstall -system-level -verbose-logging -force-uninstall
+
+
+
+ ... hmmm ... there is othere Edges ???
+ -> remove all of them: EdgeCore, EdgeWebView, EdgeUpdate
+
+
+cd %PROGRAMFILES(X86)%\Microsoft\EdgeCore\104.0.1293.70\Installer
+.\setup.exe -uninstall -system-level -verbose-logging -force-uninstall
+
+
+cd %PROGRAMFILES(X86)%\Microsoft\EdgeWebView\Application\104.0.1293.70\Installer
+NOTE: This will not remove EdgeWebView :(
+TODO: How to remove EdgeWebView?
+.\setup.exe -uninstall -system-level -verbose-logging -force-uninstall
+
+
+cd %PROGRAMFILES(X86)%\Microsoft\EdgeUpdate\1.3.167.21
+NOTE: This will not remove EdgeUpdate :(
+TODO: How to remove EdgeUpdate?
+.\MicrosoftEdgeUpdateSetup.exe -uninstall -system-level -verbose-logging -force-uninstall
+
+
+
