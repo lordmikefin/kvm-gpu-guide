@@ -1,0 +1,15 @@
+
+https://www.elevenforum.com/t/enable-or-disable-hibernate-in-windows-11.1894/
+
+NOTE: open terminal as admin:
+ - Press Windows key + R
+ - Type cmd and press Ctrl + Shift + Enter to run as administrator. 
+
+
+(Disable hibernate)​
+powercfg -h off​
+
+
+(Enable hibernate - default)​
+powercfg -h on​
+
