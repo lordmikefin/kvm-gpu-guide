@@ -491,6 +491,27 @@ https://phoenixminer.info/downloads/PhoenixMiner_6.2c_Linux.tar.gz
 
 
 
+(2022-09-16)
+The Ethash pool is now disabled due to the ETH PoS transition
+
+Use Etchash instead. It is supported by PhoenixMiner.
+
+
+NOTE: Consider moving to NBMiner or T-Rex, just becaus ...
+
+https://unmineable.com/coins/NANO?algorithm=ethash
+https://unmineable.com/coins/NANO?algorithm=etchash
+
+Old mining command:
+ $ ./PhoenixMiner/PhoenixMiner_6.2c_Linux/PhoenixMiner -pool ethash.unmineable.com:3333 -wal NANO:nano_3yc3wggmgno8rwcc9eewek1u6g8y8rqrzggw3dxrabn9du4yy8cfe7qytaj3.mate20eth -pass x
+
+New mining command:
+ $ ./PhoenixMiner/PhoenixMiner_6.2c_Linux/PhoenixMiner -pool etchash.unmineable.com:3333 -wal NANO:nano_3yc3wggmgno8rwcc9eewek1u6g8y8rqrzggw3dxrabn9du4yy8cfe7qytaj3.mate20eth -pass x
+
+--
+
+
+
 
 
 
