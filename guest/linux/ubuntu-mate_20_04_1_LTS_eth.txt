@@ -508,9 +508,50 @@ Old mining command:
 New mining command:
  $ ./PhoenixMiner/PhoenixMiner_6.2c_Linux/PhoenixMiner -pool etchash.unmineable.com:3333 -wal NANO:nano_3yc3wggmgno8rwcc9eewek1u6g8y8rqrzggw3dxrabn9du4yy8cfe7qytaj3.mate20eth -pass x
 
+Looks like etc mining yields about 0.06 nano per day :(
+With about 24 Mh/s.
+
+Eth mining yielded about 0.4 nano per day.
 --
 
 
+
+(2022-09-17)
+Testing how much kawpow (Ravencoin) mining will yield with NBMiner miner
+
+https://unmineable.com/coins/NANO?algorithm=kawpow
+https://unmineable.com/support/article/how-to-setup-nbminer-for-gpu-mining/
+https://nbminer.com/
+https://dl.nbminer.com/NBMiner_42.3_Linux.tgz
+
+ $ cd ~
+ $ mkdir NBMiner
+ $ cd ~/NBMiner
+ $ wget https://dl.nbminer.com/NBMiner_42.3_Linux.tgz
+ $ tar -zxvf NBMiner_42.3_Linux.tgz
+
+ $ ./NBMiner_Linux/nbminer -a kawpow -o stratum+tcp://kp.unmineable.com:3333 -u NANO:nano_3yc3wggmgno8rwcc9eewek1u6g8y8rqrzggw3dxrabn9du4yy8cfe7qytaj3.mate20rvn -log
+
+ $ nano ~/ethminer_for_ever.sh
+ 
+
+Looks like kawpow is yielding about 0.1 nano per day.
+With about 10 Mh/s.
+--
+
+
+
+(2022-09-17)
+Testing how much autolykos (Ergo) mining will yield with NBMiner miner
+
+https://unmineable.com/support/article/how-to-setup-nbminer-for-gpu-mining/
+
+ $ ./NBMiner_Linux/nbminer -a ergo -o stratum+tcp://autolykos.unmineable.com:3333 -u NANO:nano_3yc3wggmgno8rwcc9eewek1u6g8y8rqrzggw3dxrabn9du4yy8cfe7qytaj3.mate20ergo -log
+
+
+Looks like autolykos is yielding about 0.04 nano per day.
+With about 45 Mh/s.
+--
 
 
 
