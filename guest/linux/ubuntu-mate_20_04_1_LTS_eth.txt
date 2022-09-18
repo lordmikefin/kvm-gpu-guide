@@ -535,7 +535,8 @@ https://dl.nbminer.com/NBMiner_42.3_Linux.tgz
  $ nano ~/ethminer_for_ever.sh
  
 
-Looks like kawpow is yielding about 0.1 nano per day.
+Looks like kawpow is yielding about 0.05 nano per day.
+(unminable calculator is showing 0.1 nanos for 10 Mh/s, but ... nope)
 With about 10 Mh/s.
 --
 
@@ -552,6 +553,39 @@ https://unmineable.com/support/article/how-to-setup-nbminer-for-gpu-mining/
 Looks like autolykos is yielding about 0.04 nano per day.
 With about 45 Mh/s.
 --
+
+
+
+(2022-09-18)
+Testing how much flux mining will yield with GMiner miner.
+
+https://www.hongkiat.com/blog/mine-flux-coin/
+https://zelcore.io/
+Created ZelCore wallet with FLUX mining accout:
+  t1WRQRYZpKNmojdWrWVoM1Kp7UBJ6i96bCT
+
+https://flux.minerpool.org/
+  "miner --server flux-eu.minerpool.org --port 2033 --user WALLET.WORKERNAME --pass YourPassword --algo 125_4 --pers ZelProof --pec"
+
+https://github.com/develsoftware/GMinerRelease/releases
+https://github.com/develsoftware/GMinerRelease/releases/download/3.05/gminer_3_05_linux64.tar.xz
+
+ $ cd ~
+ $ mkdir GMiner
+ $ cd ~/GMiner
+ $ wget https://github.com/develsoftware/GMinerRelease/releases/download/3.05/gminer_3_05_linux64.tar.xz
+ $ mkdir gminer_3_05
+ $ tar -xvf gminer_3_05_linux64.tar.xz -C ./gminer_3_05
+
+ $ ./gminer_3_05/miner --server flux-eu.minerpool.org --port 2033 --user t1WRQRYZpKNmojdWrWVoM1Kp7UBJ6i96bCT.mate20flux --algo 125_4 --pers ZelProof --pec
+
+ $ nano ~/ethminer_for_ever.sh
+
+
+Monitor mining:
+  https://flux.minerpool.org/workers/t1WRQRYZpKNmojdWrWVoM1Kp7UBJ6i96bCT
+--
+
 
 
 
