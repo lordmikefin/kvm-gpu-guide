@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.9"
-CURRENT_SCRIPT_DATE="2022-08-23"
+CURRENT_SCRIPT_VER="0.0.10"
+CURRENT_SCRIPT_DATE="2022-10-01"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -422,8 +422,8 @@ PAR="${PAR} -monitor stdio"
 
 
 # USB redirection
-USB_REDIR=true
-USB_REDIR_TYPE="USB3"
+#USB_REDIR=true
+#USB_REDIR_TYPE="USB3"
 #USB_REDIR_TYPE="USB2"
 if [[ -n ${USB_REDIR} ]]; then
 	# https://www.spice-space.org/usbredir.html
@@ -477,8 +477,8 @@ if [[ -n ${SPICE_PORT} ]]; then
     # pass USB controller only when display card is passed
     #USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Fresco Logic FL1100 USB 3.0 Host Controller (rev 10)
 else 
-    PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
-    PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+    #PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
+    #PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
     
     # pass USB controller only when display card is passed
     USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Fresco Logic FL1100 USB 3.0 Host Controller (rev 10)
