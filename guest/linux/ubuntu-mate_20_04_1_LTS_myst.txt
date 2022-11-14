@@ -124,6 +124,19 @@ Send not less than 0.2 MYST to the address below. Important: only Polygon blockc
 --
 
 
+(2022-11-14)
+My ISP detected "Fake_cs_updater" malware from my connection.
+And If I do not remove it they will shutdown my connection     :(
+
+And they told me that device is using MAC: 00:e0:4c:68:00:e1
+
+So because some one who is using the VPN connection has malware, I get warning from my IPS  :(
+ -> I stopped using MYST node for now !
+
+Maybe I will restart it in the future :)
+--
+
+
 
 
 
