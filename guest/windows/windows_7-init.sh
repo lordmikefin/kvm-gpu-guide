@@ -30,7 +30,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_VER="0.0.3"
 CURRENT_SCRIPT_DATE="2022-11-20"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -461,18 +461,18 @@ PAR="${PAR} -cdrom ${LOCAL_FILE}"
 
 
 # Sound card
-#PAR="${PAR} -soundhw hda"
+PAR="${PAR} -soundhw hda"
 
 # NOTE: We must disable the net !
 # "Confirmed: Windows 10 Setup Now Prevents Local Account Creation" (October 1, 2019, 3:31pm EDT)
 # https://www.howtogeek.com/442609/confirmed-windows-10-setup-now-prevents-local-account-creation/
 
 # Network
-PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
+#PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
 #PAR="${PAR} -nic none"
 
 # TODO: parametarize the net
-#PAR="${PAR} -net none"  # Disable network for windows initialization. Enable local user creation.
+PAR="${PAR} -net none"  # Disable network for windows initialization. Enable local user creation.
 
 # Start the virtual machine with parameters
 echo "qemu-system-x86_64 ${PAR}"
