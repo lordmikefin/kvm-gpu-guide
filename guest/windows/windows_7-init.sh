@@ -21,8 +21,16 @@
 # But 1st I need to test if I even can run win 7 in kvm-qemu.
 
 
+# NOTE: There is problem installing win 7 with UEFI ???
+#       Installation hangs at "Expanding Windows Files (0%)"
+
+# TODO: How to installe win 7 
+#  ->  https://www.youtube.com/watch?v=mnVbbD7G0Bo
+#  ->  https://www.youtube.com/watch?v=OSZlG04W2_w
+
+
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
+CURRENT_SCRIPT_VER="0.0.2"
 CURRENT_SCRIPT_DATE="2022-11-20"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -369,7 +377,7 @@ echo ""
 PAR="-enable-kvm"
 
 # Mother board
-PAR="${PAR} -M q35"
+#PAR="${PAR} -M q35"
 
 # Memory
 PAR="${PAR} -m 4096"
@@ -390,11 +398,11 @@ PAR="${PAR} -rtc base=localtime"
 # ERR: qemu-system-x86_64: Display 'sdl' is not available.
 # NOTE: Use 'gtk' instead of 'sdl'
 #PAR="${PAR} -display sdl"
-PAR="${PAR} -display gtk"
+#PAR="${PAR} -display gtk"
 #PAR="${PAR} -display none"
 
 # Monitoring screen
-PAR="${PAR} -monitor stdio"
+#PAR="${PAR} -monitor stdio"
 
 # USB passthrough. Keyboard and mouse.
 # TODO: parameterize. Or auto find.
@@ -403,11 +411,12 @@ PAR="${PAR} -monitor stdio"
 #PAR="${PAR} -usbdevice tablet"
 
 # OVMF
-PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
-PAR="${PAR} -drive file=${OVMF_VARS_WIN7},if=pflash,format=raw,unit=1"
+#PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
+#PAR="${PAR} -drive file=${OVMF_VARS_WIN7},if=pflash,format=raw,unit=1"
+#PAR="${PAR} -bios ${OVMF_CODE}"
 
 # Add pcie bus
-PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
+#PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
 
 # VGA passthrough. GPU and sound.
 # TODO: Ask user which card should be used.
@@ -425,12 +434,13 @@ fi
 
 # Virtual disk
 #PAR="${PAR} -drive file=${VM_DISK_WIN7},format=qcow2 "
-PAR="${PAR} -drive file=${VM_DISK_WIN7},format=qcow2,if=none,id=drive-ide0-0-0"
-PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
+#PAR="${PAR} -drive file=${VM_DISK_WIN7},format=qcow2,if=none,id=drive-ide0-0-0"
+#PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
+PAR="${PAR} -hda ${VM_DISK_WIN7}"
 
 # Virtual data disk d-drive
-PAR="${PAR} -drive file=${VM_DISK_DATA},format=qcow2,if=none,id=drive-ide1-0-0"
-PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
+#PAR="${PAR} -drive file=${VM_DISK_DATA},format=qcow2,if=none,id=drive-ide1-0-0"
+#PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
 
 
 # TODO: Make instller image read only
@@ -451,18 +461,18 @@ PAR="${PAR} -cdrom ${LOCAL_FILE}"
 
 
 # Sound card
-PAR="${PAR} -soundhw hda"
+#PAR="${PAR} -soundhw hda"
 
 # NOTE: We must disable the net !
 # "Confirmed: Windows 10 Setup Now Prevents Local Account Creation" (October 1, 2019, 3:31pm EDT)
 # https://www.howtogeek.com/442609/confirmed-windows-10-setup-now-prevents-local-account-creation/
 
 # Network
-#PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
+PAR="${PAR} -netdev user,id=user.0 -device e1000,netdev=user.0"
 #PAR="${PAR} -nic none"
 
 # TODO: parametarize the net
-PAR="${PAR} -net none"  # Disable network for windows initialization. Enable local user creation.
+#PAR="${PAR} -net none"  # Disable network for windows initialization. Enable local user creation.
 
 # Start the virtual machine with parameters
 echo "qemu-system-x86_64 ${PAR}"
