@@ -30,7 +30,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.4"
+CURRENT_SCRIPT_VER="0.0.5"
 CURRENT_SCRIPT_DATE="2022-11-20"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -379,8 +379,14 @@ PAR="-enable-kvm"
 # NOTE: I had to define 'bios' first or installation hangs at "Expanding Windows Files (0%)" ?  WTF !?!?!
 PAR="${PAR} -bios ${OVMF_CODE}"
 
+# NOTE: machine 'q35' does not work ???
+# What is the default machine ?
+# $ qemu-system-x86_64 -machine ?
+#   pc                   Standard PC (i440FX + PIIX, 1996) (alias of pc-i440fx-4.2)
+#   q35                  Standard PC (Q35 + ICH9, 2009) (alias of pc-q35-4.2)
 # Mother board
 #PAR="${PAR} -M q35"
+PAR="${PAR} -M pc"
 
 # Memory
 PAR="${PAR} -m 4096"
