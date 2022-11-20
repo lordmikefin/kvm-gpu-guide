@@ -30,7 +30,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.3"
+CURRENT_SCRIPT_VER="0.0.4"
 CURRENT_SCRIPT_DATE="2022-11-20"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -375,6 +375,9 @@ echo ""
 
 # -enable-kvm -> enable hardware virtualization
 PAR="-enable-kvm"
+
+# NOTE: I had to define 'bios' first or installation hangs at "Expanding Windows Files (0%)" ?  WTF !?!?!
+PAR="${PAR} -bios ${OVMF_CODE}"
 
 # Mother board
 #PAR="${PAR} -M q35"
