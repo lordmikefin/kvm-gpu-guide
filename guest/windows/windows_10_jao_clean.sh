@@ -21,8 +21,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.11"
-CURRENT_SCRIPT_DATE="2022-10-01"
+CURRENT_SCRIPT_VER="0.0.12"
+CURRENT_SCRIPT_DATE="2022-11-21"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -483,6 +483,17 @@ PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
 # Virtual data disk d-drive
 PAR="${PAR} -drive file=${VM_DISK_DATA},format=qcow2,if=none,id=drive-ide1-0-0"
 PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
+
+# Mount empty iso <- Create content to it with Rufus
+#   https://qemu-project.gitlab.io/qemu/system/devices/usb.html
+# $ qemu-img create -f raw windowstan_en_7x64_entp_UEFI.iso 6G
+USB_ISO="${KVM_WORKSPACE_ISO}/windowstan_en_7x64_entp_UEFI.iso"
+PAR="${PAR} -drive if=none,id=usbstick,format=raw,file=${USB_ISO}"
+PAR="${PAR} -usb"
+PAR="${PAR} -device usb-ehci,id=ehci"
+PAR="${PAR} -device usb-tablet,bus=usb-bus.0"
+PAR="${PAR} -device usb-storage,bus=ehci.0,drive=usbstick"
+
 
 # Windows 10 ISO file
 #PAR="${PAR} -drive file=${LOCAL_FILE},id=isocd,format=raw,index=2 "
