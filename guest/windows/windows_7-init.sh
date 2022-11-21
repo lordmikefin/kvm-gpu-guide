@@ -30,7 +30,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.6"
+CURRENT_SCRIPT_VER="0.0.7"
 CURRENT_SCRIPT_DATE="2022-11-21"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -229,6 +229,11 @@ lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
 #  -> https://windowstan.com/download/windows-7-enterprise-x64/
 URL_FILE="windowstan_en_7x64_entp.iso"
 
+# NOTE: windowstan iso will not boot with UEFI?!
+# TODO: create UEFI bootable iso
+#        -> https://www.youtube.com/watch?v=8PkACdxjXWs
+
+
 LOCAL_FILE="${KVM_WORKSPACE_ISO}/${URL_FILE}"
 
 #URL_FILE_UBUNTU="ubuntu-mate-16.04.3-desktop-amd64.iso"
@@ -387,7 +392,7 @@ echo ""
 PAR="-enable-kvm"
 
 # NOTE: I had to define 'bios' first or installation hangs at "Expanding Windows Files (0%)" ?  WTF !?!?!
-PAR="${PAR} -bios ${OVMF_CODE}"
+#PAR="${PAR} -bios ${OVMF_CODE}"
 
 # NOTE: machine 'q35' does not work ???
 # What is the default machine ?
