@@ -30,8 +30,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.5"
-CURRENT_SCRIPT_DATE="2022-11-20"
+CURRENT_SCRIPT_VER="0.0.6"
+CURRENT_SCRIPT_DATE="2022-11-21"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -217,7 +217,17 @@ lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
 
 # NOTE: I was not able to download Windows 7 iso file from M$  :S
 #        -> I created iso file from existing DVD   :)
-URL_FILE="Windows7_DVD_Eng_x64.iso"
+#URL_FILE="Windows7_DVD_Eng_x64.iso"
+
+# NOTE: Windows 7 iso file can be downloaded.
+#       https://www.partitionwizard.com/partitionmanager/windows-7-iso-file-download.html
+#       https://windowstan.com/
+
+# Testing windowstan iso version. My DVD is enteprise so ...
+#  -> https://windowstan.com/win/download-windows-7-enterprise-iso/
+#  -> https://windowstan.com/get/windows-7-enterprise/
+#  -> https://windowstan.com/download/windows-7-enterprise-x64/
+URL_FILE="windowstan_en_7x64_entp.iso"
 
 LOCAL_FILE="${KVM_WORKSPACE_ISO}/${URL_FILE}"
 
