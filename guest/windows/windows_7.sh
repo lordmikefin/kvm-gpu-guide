@@ -18,7 +18,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
+CURRENT_SCRIPT_VER="0.0.2"
 CURRENT_SCRIPT_DATE="2022-11-20"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -374,8 +374,10 @@ fi
 #PAR="${PAR} -drive file=${OVMF_VARS_WIN7},if=pflash,format=raw,unit=1"
 #PAR="${PAR} -bios ${OVMF_CODE}"
 
+# NOTE: For machine 'pc' I get error: "Bus 'pcie.0' not found"
+# TODO: Must use machine 'q35'
 # Add pcie bus
-PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
+#PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
 
 # VGA passthrough. GPU and sound.
 #GPU_BUS="01:00.0"
