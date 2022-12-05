@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
-CURRENT_SCRIPT_DATE="2022-11-20"
+CURRENT_SCRIPT_VER="0.0.3"
+CURRENT_SCRIPT_DATE="2022-12-05"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -262,7 +262,7 @@ fi
 PAR="-enable-kvm"
 
 # NOTE: I had to define 'bios' first or installation hangs at "Expanding Windows Files (0%)" ?  WTF !?!?!
-PAR="${PAR} -bios ${OVMF_CODE}"
+#PAR="${PAR} -bios ${OVMF_CODE}"
 
 # NOTE: machine 'q35' does not work ???
 # What is the default machine ?
@@ -270,8 +270,8 @@ PAR="${PAR} -bios ${OVMF_CODE}"
 #   pc                   Standard PC (i440FX + PIIX, 1996) (alias of pc-i440fx-4.2)
 #   q35                  Standard PC (Q35 + ICH9, 2009) (alias of pc-q35-4.2)
 # Mother board
-#PAR="${PAR} -M q35"
-PAR="${PAR} -M pc"
+PAR="${PAR} -M q35"
+#PAR="${PAR} -M pc"
 
 # Memory
 PAR="${PAR} -m 8192"
@@ -370,8 +370,8 @@ fi
 #PAR="${PAR} -usbdevice tablet"
 
 # OVMF
-#PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
-#PAR="${PAR} -drive file=${OVMF_VARS_WIN7},if=pflash,format=raw,unit=1"
+PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
+PAR="${PAR} -drive file=${OVMF_VARS_WIN7},if=pflash,format=raw,unit=1"
 #PAR="${PAR} -bios ${OVMF_CODE}"
 
 # NOTE: For machine 'pc' I get error: "Bus 'pcie.0' not found"
