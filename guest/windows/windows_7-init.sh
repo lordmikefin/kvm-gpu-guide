@@ -27,10 +27,11 @@
 # TODO: How to installe win 7 
 #  ->  https://www.youtube.com/watch?v=mnVbbD7G0Bo
 #  ->  https://www.youtube.com/watch?v=OSZlG04W2_w
+#  ->  https://www.youtube.com/watch?v=nOOXW7CMBI0
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.8"
+CURRENT_SCRIPT_VER="0.0.9"
 CURRENT_SCRIPT_DATE="2022-12-05"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -228,11 +229,20 @@ lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
 #  -> https://windowstan.com/get/windows-7-enterprise/
 #  -> https://windowstan.com/download/windows-7-enterprise-x64/
 #URL_FILE="windowstan_en_7x64_entp.iso"
-URL_FILE="windowstan_en_7x64_entp_UEFI.iso"
 
 # NOTE: windowstan iso will not boot with UEFI?!
 # TODO: create UEFI bootable iso
 #        -> https://www.youtube.com/watch?v=8PkACdxjXWs
+#URL_FILE="windowstan_en_7x64_entp_UEFI.iso"
+
+
+# TODO: lets try yet another iso
+#    -> https://www.youtube.com/watch?v=nOOXW7CMBI0
+#    -> https://getintopc.com/?s=windows+7+all+in+one
+#    -> https://getintopc.com/softwares/operating-systems/windows-7-all-in-one-28in1-updated-jan-2020-download-1165888/
+URL_FILE="_Getintopc.com_WIN7DUAL.en-US.JAN2020.iso"
+# NOTE: this iso work  :)
+
 
 
 LOCAL_FILE="${KVM_WORKSPACE_ISO}/${URL_FILE}"
@@ -393,7 +403,7 @@ echo ""
 PAR="-enable-kvm"
 
 # NOTE: I had to define 'bios' first or installation hangs at "Expanding Windows Files (0%)" ?  WTF !?!?!
-PAR="${PAR} -bios ${OVMF_CODE}"
+#PAR="${PAR} -bios ${OVMF_CODE}"
 
 # NOTE: machine 'q35' does not work ???
 # What is the default machine ?
@@ -436,8 +446,8 @@ PAR="${PAR} -rtc base=localtime"
 #PAR="${PAR} -usbdevice tablet"
 
 # OVMF
-#PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
-#PAR="${PAR} -drive file=${OVMF_VARS_WIN7},if=pflash,format=raw,unit=1"
+PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
+PAR="${PAR} -drive file=${OVMF_VARS_WIN7},if=pflash,format=raw,unit=1"
 #PAR="${PAR} -bios ${OVMF_CODE}"
 
 # Add pcie bus
@@ -478,12 +488,12 @@ PAR="${PAR} -hda ${VM_DISK_WIN7}"
 #PAR="${PAR} -drive file=${LOCAL_FILE},format=raw,if=none,id=drive-ide1-0-0,readonly=on,media=cdrom"
 #PAR="${PAR} -drive file=${LOCAL_FILE},format=raw,if=none,id=drive-ide1-0-0,media=cdrom"
 #PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
-#PAR="${PAR} -cdrom ${LOCAL_FILE}"
-PAR="${PAR} -drive if=none,id=usbstick,format=raw,file=${LOCAL_FILE}"
-PAR="${PAR} -usb"
-PAR="${PAR} -device usb-ehci,id=ehci"
-PAR="${PAR} -device usb-tablet,bus=usb-bus.0"
-PAR="${PAR} -device usb-storage,bus=ehci.0,drive=usbstick"
+PAR="${PAR} -cdrom ${LOCAL_FILE}"
+#PAR="${PAR} -drive if=none,id=usbstick,format=raw,file=${LOCAL_FILE}"
+#PAR="${PAR} -usb"
+#PAR="${PAR} -device usb-ehci,id=ehci"
+#PAR="${PAR} -device usb-tablet,bus=usb-bus.0"
+#PAR="${PAR} -device usb-storage,bus=ehci.0,drive=usbstick"
 
 
 # Ubuntu ISO file
