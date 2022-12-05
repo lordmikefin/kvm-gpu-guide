@@ -1,0 +1,36 @@
+
+
+NOTE: windowstan iso will not boot with UEFI?!
+
+TODO: create UEFI bootable iso
+       -> https://www.youtube.com/watch?v=8PkACdxjXWs
+
+
+
+
+
+NOTE: Windows 7 iso file can be downloaded.
+      https://www.partitionwizard.com/partitionmanager/windows-7-iso-file-download.html
+      https://windowstan.com/
+      https://windowstan.com/win/download-windows-7-enterprise-iso/
+      https://windowstan.com/get/windows-7-enterprise/
+      https://windowstan.com/download/windows-7-enterprise-x64/
+
+
+Create empty iso file.
+ $ qemu-img create -f raw windowstan_en_7x64_entp_UEFI.iso 6G
+
+Mount empty iso <- Create content to it with Rufus
+  https://qemu-project.gitlab.io/qemu/system/devices/usb.html
+
+Add these lines into qemu boot script:
+--
+USB_ISO="${KVM_WORKSPACE_ISO}/windowstan_en_7x64_entp_UEFI.iso"
+PAR="${PAR} -drive if=none,id=usbstick,format=raw,file=${USB_ISO}"
+PAR="${PAR} -usb"
+PAR="${PAR} -device usb-ehci,id=ehci"
+PAR="${PAR} -device usb-tablet,bus=usb-bus.0"
+PAR="${PAR} -device usb-storage,bus=ehci.0,drive=usbstick"
+--
+sudo qemu-system-x86_64 ${PAR}
+--
