@@ -30,8 +30,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.7"
-CURRENT_SCRIPT_DATE="2022-11-21"
+CURRENT_SCRIPT_VER="0.0.8"
+CURRENT_SCRIPT_DATE="2022-12-05"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -227,7 +227,8 @@ lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
 #  -> https://windowstan.com/win/download-windows-7-enterprise-iso/
 #  -> https://windowstan.com/get/windows-7-enterprise/
 #  -> https://windowstan.com/download/windows-7-enterprise-x64/
-URL_FILE="windowstan_en_7x64_entp.iso"
+#URL_FILE="windowstan_en_7x64_entp.iso"
+URL_FILE="windowstan_en_7x64_entp_UEFI.iso"
 
 # NOTE: windowstan iso will not boot with UEFI?!
 # TODO: create UEFI bootable iso
@@ -392,7 +393,7 @@ echo ""
 PAR="-enable-kvm"
 
 # NOTE: I had to define 'bios' first or installation hangs at "Expanding Windows Files (0%)" ?  WTF !?!?!
-#PAR="${PAR} -bios ${OVMF_CODE}"
+PAR="${PAR} -bios ${OVMF_CODE}"
 
 # NOTE: machine 'q35' does not work ???
 # What is the default machine ?
@@ -400,8 +401,8 @@ PAR="-enable-kvm"
 #   pc                   Standard PC (i440FX + PIIX, 1996) (alias of pc-i440fx-4.2)
 #   q35                  Standard PC (Q35 + ICH9, 2009) (alias of pc-q35-4.2)
 # Mother board
-#PAR="${PAR} -M q35"
-PAR="${PAR} -M pc"
+PAR="${PAR} -M q35"
+#PAR="${PAR} -M pc"
 
 # Memory
 PAR="${PAR} -m 4096"
@@ -477,7 +478,13 @@ PAR="${PAR} -hda ${VM_DISK_WIN7}"
 #PAR="${PAR} -drive file=${LOCAL_FILE},format=raw,if=none,id=drive-ide1-0-0,readonly=on,media=cdrom"
 #PAR="${PAR} -drive file=${LOCAL_FILE},format=raw,if=none,id=drive-ide1-0-0,media=cdrom"
 #PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
-PAR="${PAR} -cdrom ${LOCAL_FILE}"
+#PAR="${PAR} -cdrom ${LOCAL_FILE}"
+PAR="${PAR} -drive if=none,id=usbstick,format=raw,file=${LOCAL_FILE}"
+PAR="${PAR} -usb"
+PAR="${PAR} -device usb-ehci,id=ehci"
+PAR="${PAR} -device usb-tablet,bus=usb-bus.0"
+PAR="${PAR} -device usb-storage,bus=ehci.0,drive=usbstick"
+
 
 # Ubuntu ISO file
 #PAR="${PAR} -drive file=${LOCAL_FILE_UBUNTU},format=raw,if=none,id=drive-ide1-0-0"

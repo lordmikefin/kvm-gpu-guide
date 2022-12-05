@@ -34,3 +34,30 @@ PAR="${PAR} -device usb-storage,bus=ehci.0,drive=usbstick"
 --
 sudo qemu-system-x86_64 ${PAR}
 --
+
+
+
+[ https://www.youtube.com/watch?v=8PkACdxjXWs ]
+1. Install 'Rufus' and '7z'
+2. Make sure windows 7 iso is available  (windowstan_en_7x64_entp.iso)
+
+3. Create bootable usb
+   -> Start Rufus
+   -> Select the empty usb device 6Gb
+   -> Select the iso as "Boot selection"  (windowstan_en_7x64_entp.iso)
+   -> Select 'GPT' as "Partition scheme"
+   -> Select 'UEFI (non CSM)' as "Target sytem"
+   -> Select 'FAT32 (Default)' as "File System"
+   -> Click "START"
+
+4. Open the new usb
+   -> Copy folder 'X:\efi\microsoft\boot' as 'X:\efi\boot'
+   -> Open file 'X:\sources\install.wim' with 7z
+   -> Extract '\1\Windows\Boot\EFI\bootmgfw.efi' as 'X:\efi\boot\bootx64.efi'
+
+
+
+
+
+
+
