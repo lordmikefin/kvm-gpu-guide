@@ -34,7 +34,7 @@
 # https://wiki.debian.org/VGAPassthrough
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
+CURRENT_SCRIPT_VER="0.0.2"
 CURRENT_SCRIPT_DATE="2023-01-07"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -405,6 +405,9 @@ echo ""
 # -enable-kvm -> enable hardware virtualization
 PAR="-enable-kvm"
 
+# Tesing Seabios
+#  https://bbs.archlinux.org/viewtopic.php?id=202730
+
 # NOTE: I had to define 'bios' first or installation hangs at "Expanding Windows Files (0%)" ?  WTF !?!?!
 #PAR="${PAR} -bios ${OVMF_CODE}"
 
@@ -414,8 +417,10 @@ PAR="-enable-kvm"
 #   pc                   Standard PC (i440FX + PIIX, 1996) (alias of pc-i440fx-4.2)
 #   q35                  Standard PC (Q35 + ICH9, 2009) (alias of pc-q35-4.2)
 # Mother board
-PAR="${PAR} -M q35"
+#PAR="${PAR} -M q35"
 #PAR="${PAR} -M pc"
+#PAR="${PAR} -M pc,accel=kvm,iommu=on"
+PAR="${PAR} -M pc,accel=kvm"
 
 # Memory
 PAR="${PAR} -m 4096"
@@ -459,7 +464,7 @@ PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # Bus 001 Device 
 #PAR="${PAR} -bios ${OVMF_CODE}"
 
 # Add pcie bus
-PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
+#PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
 
 # VGA passthrough. GPU and sound.
 # TODO: Ask user which card should be used.
@@ -472,11 +477,14 @@ if [[ ! -z ${NVIDIA_GPU} ]]; then
     #  https://wiki.debian.org/VGAPassthrough
     #  https://www.techpowerup.com/vgabios/
 	#PAR="${PAR} -device vfio-pci,host=${NVIDIA_GPU},bus=root.1,addr=00.0,multifunction=on,x-vga=on"
-	PAR="${PAR} -device vfio-pci,host=${NVIDIA_GPU},bus=root.1,addr=00.0,multifunction=on,x-vga=on,romfile=/home/lordmike/kvm-workspace/software/rom/Sapphire_RX_570_8_GB_Pulse/Sapphire.RX570.8192.191031_1.rom"
+	#PAR="${PAR} -device vfio-pci,host=${NVIDIA_GPU},bus=root.1,addr=00.0,multifunction=on,x-vga=on,romfile=/home/lordmike/kvm-workspace/software/rom/Sapphire_RX_570_8_GB_Pulse/Sapphire.RX570.8192.191031_1.rom"
+	#PAR="${PAR} -device vfio-pci,host=${NVIDIA_GPU},multifunction=on,x-vga=on"
+	PAR="${PAR} -device vfio-pci,host=${NVIDIA_GPU},multifunction=on,x-vga=on,romfile=/home/lordmike/kvm-workspace/software/rom/Sapphire_RX_570_8_GB_Pulse/Sapphire.RX570.8192.191031_1.rom"
 fi
 
 if [[ ! -z ${NVIDIA_SOUND} ]]; then
-	PAR="${PAR} -device vfio-pci,host=${NVIDIA_SOUND},bus=root.1,addr=00.1"
+	#PAR="${PAR} -device vfio-pci,host=${NVIDIA_SOUND},bus=root.1,addr=00.1"
+	PAR="${PAR} -device vfio-pci,host=${NVIDIA_SOUND}"
 fi
 
 # Virtual disk
