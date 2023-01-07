@@ -21,8 +21,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.12"
-CURRENT_SCRIPT_DATE="2022-11-21"
+CURRENT_SCRIPT_VER="0.0.13"
+CURRENT_SCRIPT_DATE="2023-01-07"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -455,11 +455,13 @@ fi
 if [[ ! -z ${USB_CONTROLLER} ]]; then
     # https://github.com/qemu/qemu/blob/master/docs/pcie.txt
     
+    # NOTE: Got error from qemu "...id=root.2: PCI: slot 29 function 0 not available for ioh3420, in use by ich9-usb-uhci1"
     # Add pcie bus 2
-    PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1d.0,chassis=2,id=root.2"
+    #PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1d.0,chassis=2,id=root.2"
     
 	#PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.1,addr=00.0,multifunction=on"
-	PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.2"
+	#PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.2"
+	PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.1,addr=01.0"
 fi
 
 
