@@ -418,7 +418,8 @@ PAR="${PAR} -M q35"
 PAR="${PAR} -m 4096"
 
 # CPU
-PAR="${PAR} -cpu host,kvm=off"
+PAR="${PAR} -cpu Haswell-noTSX-IBRS,kvm=off"
+#PAR="${PAR} -cpu host,kvm=off"
 PAR="${PAR} -smp 4,sockets=1,cores=4,threads=1"
 
 # Boot menu
@@ -429,14 +430,14 @@ PAR="${PAR} -rtc base=localtime"
 
 # Display   qxl
 # TODO: Ask user if virtual display is needed.
-#PAR="${PAR} -vga qxl"
+PAR="${PAR} -vga qxl"
 # ERR: qemu-system-x86_64: Display 'sdl' is not available.
 # NOTE: Use 'gtk' instead of 'sdl'
 #PAR="${PAR} -display sdl"
-#PAR="${PAR} -display gtk"
-PAR="${PAR} -display none"
-PAR="${PAR} -vga none"
-PAR="${PAR} -device secondary-vga"
+PAR="${PAR} -display gtk"
+#PAR="${PAR} -display none"
+#PAR="${PAR} -vga none"
+#PAR="${PAR} -device secondary-vga"
 
 # Monitoring screen
 #PAR="${PAR} -monitor stdio"
@@ -460,8 +461,8 @@ PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis
 
 # VGA passthrough. GPU and sound.
 # TODO: Ask user which card should be used.
-NVIDIA_GPU="01:00.0"
-NVIDIA_SOUND="01:00.1"
+#NVIDIA_GPU="01:00.0"
+#NVIDIA_SOUND="01:00.1"
 #NVIDIA_GPU="02:00.0"
 #NVIDIA_SOUND="02:00.1"
 if [[ ! -z ${NVIDIA_GPU} ]]; then
