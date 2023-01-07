@@ -300,11 +300,14 @@ PAR="${PAR} -rtc base=localtime"
 #PAR="${PAR} -display none"
 
 if [[ -n ${VIRTUAL_DISPLAY} ]]; then
-	PAR="${PAR} -vga std"
+	#PAR="${PAR} -vga std"
+	PAR="${PAR} -vga none"
 	#PAR="${PAR} -vga qxl"
 	# NOTE: Use 'gtk' instead of 'sdl'
 	#PAR="${PAR} -display sdl"
-	PAR="${PAR} -display gtk"
+	#PAR="${PAR} -display gtk"
+	PAR="${PAR} -display none"
+	PAR="${PAR} -device secondary-vga"
 	
 	PAR="${PAR} -device nec-usb-xhci,id=usb"
 	#PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
@@ -390,7 +393,10 @@ if [[ ! -z ${GPU_BUS} ]]; then
     # NOTE: On win7 radeon driver is showing error code 12   :(
     #   https://forum.proxmox.com/threads/gpu-passthrough-windows-7-error-code-12.49505/
     #   https://bugzilla.redhat.com/show_bug.cgi?id=1273172
+    # TODO: is 'i915.enable_hd_vgaarb=1' needed in boot-grub ?
     #   https://bbs.archlinux.org/viewtopic.php?id=202730
+    # More about 'VGA arbiter'
+    #   https://wiki.debian.org/VGAPassthrough
 	PAR="${PAR} -device vfio-pci,host=${GPU_BUS},bus=root.1,addr=00.0,multifunction=on,x-vga=on"
 	#PAR="${PAR} -device vfio-pci,host=${GPU_BUS},bus=root.1,addr=10.0,multifunction=on,x-vga=on"
 	#PAR="${PAR} -device vfio-pci,host=${GPU_BUS},bus=pcie.0,addr=09.0,multifunction=on,x-vga=on"
