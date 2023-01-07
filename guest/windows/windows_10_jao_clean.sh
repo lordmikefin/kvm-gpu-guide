@@ -305,7 +305,8 @@ elif [[ -n ${VIRTUAL_DISPLAY} ]]; then
 	PAR="${PAR} -device nec-usb-xhci,id=usb"
 	#PAR="${PAR} -usb -usbdevice host:534d:6021" # ID 534d:6021 
 	#PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
-	#PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+	
+    #PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 005: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
     #PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
     
     # USB controller passthrough
@@ -456,12 +457,14 @@ if [[ ! -z ${USB_CONTROLLER} ]]; then
     # https://github.com/qemu/qemu/blob/master/docs/pcie.txt
     
     # NOTE: Got error from qemu "...id=root.2: PCI: slot 29 function 0 not available for ioh3420, in use by ich9-usb-uhci1"
+    # FL1100 USB 3.0 Host Controller will not work in same bus as GPU ?!?!?! Win driver is loaded, but can't be used ???
     # Add pcie bus 2
     #PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1d.0,chassis=2,id=root.2"
+    PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1e.0,chassis=2,id=root.2"
     
 	#PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.1,addr=00.0,multifunction=on"
-	#PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.2"
-	PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.1,addr=01.0"
+	PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.2"
+	#PAR="${PAR} -device vfio-pci,host=${USB_CONTROLLER},bus=root.1,addr=01.0"
 fi
 
 
