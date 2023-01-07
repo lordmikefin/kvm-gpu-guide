@@ -276,8 +276,12 @@ PAR="${PAR} -M q35"
 # Memory
 PAR="${PAR} -m 8192"
 
+# NOTE: On win7 radeon driver is showing error code 12   :(
+#  https://ubuntuforums.org/archive/index.php/t-2414098.html
+#  https://qemu.readthedocs.io/en/latest/system/qemu-cpu-models.html#preferred-cpu-models-for-intel-x86-hosts
 # CPU
-PAR="${PAR} -cpu host,kvm=off"
+PAR="${PAR} -cpu Haswell-noTSX-IBRS,kvm=off"
+#PAR="${PAR} -cpu host,kvm=off"
 #PAR="${PAR} -cpu host"
 PAR="${PAR} -smp 4,sockets=1,cores=4,threads=1"
 
