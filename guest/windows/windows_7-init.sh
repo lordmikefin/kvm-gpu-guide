@@ -31,8 +31,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.9"
-CURRENT_SCRIPT_DATE="2022-12-05"
+CURRENT_SCRIPT_VER="0.0.10"
+CURRENT_SCRIPT_DATE="2023-01-07"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -434,13 +434,18 @@ PAR="${PAR} -rtc base=localtime"
 # NOTE: Use 'gtk' instead of 'sdl'
 #PAR="${PAR} -display sdl"
 #PAR="${PAR} -display gtk"
-#PAR="${PAR} -display none"
+PAR="${PAR} -display none"
+PAR="${PAR} -vga none"
+PAR="${PAR} -device secondary-vga"
 
 # Monitoring screen
 #PAR="${PAR} -monitor stdio"
 
 # USB passthrough. Keyboard and mouse.
 # TODO: parameterize. Or auto find.
+PAR="${PAR} -device nec-usb-xhci,id=usb"
+PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 005: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # Bus 001 Device 003: ID 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard
 #PAR="${PAR} -usb -usbdevice host:046d:c077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
 #PAR="${PAR} -device usb-host,hostbus=1,hostaddr=5" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
 #PAR="${PAR} -usbdevice tablet"
@@ -451,12 +456,12 @@ PAR="${PAR} -drive file=${OVMF_VARS_WIN7},if=pflash,format=raw,unit=1"
 #PAR="${PAR} -bios ${OVMF_CODE}"
 
 # Add pcie bus
-#PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
+PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
 
 # VGA passthrough. GPU and sound.
 # TODO: Ask user which card should be used.
-#NVIDIA_GPU="01:00.0"
-#NVIDIA_SOUND="01:00.1"
+NVIDIA_GPU="01:00.0"
+NVIDIA_SOUND="01:00.1"
 #NVIDIA_GPU="02:00.0"
 #NVIDIA_SOUND="02:00.1"
 if [[ ! -z ${NVIDIA_GPU} ]]; then
