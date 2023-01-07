@@ -463,12 +463,16 @@ PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis
 
 # VGA passthrough. GPU and sound.
 # TODO: Ask user which card should be used.
-NVIDIA_GPU="01:00.0"
+NVIDIA_GPU="01:00.0" # Sapphire Technology Limited Radeon RX 570 Pulse 4GB [1da2:e353]  Advanced Micro Devices
 NVIDIA_SOUND="01:00.1"
 #NVIDIA_GPU="02:00.0"
 #NVIDIA_SOUND="02:00.1"
 if [[ ! -z ${NVIDIA_GPU} ]]; then
-	PAR="${PAR} -device vfio-pci,host=${NVIDIA_GPU},bus=root.1,addr=00.0,multifunction=on,x-vga=on"
+    # NOTE: "romfile=" is needed
+    #  https://wiki.debian.org/VGAPassthrough
+    #  https://www.techpowerup.com/vgabios/
+	#PAR="${PAR} -device vfio-pci,host=${NVIDIA_GPU},bus=root.1,addr=00.0,multifunction=on,x-vga=on"
+	PAR="${PAR} -device vfio-pci,host=${NVIDIA_GPU},bus=root.1,addr=00.0,multifunction=on,x-vga=on,romfile=/home/lordmike/kvm-workspace/software/rom/Sapphire_RX_570_8_GB_Pulse/Sapphire.RX570.8192.191031_1.rom"
 fi
 
 if [[ ! -z ${NVIDIA_SOUND} ]]; then
