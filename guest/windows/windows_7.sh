@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.5"
-CURRENT_SCRIPT_DATE="2022-12-05"
+CURRENT_SCRIPT_VER="0.0.6"
+CURRENT_SCRIPT_DATE="2023-01-07"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -383,11 +383,15 @@ PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis
 #GPU_BUS="01:00.0"
 #GPU_SOUND="01:00.1"
 if [[ ! -z ${GPU_BUS} ]]; then
-	PAR="${PAR} -device vfio-pci,host=${GPU_BUS},bus=root.1,addr=00.0,multifunction=on,x-vga=on"
+    # NOTE: On win7 radeon driver is showing error code 12   :(
+    #   https://forum.proxmox.com/threads/gpu-passthrough-windows-7-error-code-12.49505/
+	#PAR="${PAR} -device vfio-pci,host=${GPU_BUS},bus=root.1,addr=00.0,multifunction=on,x-vga=on"
+	PAR="${PAR} -device vfio-pci,host=${GPU_BUS},bus=root.1,addr=10.0,multifunction=on,x-vga=on"
 fi
 
 if [[ ! -z ${GPU_SOUND} ]]; then
-	PAR="${PAR} -device vfio-pci,host=${GPU_SOUND},bus=root.1,addr=00.1"
+	#PAR="${PAR} -device vfio-pci,host=${GPU_SOUND},bus=root.1,addr=00.1"
+	PAR="${PAR} -device vfio-pci,host=${GPU_SOUND},bus=root.1,addr=10.1"
 fi
 
 # Samba share. As default samba server address is  \\10.0.2.4\qemu\
