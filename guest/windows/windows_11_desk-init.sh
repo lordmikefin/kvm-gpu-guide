@@ -20,7 +20,7 @@
 # https://www.tecklyfe.com/how-to-create-a-windows-11-virtual-machine-in-qemu/
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.3"
+CURRENT_SCRIPT_VER="0.0.4"
 CURRENT_SCRIPT_DATE="2023-01-23"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -218,8 +218,9 @@ lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
 #URL_FILE="Win10_1703_English_x64.iso"
 #URL_FILE="Win10_1709_English_x64.iso"
 #URL_FILE="Win10_2004_English_x64.iso"
-#URL_FILE="Win11_English_x64v1.iso" # This is version 21H2 and it works. What is wrong with 22H2 ?!
-URL_FILE="Win11_22H2_EnglishInternational_x64v1.iso"
+# NOTE(2023-01-23): Using older installation ISO :(
+URL_FILE="Win11_English_x64v1.iso" # This is version 21H2 and it works. What is wrong with 22H2 ?!
+#URL_FILE="Win11_22H2_EnglishInternational_x64v1.iso"
 #URL_FILE="Win11_22H2_English_x64v1.iso"
 #URL_FILE="Windows10_USB_2018-02-11.iso"
 #URL_PLAIN="https://software-download.microsoft.com/pr"
@@ -288,8 +289,8 @@ fi
 # $ cp -v /usr/share/OVMF/OVMF_VARS.fd /opt/kvm/vm_storage/windows_10_VARS.fd
 # OVMF binary file. Do _NOT_ over write.
 # NOTE: Using secureboot UEFI !
-#OVMF_CODE="/usr/share/OVMF/OVMF_CODE.fd"
-OVMF_CODE="/usr/share/OVMF/OVMF_CODE.secboot.fd"
+OVMF_CODE="/usr/share/OVMF/OVMF_CODE.fd"
+#OVMF_CODE="/usr/share/OVMF/OVMF_CODE.secboot.fd"
 OVMF_VARS="/usr/share/OVMF/OVMF_VARS.fd"
 KVM_WORKSPACE_VM_WIN11="${KVM_WORKSPACE}/vm/windows_11_desk"
 OVMF_VARS_WIN11="${KVM_WORKSPACE_VM_WIN11}/windows_11_desk_VARS.fd"
@@ -400,15 +401,15 @@ echo ""
 PAR="-enable-kvm"
 
 # Mother board
-#PAR="${PAR} -M q35"
-# NOTE: Using secureboot UEFI !
-PAR="${PAR} -M q35,smm=on,accel=kvm"
-# Due to the way some of the models work in edk2, we need to disable
-# s3 resume. Without this option, qemu will appear to silently hang
-# althouh it emits an error message on the ovmf_log
-PAR="${PAR} -global ICH9-LPC.disable_s3=1"
-# Secure!
-PAR="${PAR} -global driver=cfi.pflash01,property=secure,value=on"
+PAR="${PAR} -M q35"
+## NOTE: Using secureboot UEFI !
+#PAR="${PAR} -M q35,smm=on,accel=kvm"
+## Due to the way some of the models work in edk2, we need to disable
+## s3 resume. Without this option, qemu will appear to silently hang
+## althouh it emits an error message on the ovmf_log
+#PAR="${PAR} -global ICH9-LPC.disable_s3=1"
+## Secure!
+#PAR="${PAR} -global driver=cfi.pflash01,property=secure,value=on"
 
 
 # Memory
