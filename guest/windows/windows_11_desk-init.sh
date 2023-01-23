@@ -204,6 +204,7 @@ lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
 #       https://www.spinics.net/linux/fedora/fedora-users/msg515006.html
 #       https://serverfault.com/questions/1096400/qemu-win11-this-pc-cant-run-windows-11
 #         "Firmware change the default bios to : UEFI ... .secboot.fd"
+#       https://getlabsdone.com/how-to-install-windows-11-on-kvm/
 
 # TODO: is secure boot needed "OVMF_CODE.secboot.fd"
 #       https://www.labbott.name/blog/2016/09/15/secure-ish-boot-with-qemu/
@@ -211,7 +212,7 @@ lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
 #URL_FILE="Win10_1703_English_x64.iso"
 #URL_FILE="Win10_1709_English_x64.iso"
 #URL_FILE="Win10_2004_English_x64.iso"
-#URL_FILE="Win11_English_x64v1.iso"
+#URL_FILE="Win11_English_x64v1.iso" # This is version 21H2 and it works. What is wrong with 22H2 ?!
 URL_FILE="Win11_22H2_EnglishInternational_x64v1.iso"
 #URL_FILE="Win11_22H2_English_x64v1.iso"
 #URL_FILE="Windows10_USB_2018-02-11.iso"
