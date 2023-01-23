@@ -20,7 +20,7 @@
 # https://www.tecklyfe.com/how-to-create-a-windows-11-virtual-machine-in-qemu/
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_VER="0.0.3"
 CURRENT_SCRIPT_DATE="2023-01-23"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -393,7 +393,16 @@ echo ""
 PAR="-enable-kvm"
 
 # Mother board
-PAR="${PAR} -M q35"
+#PAR="${PAR} -M q35"
+# NOTE: Using secureboot UEFI !
+PAR="${PAR} -M q35,smm=on,accel=kvm"
+# Due to the way some of the models work in edk2, we need to disable
+# s3 resume. Without this option, qemu will appear to silently hang
+# althouh it emits an error message on the ovmf_log
+PAR="${PAR} -global ICH9-LPC.disable_s3=1"
+# Secure!
+PAR="${PAR} -global driver=cfi.pflash01,property=secure,value=on"
+
 
 # Memory
 PAR="${PAR} -m 4096"
