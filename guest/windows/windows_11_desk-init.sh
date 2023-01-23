@@ -199,11 +199,14 @@ lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
 # NOTE(2023-01-23): Just download "English International" from 
 #                   https://www.microsoft.com/en-us/software-download/windows11
 
+# NOTE(2023-01-23): Current win11 iso version (22H2) will not boot :(
+
 #URL_FILE="Win10_1703_English_x64.iso"
 #URL_FILE="Win10_1709_English_x64.iso"
 #URL_FILE="Win10_2004_English_x64.iso"
 #URL_FILE="Win11_English_x64v1.iso"
 URL_FILE="Win11_22H2_EnglishInternational_x64v1.iso"
+#URL_FILE="Win11_22H2_English_x64v1.iso"
 #URL_FILE="Windows10_USB_2018-02-11.iso"
 #URL_PLAIN="https://software-download.microsoft.com/pr"
 #URL="${URL_PLAIN}/${URL_FILE}"
