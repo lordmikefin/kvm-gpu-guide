@@ -205,6 +205,12 @@ lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
 #       https://serverfault.com/questions/1096400/qemu-win11-this-pc-cant-run-windows-11
 #         "Firmware change the default bios to : UEFI ... .secboot.fd"
 #       https://getlabsdone.com/how-to-install-windows-11-on-kvm/
+#       https://gitlab.com/qemu-project/qemu/-/issues/1225
+#       https://gitlab.com/qemu-project/qemu/-/issues/1246
+#         "it requires a trivial hack (AutoUnattend.xml file) to bypass the Win11 checks (google for it)."
+
+# TODO: is AutoUnattend.xml the correct solution?
+#       https://www.elevenforum.com/t/sharing-some-helpful-answer-files-to-bypass-win-11-setup-requirements-and-more.3300/
 
 # TODO: is secure boot needed "OVMF_CODE.secboot.fd"
 #       https://www.labbott.name/blog/2016/09/15/secure-ish-boot-with-qemu/
