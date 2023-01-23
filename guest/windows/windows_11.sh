@@ -21,8 +21,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
-CURRENT_SCRIPT_DATE="2022-08-28"
+CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_DATE="2023-01-23"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -242,6 +242,16 @@ else
 	echo -e "\n File ${VM_DISK_DATA} alrealy exists.\n"
 fi
 
+
+# Make sure the TPM socket directory exists
+if [[ ! -d "${EMULATED_TPM}" ]]; then
+	echo ""
+	echo "Createing direcotry ${EMULATED_TPM}"
+	echo ""
+    mkdir ${EMULATED_TPM}
+else
+	echo -e "\n Direcotry ${EMULATED_TPM} alrealy exists.\n"
+fi
 
 # https://www.tecklyfe.com/how-to-create-a-windows-11-virtual-machine-in-qemu/
 # TODO: how to verify that TPM socket is running?
