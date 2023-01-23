@@ -20,7 +20,7 @@
 # https://www.tecklyfe.com/how-to-create-a-windows-11-virtual-machine-in-qemu/
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
+CURRENT_SCRIPT_VER="0.0.2"
 CURRENT_SCRIPT_DATE="2023-01-23"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -200,6 +200,13 @@ lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
 #                   https://www.microsoft.com/en-us/software-download/windows11
 
 # NOTE(2023-01-23): Current win11 iso version (22H2) will not boot :(
+# TODO: Is there way to fix booting issue:
+#       https://www.spinics.net/linux/fedora/fedora-users/msg515006.html
+#       https://serverfault.com/questions/1096400/qemu-win11-this-pc-cant-run-windows-11
+#         "Firmware change the default bios to : UEFI ... .secboot.fd"
+
+# TODO: is secure boot needed "OVMF_CODE.secboot.fd"
+#       https://www.labbott.name/blog/2016/09/15/secure-ish-boot-with-qemu/
 
 #URL_FILE="Win10_1703_English_x64.iso"
 #URL_FILE="Win10_1709_English_x64.iso"
@@ -273,7 +280,9 @@ fi
 # $ qemu-img create -f qcow2 /opt/kvm/vm_storage/windows_10.qcow2 50G
 # $ cp -v /usr/share/OVMF/OVMF_VARS.fd /opt/kvm/vm_storage/windows_10_VARS.fd
 # OVMF binary file. Do _NOT_ over write.
-OVMF_CODE="/usr/share/OVMF/OVMF_CODE.fd"
+# NOTE: Using secureboot UEFI !
+#OVMF_CODE="/usr/share/OVMF/OVMF_CODE.fd"
+OVMF_CODE="/usr/share/OVMF/OVMF_CODE.secboot.fd"
 OVMF_VARS="/usr/share/OVMF/OVMF_VARS.fd"
 KVM_WORKSPACE_VM_WIN11="${KVM_WORKSPACE}/vm/windows_11_desk"
 OVMF_VARS_WIN11="${KVM_WORKSPACE_VM_WIN11}/windows_11_desk_VARS.fd"
