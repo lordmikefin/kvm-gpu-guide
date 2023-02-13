@@ -507,6 +507,10 @@ PAR="${PAR} -soundhw hda"
 #PAR="${PAR} -netdev bridge,br=virbr0,id=user.0"
 #PAR="${PAR} -device e1000,netdev=user.0,mac=${MACADDRESS}"
 
+# NOTE: Use "No Thank You" Method to skip M$ account  ->  no@thankyou.com
+#   https://www.tomshardware.com/how-to/install-windows-11-without-microsoft-account
+# "Using the "No Thank You" Method to Install Windows 11 with a Local Account"
+
 # TODO: parametarize the net
 PAR="${PAR} -net none"  # Disable network for windows initialization. Enable local user creation.
 
