@@ -22,8 +22,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.2"
-CURRENT_SCRIPT_DATE="2023-02-13"
+CURRENT_SCRIPT_VER="0.0.3"
+CURRENT_SCRIPT_DATE="2023-03-12"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -535,6 +535,23 @@ PAR="${PAR} -cdrom ${VIRTIO_FILE}"
 # Ubuntu ISO file
 #PAR="${PAR} -drive file=${LOCAL_FILE_UBUNTU},format=raw,if=none,id=drive-ide1-0-0"
 #PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
+
+
+# Passthrough physical DVD/BluRay drive to the vm
+#  https://github.com/stevenewbs/blog/blob/master/libvirtd%20qemu%20Blu%20Ray%20passthrough.md
+#  https://forums.unraid.net/topic/33851-blu-ray-dvd-rom-passthrough/
+#  https://lists.nongnu.org/archive/html/qemu-devel/2011-11/msg00627.html
+#  https://wiki.gentoo.org/wiki/QEMU/Options
+#  https://www.reddit.com/r/VFIO/comments/v9eian/qemukvm_with_vfio_passthrough_kinda_slow/
+#  https://discussion.fedoraproject.org/t/how-to-acces-to-a-physical-dvd-drive-from-a-vm/67590/2
+#   $ lsscsi
+#     [6:0:0:0]    cd/dvd  HL-DT-ST BDDVDRW GGC-H20L 1.03  /dev/sr0 
+#PAR="${PAR} -drive file=/dev/sr0,if=scsi"
+# Qemu error: " -drive file=/dev/sr0,if=scsi: machine type does not support if=scsi,bus=0,unit=0"
+PAR="${PAR} -device ahci,id=ahci"
+PAR="${PAR} -drive file=/dev/sr0,if=none,media=cdrom,id=drive-cd-1"
+PAR="${PAR} -device ide-cd,bus=ahci.0,drive=drive-cd-1"
+
 
 # Sound card
 PAR="${PAR} -soundhw hda"
