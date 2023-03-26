@@ -22,7 +22,7 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.4"
+CURRENT_SCRIPT_VER="0.0.5"
 CURRENT_SCRIPT_DATE="2023-03-26"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
@@ -371,7 +371,7 @@ elif [[ -n ${VIRTUAL_DISPLAY} ]]; then
 	#PAR="${PAR} -display sdl"
 	PAR="${PAR} -display gtk"
 	
-	PAR="${PAR} -device nec-usb-xhci,id=usb"
+	#PAR="${PAR} -device nec-usb-xhci,id=usb"
 	#PAR="${PAR} -usb -usbdevice host:534d:6021" # ID 534d:6021 
 	#PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
 	#PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
@@ -385,7 +385,7 @@ else
 	# TODO: qemu-system-x86_64: -usbdevice tablet: '-usbdevice' is deprecated, please use '-device usb-...' instead
 	# TODO: how usb devices are set in QEMU 4.2.1 ???
 	#PAR="${PAR} -usbdevice tablet"
-	PAR="${PAR} -device nec-usb-xhci,id=usb"
+	#PAR="${PAR} -device nec-usb-xhci,id=usb"
 fi
 
 # Display   qxl
@@ -415,8 +415,8 @@ PAR="${PAR} -monitor stdio"
 
 
 # USB redirection
-#USB_REDIR=true
-#USB_REDIR_TYPE="USB3"
+USB_REDIR=true
+USB_REDIR_TYPE="USB3"
 #USB_REDIR_TYPE="USB2"
 if [[ -n ${USB_REDIR} ]]; then
 	# https://www.spice-space.org/usbredir.html
@@ -453,8 +453,8 @@ fi
 # TODO: parameterize. Or auto find.
 #PAR="${PAR} -usb -usbdevice host:046d:c077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
 #PAR="${PAR} -device usb-host,hostbus=1,hostaddr=4" # Bus 001 Device 007: ID 046d:c31c Logitech, Inc. Keyboard K120
-PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
-PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+#PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
+#PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
 
 # Always passthrough HP printer and scanner to this VM.
 PAR="${PAR} -device usb-host,vendorid=0x03f0,productid=0x4717" # Bus 001 Device 074: ID 03f0:4717 HP, Inc Color LaserJet CP1215
