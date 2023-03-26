@@ -22,8 +22,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.3"
-CURRENT_SCRIPT_DATE="2023-03-12"
+CURRENT_SCRIPT_VER="0.0.4"
+CURRENT_SCRIPT_DATE="2023-03-26"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -175,6 +175,7 @@ OVMF_VARS_WIN11="${KVM_WORKSPACE_VM_WIN11}/windows_11_desk_VARS.fd"
 VM_DISK_WIN11="${KVM_WORKSPACE_VM_WIN11}/windows_11_desk.qcow2"
 #KVM_WORKSPACE_SOFTWARE="${KVM_WORKSPACE}/software"
 VM_DISK_DATA="${KVM_WORKSPACE_VM_WIN11}/windows_11_desk_data_d_drive.qcow2"
+VM_DISK_GAMES="${KVM_WORKSPACE_VM_WIN11}/disks/windows_11_desk_games_g_drive.qcow2"
 
 EMULATED_TPM="/tmp/emulated_tpm_windows_11_desk"
 
@@ -241,6 +242,17 @@ if [[ ! -f "${VM_DISK_DATA}" ]]; then
 	qemu-img create -f qcow2 "${VM_DISK_DATA}" 200G  || lm_failure
 else
 	echo -e "\n File ${VM_DISK_DATA} alrealy exists.\n"
+fi
+
+
+# Create games disk g-drive.
+if [[ ! -f "${VM_DISK_GAMES}" ]]; then
+	echo ""
+	echo "Createing file ${VM_DISK_GAMES}"
+	echo ""
+	qemu-img create -f qcow2 "${VM_DISK_GAMES}" 500G  || lm_failure
+else
+	echo -e "\n File ${VM_DISK_GAMES} alrealy exists.\n"
 fi
 
 
@@ -522,6 +534,15 @@ PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
 PAR="${PAR} -drive file=${VM_DISK_DATA},format=qcow2,if=none,id=drive-ide1-0-0"
 PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
 
+
+PAR="${PAR} -device ahci,id=ahci"
+
+# Virtual games disk g-drive.
+#PAR="${PAR} -drive file=${VM_DISK_GAMES},format=qcow2,if=none,id=drive-ide2-0-0"
+#PAR="${PAR} -device ide-hd,bus=ide.2,unit=0,drive=drive-ide2-0-0,id=ide2-0-0"
+PAR="${PAR} -drive file=${VM_DISK_GAMES},if=none,id=disk-g"
+PAR="${PAR} -device ide-hd,drive=disk-g,bus=ahci.1"
+
 # Windows 10 ISO file
 #PAR="${PAR} -drive file=${LOCAL_FILE},id=isocd,format=raw,index=2 "
 #PAR="${PAR} -drive file=${ISO_FILE},format=raw,if=none,id=drive-ide1-0-0"
@@ -548,7 +569,7 @@ PAR="${PAR} -cdrom ${VIRTIO_FILE}"
 #     [6:0:0:0]    cd/dvd  HL-DT-ST BDDVDRW GGC-H20L 1.03  /dev/sr0 
 #PAR="${PAR} -drive file=/dev/sr0,if=scsi"
 # Qemu error: " -drive file=/dev/sr0,if=scsi: machine type does not support if=scsi,bus=0,unit=0"
-PAR="${PAR} -device ahci,id=ahci"
+#PAR="${PAR} -device ahci,id=ahci"
 PAR="${PAR} -drive file=/dev/sr0,if=none,media=cdrom,id=drive-cd-1"
 PAR="${PAR} -device ide-cd,bus=ahci.0,drive=drive-cd-1"
 
