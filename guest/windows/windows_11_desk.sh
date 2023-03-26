@@ -176,6 +176,8 @@ VM_DISK_WIN11="${KVM_WORKSPACE_VM_WIN11}/windows_11_desk.qcow2"
 #KVM_WORKSPACE_SOFTWARE="${KVM_WORKSPACE}/software"
 VM_DISK_DATA="${KVM_WORKSPACE_VM_WIN11}/windows_11_desk_data_d_drive.qcow2"
 VM_DISK_GAMES="${KVM_WORKSPACE_VM_WIN11}/disks/windows_11_desk_games_g_drive.qcow2"
+VM_DISK_OLD_GAMES="${KVM_WORKSPACE_VM_WIN11}/disks/windows_11_desk_old_games_o_drive.qcow2"
+VM_DISK_STEAM_GAMES="${KVM_WORKSPACE_VM_WIN11}/disks/windows_11_desk_steam_games_s_drive.qcow2"
 
 EMULATED_TPM="/tmp/emulated_tpm_windows_11_desk"
 
@@ -253,6 +255,28 @@ if [[ ! -f "${VM_DISK_GAMES}" ]]; then
 	qemu-img create -f qcow2 "${VM_DISK_GAMES}" 500G  || lm_failure
 else
 	echo -e "\n File ${VM_DISK_GAMES} alrealy exists.\n"
+fi
+
+
+# Create "old games" disk o-drive.
+if [[ ! -f "${VM_DISK_OLD_GAMES}" ]]; then
+	echo ""
+	echo "Createing file ${VM_DISK_OLD_GAMES}"
+	echo ""
+	qemu-img create -f qcow2 "${VM_DISK_OLD_GAMES}" 500G  || lm_failure
+else
+	echo -e "\n File ${VM_DISK_OLD_GAMES} alrealy exists.\n"
+fi
+
+
+# Create "steam games" disk s-drive.
+if [[ ! -f "${VM_DISK_STEAM_GAMES}" ]]; then
+	echo ""
+	echo "Createing file ${VM_DISK_STEAM_GAMES}"
+	echo ""
+	qemu-img create -f qcow2 "${VM_DISK_STEAM_GAMES}" 500G  || lm_failure
+else
+	echo -e "\n File ${VM_DISK_STEAM_GAMES} alrealy exists.\n"
 fi
 
 
@@ -542,6 +566,15 @@ PAR="${PAR} -device ahci,id=ahci"
 #PAR="${PAR} -device ide-hd,bus=ide.2,unit=0,drive=drive-ide2-0-0,id=ide2-0-0"
 PAR="${PAR} -drive file=${VM_DISK_GAMES},if=none,id=disk-g"
 PAR="${PAR} -device ide-hd,drive=disk-g,bus=ahci.1"
+
+# Virtual "old games" disk o-drive.
+PAR="${PAR} -drive file=${VM_DISK_OLD_GAMES},if=none,id=disk-o"
+PAR="${PAR} -device ide-hd,drive=disk-o,bus=ahci.2"
+
+# Virtual "steam games" disk s-drive.
+PAR="${PAR} -drive file=${VM_DISK_STEAM_GAMES},if=none,id=disk-s"
+PAR="${PAR} -device ide-hd,drive=disk-s,bus=ahci.3"
+
 
 # Windows 10 ISO file
 #PAR="${PAR} -drive file=${LOCAL_FILE},id=isocd,format=raw,index=2 "
