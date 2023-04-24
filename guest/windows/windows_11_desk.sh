@@ -22,8 +22,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.5"
-CURRENT_SCRIPT_DATE="2023-03-26"
+CURRENT_SCRIPT_VER="0.0.6"
+CURRENT_SCRIPT_DATE="2023-04-24"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -460,6 +460,8 @@ fi
 PAR="${PAR} -device usb-host,vendorid=0x03f0,productid=0x4717" # Bus 001 Device 074: ID 03f0:4717 HP, Inc Color LaserJet CP1215
 PAR="${PAR} -device usb-host,vendorid=0x03f0,productid=0x1d05" # Bus 001 Device 075: ID 03f0:1d05 HP, Inc    (I guess this is the hp scanjet 300)
 
+# Passthrough Logitech G330 Headset
+PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0x0a17" # Bus 001 Device 117: ID 046d:0a17 Logitech, Inc. G330 Headset
 
 #PAR="${PAR} -usb -usbdevice host:0e8d:2008" # Bus 001 Device 005: ID 0e8d:2008 MediaTek Inc. (BV6000 Transfer files)
 #PAR="${PAR} -usb -usbdevice host:0e8d:200b" # Bus 001 Device 009: ID 0e8d:200b MediaTek Inc. (BV6000 Transfer photos)
