@@ -606,6 +606,19 @@ https://github.com/develsoftware/GMinerRelease/releases/download/3.31/gminer_3_3
 
 
 
+(2023-05-01)
+Get information about system with 'cpu-x'. This app is 'cpu-z' clone.
+NOTE: Can this give information about gpu memory usage? Like 'radeontop' should.
+ $ sudo apt-get install cpu-x
+ $ sudo cpu-x -D
+ $ sudo cpu-x -d
+ $ sudo cpu-x -n
+--
+
+
+
+
+
 
 
 (2022-08-XX)
