@@ -605,8 +605,9 @@ PAR="${PAR} -cdrom ${VIRTIO_FILE}"
 #PAR="${PAR} -drive file=/dev/sr0,if=scsi"
 # Qemu error: " -drive file=/dev/sr0,if=scsi: machine type does not support if=scsi,bus=0,unit=0"
 #PAR="${PAR} -device ahci,id=ahci"
-PAR="${PAR} -drive file=/dev/sr0,if=none,media=cdrom,id=drive-cd-1"
-PAR="${PAR} -device ide-cd,bus=ahci.0,drive=drive-cd-1"
+# TODO: This will cause stuttering/latency in the VM! Why???
+#PAR="${PAR} -drive file=/dev/sr0,if=none,media=cdrom,id=drive-cd-1"
+#PAR="${PAR} -device ide-cd,bus=ahci.0,drive=drive-cd-1"
 
 
 # Sound card
