@@ -617,6 +617,18 @@ NOTE: Can this give information about gpu memory usage? Like 'radeontop' should.
 
 
 
+(2023-10-22)
+'minerpool.org' has been changed to 'minerpool.pro'
+  https://solo-flux.minerpool.pro/
+    -> flux-eu.minerpool.pro	2057	Single GPUs or rigs below 50 sol/s (< 1070Ti) Fixed diff = 409.6
+
+ $ cd ~/GMiner
+ $ ./gminer_3_31/miner --server flux-eu.minerpool.pro --port 2057 --user t1WRQRYZpKNmojdWrWVoM1Kp7UBJ6i96bCT.mate20flux --algo 125_4 --pers ZelProof --pec
+
+ $ nano ~/ethminer_for_ever.sh
+--
+
+
 
 
 
