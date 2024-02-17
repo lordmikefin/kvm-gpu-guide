@@ -19,8 +19,8 @@
 # https://www.tecklyfe.com/how-to-create-a-windows-11-virtual-machine-in-qemu/
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.3"
-CURRENT_SCRIPT_DATE="2022-08-28"
+CURRENT_SCRIPT_VER="0.0.4"
+CURRENT_SCRIPT_DATE="2024-02-17"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -198,8 +198,11 @@ lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
 #URL_FILE="Win10_1703_English_x64.iso"
 #URL_FILE="Win10_1709_English_x64.iso"
 #URL_FILE="Win10_2004_English_x64.iso"
-URL_FILE="Win11_English_x64v1.iso"
+#URL_FILE="Win11_English_x64v1.iso"
 #URL_FILE="Windows10_USB_2018-02-11.iso"
+#https://www.microsoft.com/software-download/windows11
+#https://software.download.prss.microsoft.com/dbazure/Win11_23H2_EnglishInternational_x64v2.iso?...
+URL_FILE="Win11_23H2_EnglishInternational_x64v2.iso"
 #URL_PLAIN="https://software-download.microsoft.com/pr"
 #URL="${URL_PLAIN}/${URL_FILE}"
 
