@@ -373,6 +373,13 @@ echo " $ screen -xS emulated_tpm_windows_11"
 #echo ""
 
 
+#https://www.tomshardware.com/how-to/install-windows-11-without-microsoft-account
+echo ""
+echo "How to Install Windows 11 Without a Microsoft Account"
+echo ""
+echo " 1. Hit 'Shift + F10' A command prompt appears"
+echo " 2. Type 'OOBE\BYPASSNRO'"
+echo ""
 
 
 # -enable-kvm -> enable hardware virtualization
