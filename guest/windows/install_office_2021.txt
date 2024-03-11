@@ -1,0 +1,57 @@
+
+
+https://www.youtube.com/watch?v=KnLEj1Z1JdI
+Activate Microsoft Office for Free: Step-by-Step Guide
+------------------------------------------------------
+
+
+KMS Server (Backup)
+kms.03k.org
+kms8.MSGuides.com
+kms9.MSGuides.com
+--
+
+
+
+Step 1: Download Office Deployment Tool
+        https://www.microsoft.com/en-us/download/details.aspx?id=49117
+        
+        -> Install into "C:\office"
+--
+
+Step 2: Create Microsoft Office Profile
+        - Products and releases
+          * Products
+            -> Office Suites -> Select: "Office LTSC Professional Plus 2021 - Volume License"
+          * Apps
+            -> Select:
+               - Word  (On)
+               - Excel (On)
+               - (Switch others -> Off)
+        - Language
+          * Languages
+            -> Select primary language: "English (United Kingdom)"
+            -> Select Additional languages: "Finnish (Finland)"
+        
+        -> Click "Export"
+           -> Select: "Office Open XML formats"
+           -> Click "OK"
+           
+        -> File Name: "config"
+           -> Click "Export"
+--
+
+Step 3: Install Microsoft Office
+        C:
+        cd C:\office
+        setup.exe /download config.xml
+        :: NOTE: This will download installer files into ./Office
+        setup.exe /configure config.xml
+--
+
+Step 4: Activate Microsoft Office
+        cd C:\Program Files\Microsoft Office\Office16
+        cscript ospp.vbs /sethst:kms.03k.org
+        cscript ospp.vbs /act
+--
+
