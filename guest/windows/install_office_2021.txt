@@ -20,7 +20,7 @@ Step 1: Download Office Deployment Tool
 --
 
 Step 2: Create Microsoft Office Profile
-        https://www.microsoft.com/en-us/deploymentsettings
+        https://config.office.com/deploymentsettings
         - Products and releases
           * Products
             -> Office Suites -> Select: "Office LTSC Professional Plus 2021 - Volume License"
