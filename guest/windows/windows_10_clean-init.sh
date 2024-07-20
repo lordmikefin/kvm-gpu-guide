@@ -21,8 +21,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.3"
-CURRENT_SCRIPT_DATE="2021-02-15"
+CURRENT_SCRIPT_VER="0.0.4"
+CURRENT_SCRIPT_DATE="2024-07-20"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -201,7 +201,8 @@ lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
 #URL_FILE="Win10_1703_English_x64.iso"
 #URL_FILE="Win10_1709_English_x64.iso"
 #URL_FILE="Win10_1909_English_x64.iso"
-URL_FILE="Win10_2004_English_x64.iso"
+#URL_FILE="Win10_2004_English_x64.iso"
+URL_FILE="Win10_22H2_EnglishInternational_x64v1.iso"
 #URL_FILE="Windows10_USB_2018-02-11.iso"
 #URL_PLAIN="https://software-download.microsoft.com/pr"
 #URL="${URL_PLAIN}/${URL_FILE}"
