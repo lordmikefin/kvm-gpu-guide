@@ -1,0 +1,41 @@
+
+Create 'autounattend.xml' file for Windows 11 installation iso.
+
+NOTE: 'autounattend.xml' can be imported into the form.
+
+
+
+Form:
+https://schneegans.de/windows/unattend-generator/
+
+Source code:
+https://github.com/cschneegans/unattend-generator/
+
+
+
+Usage guide:
+https://schneegans.de/windows/unattend-generator/usage/
+
+
+ 1. Fill out the form, make sure to check Install VirtIO Guest Tools and QEMU Guest Agent, then click the "Download .iso file" button.
+ 2. Upload/Attach these .iso files to Proxmox/QEMU:
+
+    * The Windows installation image, such as Win11_23H2_English_x64v2.iso
+    * The virtio-win-*.iso image, which contains the virtio-win-guest-tools.exe installer and can be downloaded in its latest stable or its most recent version
+    * The unattend.iso image downloaded earlier
+
+ 3. Create your VM and configure its CD/DVD drives as follows: 
+      [image]
+    * virtio-win.iso.iso,media=cdrom
+    * unattend.iso,media=cdrom
+    * Win10_22H2_English_x64v1.iso,media=cdrom
+
+ 4. Start the VM to begin the unattended installation.
+
+
+
+
+
+Latest stable virtio:
+https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
+
