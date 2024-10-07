@@ -436,8 +436,11 @@ fi
 
 # Virtual disk
 #PAR="${PAR} -drive file=${VM_DISK_WIN11},format=qcow2 "
-PAR="${PAR} -drive file=${VM_DISK_WIN11},format=qcow2,if=none,id=drive-ide0-0-0"
-PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
+#PAR="${PAR} -drive file=${VM_DISK_WIN11},format=qcow2,if=none,id=drive-ide0-0-0"
+#PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
+PAR="${PAR} -device ahci,id=ahci"
+PAR="${PAR} -drive file=${VM_DISK_WIN11},if=none,id=disk-os"
+PAR="${PAR} -device ide-hd,drive=disk-os,bus=ahci.1"
 
 
 # TODO: Make instller image read only
@@ -457,10 +460,12 @@ PAR="${PAR} -cdrom ${LOCAL_FILE}"
 #PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
 
 # 'virtio' driver disk
-PAR="${PAR} -cdrom ${VIRTIO_FILE}"
+#PAR="${PAR} -cdrom ${VIRTIO_FILE}"
+PAR="${PAR} -drive file=${VIRTIO_FILE},media=cdrom"
 
 # 'autounattend' driver disk
-PAR="${PAR} -cdrom ${UNATTEND_FILE}"
+#PAR="${PAR} -cdrom ${UNATTEND_FILE}"
+PAR="${PAR} -drive file=${UNATTEND_FILE},media=cdrom"
 
 
 

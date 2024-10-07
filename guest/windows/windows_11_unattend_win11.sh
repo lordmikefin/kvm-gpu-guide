@@ -489,16 +489,20 @@ fi
 
 
 # Virtual disk
+PAR="${PAR} -device ahci,id=ahci"
 #PAR="${PAR} -drive file=${VM_DISK_WIN11},format=qcow2 "
-PAR="${PAR} -drive file=${VM_DISK_WIN11},format=qcow2,if=none,id=drive-ide0-0-0"
-PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
+#PAR="${PAR} -drive file=${VM_DISK_WIN11},format=qcow2,if=none,id=drive-ide0-0-0"
+#PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
+PAR="${PAR} -drive file=${VM_DISK_WIN11},if=none,id=disk-os"
+PAR="${PAR} -device ide-hd,drive=disk-os,bus=ahci.1"
 
 # Virtual data disk d-drive
-PAR="${PAR} -drive file=${VM_DISK_DATA},format=qcow2,if=none,id=drive-ide1-0-0"
-PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
+#PAR="${PAR} -drive file=${VM_DISK_DATA},format=qcow2,if=none,id=drive-ide1-0-0"
+#PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
+PAR="${PAR} -drive file=${VM_DISK_DATA},if=none,id=disk-d"
+PAR="${PAR} -device ide-hd,drive=disk-d,bus=ahci.2"
 
 
-PAR="${PAR} -device ahci,id=ahci"
 
 
 
