@@ -223,7 +223,7 @@ lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
 #URL_FILE="Win10_2004_English_x64.iso"
 # NOTE(2023-01-23): Using older installation ISO :(
 #URL_FILE="Win11_English_x64v1.iso" # This is version 21H2 and it works. What is wrong with 22H2 ?!
-URL_FILE="Win11_23H2_EnglishInternational_x64v2.iso"
+URL_FILE="Win11_24H2_EnglishInternational_x64.iso"
 
 #URL_PLAIN="https://software-download.microsoft.com/pr"
 #URL="${URL_PLAIN}/${URL_FILE}"
