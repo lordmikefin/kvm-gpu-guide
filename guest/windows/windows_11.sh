@@ -183,7 +183,7 @@ EMULATED_TPM="/tmp/emulated_tpm_windows_11"
 # Get 'virtio' iso file.
 KVM_WORKSPACE_ISO="${KVM_WORKSPACE}/iso"
 #VIRTIO_FILE="${KVM_WORKSPACE_ISO}/virtio-win-0.1.126.iso"
-VIRTIO_FILE="${KVM_WORKSPACE_ISO}/virtio-win-0.1.221.iso"
+VIRTIO_FILE="${KVM_WORKSPACE_ISO}/virtio-win-0.1.262.iso"
 
 
 unset INPUT
@@ -587,9 +587,9 @@ echo ""
 if [[ -n ${SPICE_PORT} ]]; then
 	echo ""
 	echo "Connect to 'spice' remote server."
-	echo " $ spicy --title Windows 127.0.0.1 -p ${SPICE_PORT}"
+	echo " $ spicy --title 'Windows 11' 127.0.0.1 -p ${SPICE_PORT}"
 	echo "You could also use 'remote-viewer'"
-	echo " $ remote-viewer --title Windows spice://127.0.0.1:${SPICE_PORT}"
+	echo " $ remote-viewer --title 'Windows 11' spice://127.0.0.1:${SPICE_PORT}"
 fi
 
 

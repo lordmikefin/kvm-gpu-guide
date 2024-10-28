@@ -500,9 +500,9 @@ echo ""
 if [[ -n ${SPICE_PORT} ]]; then
 	echo ""
 	echo "Connect to 'spice' remote server."
-	echo " $ spicy --title Windows 127.0.0.1 -p ${SPICE_PORT}"
+	echo " $ spicy --title 'Windows 7' 127.0.0.1 -p ${SPICE_PORT}"
 	echo "You could also use 'remote-viewer'"
-	echo " $ remote-viewer --title Windows spice://127.0.0.1:${SPICE_PORT}"
+	echo " $ remote-viewer --title 'Windows 7' spice://127.0.0.1:${SPICE_PORT}"
 fi
 
 echo ""
