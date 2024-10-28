@@ -458,7 +458,7 @@ PAR="${PAR} -vga qxl" # NOTE: Install 'qxl' driver from 'virtio' iso disk.
 #PAR="${PAR} -display none"
 
 # Display 'spice'
-SPICE_PORT=5924
+SPICE_PORT=5925
 if [[ -n ${SPICE_PORT} ]]; then
 	# https://wiki.gentoo.org/wiki/QEMU/Windows_guest
 	# https://www.spice-space.org/download.html

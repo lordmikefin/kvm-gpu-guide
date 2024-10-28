@@ -308,7 +308,7 @@ elif [[ -n ${VIRTUAL_DISPLAY} ]]; then
 	#PAR="${PAR} -device usb-host,vendorid=0x046d,productid=0xc077" # Bus 001 Device 006: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
     #PAR="${PAR} -device usb-host,vendorid=0x1a2c,productid=0x2c27" # 1a2c:2c27 China Resource Semico Co., Ltd USB Keyboard    a.k.a Trust
 else
-	SPICE_PORT=5925
+	SPICE_PORT=5924
 	PAR="${PAR} -vga qxl"
 	# TODO: qemu-system-x86_64: -usbdevice tablet: '-usbdevice' is deprecated, please use '-device usb-...' instead
 	# TODO: how usb devices are set in QEMU 4.2.1 ???

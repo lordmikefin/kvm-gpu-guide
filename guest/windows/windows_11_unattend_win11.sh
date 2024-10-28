@@ -317,7 +317,7 @@ elif [[ -n ${VIRTUAL_DISPLAY} ]]; then
     # USB controller passthrough
     USB_CONTROLLER="05:00.0" # 05:00.0 USB controller: Fresco Logic FL1100 USB 3.0 Host Controller (rev 10)
 else
-	SPICE_PORT=5926
+	SPICE_PORT=5934
 	PAR="${PAR} -vga qxl"
 	# TODO: qemu-system-x86_64: -usbdevice tablet: '-usbdevice' is deprecated, please use '-device usb-...' instead
 	# TODO: how usb devices are set in QEMU 4.2.1 ???
