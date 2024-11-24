@@ -10,11 +10,10 @@
 #   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/LICENSE.rst
 # 
 # Latest version of this script file:
-#   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/guest/linux/debian_12_git-init.sh
+#   https://github.com/lordmikefin/kvm-gpu-guide/blob/master/guest/linux/debian_12_git.sh
 
-# debian_12_git-init.sh
-# Initialize debian_12_git virtual machine. Git server.
-# This script will create a new vm into folder ~/kvm-workspace/vm/debian_12_git/
+# debian_12_git.sh
+# Start debian_12_git virtual machine. Git server.
 
 
 
@@ -27,7 +26,8 @@ echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 unset CURRENT_SCRIPT CURRENT_SCRIPT_REALPATH CURRENT_SCRIPT_DIR WORK_DIR
 
-CURRENT_SCRIPT_REALPATH="$(realpath ${BASH_SOURCE[0]})"
+CURRENT_SCRIPT_REALPATH="$(readlink -f "${BASH_SOURCE[0]}")"
+
 CURRENT_SCRIPT="$(basename ${CURRENT_SCRIPT_REALPATH})"
 CURRENT_SCRIPT_DIR="$(dirname ${CURRENT_SCRIPT_REALPATH})"
 WORK_DIR="${PWD}"
@@ -121,27 +121,12 @@ lm_check_KVM_WORKSPACE
 
 
 
-KVM_WORKSPACE_ISO="${KVM_WORKSPACE}/iso"
-lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
-
-
-# NOTE: Download the iso file before.
-# TODO: Auto download and verify iso file.
-#       https://www.debian.org/distrib/
-#       https://cdimage.debian.org/debian-cd/current/amd64/iso-dvd/debian-12.8.0-amd64-DVD-1.iso
-ISO_FILE="debian-12.8.0-amd64-DVD-1.iso"
-
-LOCAL_FILE="${KVM_WORKSPACE_ISO}/${ISO_FILE}"
-
-
-
-
 # OVMF binary file. Do _NOT_ over write.
 OVMF_CODE="/usr/share/OVMF/OVMF_CODE.fd"
-OVMF_VARS="/usr/share/OVMF/OVMF_VARS.fd"
 KVM_WORKSPACE_VM_UBUNTU="${KVM_WORKSPACE}/vm/debian_12_git"
 OVMF_VARS_UBUNTU="${KVM_WORKSPACE_VM_UBUNTU}/debian_12_git_VARS.fd"
 VM_DISK_UBUNTU="${KVM_WORKSPACE_VM_UBUNTU}/debian_12_git.qcow2"
+
 
 unset INPUT
 lm_read_to_INPUT "Do you wanna use folder ${KVM_WORKSPACE_VM_UBUNTU} for virtual machine?"
@@ -149,62 +134,79 @@ case "${INPUT}" in
 	"YES" )
 		INPUT="YES" ;;
 	"NO" )
-		exit 1
-		;;
+		exit 1 ;;
 	"FAILED" | * )
-		lm_failure_message
-		INPUT="FAILED" ;;
+		lm_failure ;;
 esac
 
-# Create Ubuntu vm folder.
-lm_create_folder_recursive "${KVM_WORKSPACE_VM_UBUNTU}"  || lm_failure
+
+
 
 # OVMF file for vm. UEFI boot.
-if [[ -f "${OVMF_VARS}" ]]; then
-	if [[ ! -f "${OVMF_VARS_UBUNTU}" ]]; then
-		lm_copy_file "${OVMF_VARS}" "${OVMF_VARS_UBUNTU}"  || lm_failure
-	else
-		echo -e "\n File ${OVMF_VARS_UBUNTU} alrealy exists.\n"
-	fi
-else
-	>&2 echo -e "\n File ${OVMF_VARS} missing. Did you installed OVMF?  Aborting."
+if [[ ! -f "${OVMF_VARS_UBUNTU}" ]]; then
+	lm_failure_message "${BASH_SOURCE[0]}" "${LINENO}" "File ${OVMF_VARS_UBUNTU} does not exists."
 	exit 1
 fi
 
+
 # Create Ubuntu vm virtual disk.
 if [[ ! -f "${VM_DISK_UBUNTU}" ]]; then
-	echo ""
-	echo "Createing file ${VM_DISK_UBUNTU}"
-	echo ""
-	qemu-img create -f qcow2 "${VM_DISK_UBUNTU}" 50G  || lm_failure
-else
-	echo -e "\n File ${VM_DISK_UBUNTU} alrealy exists.\n"
+	lm_failure_message "${BASH_SOURCE[0]}" "${LINENO}" "File ${VM_DISK_UBUNTU} does not exists."
+	exit 1
 fi
 
+
+
+
+
+echo ""
+echo "Starting the vm."
+echo ""
 
 
 # -enable-kvm -> enable hardware virtualization
 PAR="-enable-kvm"
 
+
 # Mother board
 PAR="${PAR} -M q35"
+
 
 # Memory
 PAR="${PAR} -m 4096"
 
 # CPU
 PAR="${PAR} -cpu host,kvm=off"
+#PAR="${PAR} -cpu host"
 PAR="${PAR} -smp 4,sockets=1,cores=4,threads=1"
 
 # Boot menu
 PAR="${PAR} -boot menu=on"
 
-# Display   qxl
+
+
 PAR="${PAR} -vga qxl"
-PAR="${PAR} -display gtk"
+# NOTE: start 'spice' only if 'qxl' virtual card is used
+SPICE_PORT=5952
+
+
+# Display 'spice'
+if [[ -n ${SPICE_PORT} ]]; then
+	# https://wiki.gentoo.org/wiki/QEMU/Linux_guest
+	# https://www.spice-space.org/download.html
+	# $ sudo apt-get install spice-vdagent
+	# -> This will add bidirectonal clipboard among other stuff ;)
+	PAR="${PAR} -spice port=${SPICE_PORT},disable-ticketing"
+	# 
+	PAR="${PAR} -device virtio-serial"
+	PAR="${PAR} -chardev spicevmc,id=vdagent,name=vdagent"
+	PAR="${PAR} -device virtserialport,chardev=vdagent,name=com.redhat.spice.0"
+fi
 
 # Monitoring screen
 PAR="${PAR} -monitor stdio"
+
+
 
 # OVMF
 PAR="${PAR} -drive file=${OVMF_CODE},if=pflash,format=raw,unit=0,readonly=on"
@@ -213,21 +215,23 @@ PAR="${PAR} -drive file=${OVMF_VARS_UBUNTU},if=pflash,format=raw,unit=1"
 # Add pcie bus
 PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1"
 
+
 # Virtual disk
+#PAR="${PAR} -drive file=${VM_DISK_UBUNTU},format=qcow2 "
 PAR="${PAR} -drive file=${VM_DISK_UBUNTU},format=qcow2,if=none,id=drive-ide0-0-0"
 PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
 
-# Ubuntu ISO file
-PAR="${PAR} -drive file=${LOCAL_FILE},format=raw,if=none,id=drive-ide1-0-0"
-PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
-
-# Sound card
-PAR="${PAR} -soundhw hda"
 
 # Network
 MACADDRESS="$(lm_generate_mac_address)"  || lm_failure
+
+# Internal networking. Bridged networking.
+# NOTE: virbr0 is created by virsh default network
+# If virsh is installed it should start at boot.
+#  $ virsh net-start default
 PAR="${PAR} -netdev bridge,br=virbr0,id=user.0"
 PAR="${PAR} -device e1000,netdev=user.0,mac=${MACADDRESS}"
+
 
 # Start the virtual machine with parameters
 echo ""
@@ -237,7 +241,20 @@ echo "https://en.wikibooks.org/wiki/QEMU/Monitor"
 echo " (qemu) help"
 echo " (qemu) info pci"
 echo ""
+
+if [[ -n ${SPICE_PORT} ]]; then
+	echo ""
+	echo "Connect to 'spice' remote server."
+	echo " $ spicy --title Ubuntu 127.0.0.1 -p ${SPICE_PORT}"
+	echo "You could also use 'remote-viewer'"
+	echo " $ remote-viewer --title Ubuntu spice://127.0.0.1:${SPICE_PORT}"
+fi
+
+
+
+echo ""
 sudo qemu-system-x86_64 ${PAR}
+
 
 
 echo ""
