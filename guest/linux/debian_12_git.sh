@@ -156,6 +156,9 @@ if [[ ! -f "${VM_DISK_UBUNTU}" ]]; then
 fi
 
 
+KVM_WORKSPACE_ISO="${KVM_WORKSPACE}/iso"
+lm_create_folder_recursive "${KVM_WORKSPACE_ISO}"  || lm_failure
+
 # NOTE: I installed debian whout net. So keep disk in :)
 ISO_FILE="debian-12.8.0-amd64-DVD-1.iso"
 LOCAL_FILE="${KVM_WORKSPACE_ISO}/${ISO_FILE}"
