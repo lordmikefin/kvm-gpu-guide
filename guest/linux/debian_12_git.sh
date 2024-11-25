@@ -18,8 +18,8 @@
 
 
 unset CURRENT_SCRIPT_VER CURRENT_SCRIPT_DATE
-CURRENT_SCRIPT_VER="0.0.1"
-CURRENT_SCRIPT_DATE="2024-11-24"
+CURRENT_SCRIPT_VER="0.0.2"
+CURRENT_SCRIPT_DATE="2024-11-25"
 echo "CURRENT_SCRIPT_VER: ${CURRENT_SCRIPT_VER} (${CURRENT_SCRIPT_DATE})"
 
 
@@ -156,6 +156,10 @@ if [[ ! -f "${VM_DISK_UBUNTU}" ]]; then
 fi
 
 
+# NOTE: I installed debian whout net. So keep disk in :)
+ISO_FILE="debian-12.8.0-amd64-DVD-1.iso"
+LOCAL_FILE="${KVM_WORKSPACE_ISO}/${ISO_FILE}"
+
 
 
 
@@ -220,6 +224,10 @@ PAR="${PAR} -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis
 #PAR="${PAR} -drive file=${VM_DISK_UBUNTU},format=qcow2 "
 PAR="${PAR} -drive file=${VM_DISK_UBUNTU},format=qcow2,if=none,id=drive-ide0-0-0"
 PAR="${PAR} -device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-0,id=ide0-0-0"
+
+# ISO file
+PAR="${PAR} -drive file=${LOCAL_FILE},format=raw,if=none,id=drive-ide1-0-0"
+PAR="${PAR} -device ide-hd,bus=ide.1,unit=0,drive=drive-ide1-0-0,id=ide1-0-0"
 
 
 # Network
