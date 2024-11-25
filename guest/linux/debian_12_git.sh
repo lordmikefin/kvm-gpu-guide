@@ -187,7 +187,7 @@ PAR="${PAR} -boot menu=on"
 
 PAR="${PAR} -vga qxl"
 # NOTE: start 'spice' only if 'qxl' virtual card is used
-SPICE_PORT=5952
+SPICE_PORT=5960
 
 
 # Display 'spice'
@@ -245,7 +245,7 @@ echo ""
 if [[ -n ${SPICE_PORT} ]]; then
 	echo ""
 	echo "Connect to 'spice' remote server."
-	echo " $ spicy --title Ubuntu 127.0.0.1 -p ${SPICE_PORT}"
+	echo " $ spicy --title 'Debian 12 git server' 127.0.0.1 -p ${SPICE_PORT}"
 	echo "You could also use 'remote-viewer'"
 	echo " $ remote-viewer --title Ubuntu spice://127.0.0.1:${SPICE_PORT}"
 fi
