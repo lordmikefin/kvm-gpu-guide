@@ -27,7 +27,7 @@ C:
 mkdir "C:\Program Files\Kill-Update"
 cd "C:\Program Files\Kill-Update"
 
-PowerShell -Command "& {$client = new-object System.Net.WebClient; $client.DownloadFile('https://github.com/dlebansais/Kill-Update/releases/download/v1.1.0/Kill-Update.exe','.\Kill-Update.exe')}"
+PowerShell -Command "& {$client = new-object System.Net.WebClient; $client.DownloadFile('https://github.com/dlebansais/Kill-Update/releases/download/v1.1.2/Kill-Update.exe','.\Kill-Update.exe')}"
 
 Kill-Update.exe
 ```
