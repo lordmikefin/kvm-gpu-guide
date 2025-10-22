@@ -8,3 +8,25 @@ https://www.microsoft.com/en-us/software-download/windows11
 https://software.download.prss.microsoft.com/dbazure/Win11_24H2_EnglishInternational_x64.iso
 --
 
+
+Create USB from iso file:
+
+1. Use Rufus (Recommended)
+Rufus knows that Windows ISO files are structured differently than ISO files for Linux distributions.
+A Windows ISO contains multiple partitions and uses specific bootloader formats (like UEFI + NTFS),
+which aren’t properly handled by a raw 'dd' copy.
+
+Rufus creates:
+ • A hybrid bootloader (UEFI + BIOS)
+ • A boot partition using FAT32 or NTFS depending on the ISO
+ • Additional settings like removable media flags, which Windows installer checks
+--
+
+You can use "WoeUSB" or "Ventoy" as Linux-friendly alternatives to Rufus.
+--
+
+2. Manual method on Linux (if you don't want to use Rufus):
+ $ sudo mkdir /mnt/winiso
+ $ sudo mount -o loop win11.iso /mnt/winiso
+ $ sudo cp -rT /mnt/winiso /media/your-usb-mountpoint
+--
