@@ -1,0 +1,10 @@
+
+Download iso from Microsoft
+
+https://www.microsoft.com/en-us/software-download/windows11
+ Current release: Windows 11 2024 Update  Version 24H2
+ Download Windows 11 Disk Image (ISO) for x64 devices
+--
+https://software.download.prss.microsoft.com/dbazure/Win11_24H2_EnglishInternational_x64.iso
+--
+
